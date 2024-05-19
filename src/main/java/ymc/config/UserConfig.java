@@ -1,6 +1,8 @@
 package ymc.config;
 
-public class UserConfig {
+import java.io.Serializable;
+
+public class UserConfig implements Serializable {
     private String selectedWordBook;
     private int dailyLearningQuota;
     private int dailyReviewQuota;

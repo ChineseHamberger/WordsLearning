@@ -1,6 +1,8 @@
 package ymc.basicelements;
 
-public class Word {
+import java.io.Serializable;
+
+public class Word implements Serializable {
     private final String english;
     private final String definition;
     private final String exampleSentence;

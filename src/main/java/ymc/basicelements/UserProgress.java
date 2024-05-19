@@ -1,10 +1,11 @@
 package ymc.basicelements;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UserProgress {
+public class UserProgress implements Serializable {
     private Map<String, Integer> wordFamiliarity;
     private Map<String, LocalDate> lastReviewed;
 
