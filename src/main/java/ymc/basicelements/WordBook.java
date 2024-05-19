@@ -1,8 +1,9 @@
 package ymc.basicelements;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class WordBook {
+public class WordBook implements Serializable {
     private final String name;
     private final List<Word> words;
 

@@ -10,8 +10,11 @@ import java.util.List;
 
 public class WordSelectionAlgorithm {
     public List<Word> getWordsForToday(UserProgress progress, UserConfig config, WordBook wordBook) {
-        // Implement selection logic...
-        return new ArrayList<>();
+        List<Word> selectedWords = new ArrayList<>();
+        // Simple algorithm: pick first N words for learning quota
+        for (int i = 0; i < config.getDailyLearningQuota() && i < wordBook.getWords().size(); i++) {
+            selectedWords.add(wordBook.getWords().get(i));
+        }
+        return selectedWords;
     }
 }
-
