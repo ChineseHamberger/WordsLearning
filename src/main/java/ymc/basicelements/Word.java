@@ -21,4 +21,5 @@ public class Word implements Serializable {
     public String getExampleSentence() {
         return exampleSentence;
     }
+
 }

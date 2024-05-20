@@ -78,13 +78,14 @@ public class ArticleParser {
                     File file = new File(articlesDir, fileName);
                     try (FileWriter writer = new FileWriter(file)) {
                         writer.write(content.toString());
-                        System.out.println("文章已保存为：" + file.getPath());
+//                        System.out.println("文章已保存为：" + file.getPath());
                     }
                 } else {
-                    System.out.println("未找到文章内容：" + url);
+
+//                    System.out.println("未找到文章内容：" + url);
                 }
             } catch (IOException e) {
-                System.out.println("无法解析文章：" + url);
+//                System.out.println("无法解析文章：" + url);
                 e.printStackTrace();
             }
         }

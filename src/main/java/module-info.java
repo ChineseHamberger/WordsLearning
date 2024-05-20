@@ -11,6 +11,7 @@ module org.example.wordslearning {
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
     requires org.jsoup;
+    requires java.desktop;
 
     opens org.example.wordslearning to javafx.fxml;
     exports org.example.wordslearning;

@@ -13,7 +13,7 @@ public class ArticleFetcher {
 
     private static ConcurrentLinkedQueue<String> articleLinks = new ConcurrentLinkedQueue<>();
 
-    public static void main(String[] args) {
+    public static void fetchArticles() {
         String url = "https://www.readersdigest.co.uk/";
         try {
             // 使用Jsoup连接到指定的URL
@@ -29,13 +29,13 @@ public class ArticleFetcher {
                 // 检查链接是否符合你的条件
                 if (countOccurrences(href, '-') >= 3) {
                     String articleUrl = link.absUrl("href");
-                    System.out.println("发现链接：" + articleUrl);
+//                    System.out.println("发现链接：" + articleUrl);
                     articleLinks.add(articleUrl);
                 }
             }
 
             // 打印所有收集到的链接
-            System.out.println("收集到的链接数：" + articleLinks.size());
+//            System.out.println("收集到的链接数：" + articleLinks.size());
 
             // 启动文章解析爬虫
             ArticleParser parser = new ArticleParser(articleLinks);
