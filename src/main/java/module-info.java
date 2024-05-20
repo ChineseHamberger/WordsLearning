@@ -10,6 +10,7 @@ module org.example.wordslearning {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
+    requires org.jsoup;
 
     opens org.example.wordslearning to javafx.fxml;
     exports org.example.wordslearning;
