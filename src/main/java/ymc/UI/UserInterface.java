@@ -4,8 +4,10 @@ import ymc.LocalStorage.LocalStorage;
 import ymc.basicelements.UserProgress;
 import ymc.basicelements.Word;
 import ymc.basicelements.WordBook;
+import ymc.basicelements.WordBookLoader;
 import ymc.init.ArticleFetcher;
 import ymc.config.UserConfig;
+import ymc.translator.translator;
 
 import javax.swing.*;
 import java.awt.*;
@@ -122,6 +124,10 @@ public class UserInterface {
         readArticlesButton.addActionListener(e -> readArticles());
         panel.add(readArticlesButton);
 
+        JButton translateButton = new JButton("查询单词");
+        translateButton.addActionListener(e -> queryWord());
+        panel.add(translateButton);
+
         JButton exitButton = new JButton("退出");
         exitButton.addActionListener(e -> {
             storage.saveUserProgress(progress);
@@ -196,42 +202,53 @@ public class UserInterface {
 
         JPanel panel = new JPanel(new GridLayout(0, 1));
 
-        List<Word> wordsToLearn = articleProcessor.getWordsForLearning(config.getDailyLearningQuota(), progress);
-        List<Word> wordsToReview = articleProcessor.getWordsForReview(config.getDailyReviewQuota(), progress);
+        // 加载选定的单词书
+        String selectedWordBook = config.getSelectedWordBook();
+        WordBook wordBook = WordBookLoader.loadWordBook(selectedWordBook);
+        List<Word> allWords = wordBook.getWords();
 
-        JLabel learningLabel = new JLabel("学习新单词：");
-        panel.add(learningLabel);
+        // 获取今日需要学习和复习的单词
+        List<Word> wordsToLearn = progress.getWordsForLearning(selectedWordBook, allWords, config.getDailyLearningQuota());
+        List<Word> wordsToReview = progress.getWordsForReview(selectedWordBook, config.getDailyReviewQuota());
 
+        // 弹出学习单词窗口
         for (Word word : wordsToLearn) {
-            JButton wordButton = new JButton(word.getEnglish());
-            wordButton.addActionListener(e -> {
-                // 展示单词详细信息
-                displayWordDetails(word);
-                // 更新学习进度
-                progress.learnWord(word);
-                storage.saveUserProgress(progress);
-            });
-            panel.add(wordButton);
+            showWordDialog(word, progress, selectedWordBook, true);
         }
 
-        JLabel reviewLabel = new JLabel("复习单词：");
-        panel.add(reviewLabel);
-
+        // 弹出复习单词窗口
         for (Word word : wordsToReview) {
-            JButton wordButton = new JButton(word.getEnglish());
-            wordButton.addActionListener(e -> {
-                // 展示单词详细信息
-                displayWordDetails(word);
-                // 更新复习进度
-                progress.reviewWord(word);
-                storage.saveUserProgress(progress);
-            });
-            panel.add(wordButton);
+            showWordDialog(word, progress, selectedWordBook, false);
         }
+
+        JLabel finishLabel = new JLabel("恭喜你完成今日学习任务");
+        panel.add(finishLabel);
 
         frame.getContentPane().add(panel);
         frame.setVisible(true);
     }
+
+    private void showWordDialog(Word word, UserProgress progress, String selectedWordBook, boolean isLearning) {
+        int option = JOptionPane.showConfirmDialog(null, "你认识这个单词吗？\n" + word.getEnglish(), "单词测试", JOptionPane.YES_NO_OPTION);
+
+        if (option == JOptionPane.YES_OPTION) {
+            if (isLearning) {
+                progress.learnWord(selectedWordBook, word);
+            } else {
+                progress.reviewWord(selectedWordBook, word);
+            }
+            progress.saveProgress("username"); // 保存进度，假设用户名为"username"
+        }
+
+        // 显示单词详细信息
+        JOptionPane.showMessageDialog(null, getWordDetailMessage(word), "单词详情", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private String getWordDetailMessage(Word word) {
+        return "单词详细信息：\n英文: " + word.getEnglish() + "\n中文: " + word.getDefinition() + "\n例句: " + word.getExampleSentence();
+    }
+
+
 
     private void readArticles() {
         articleFetcher.fetchArticles();  // 生成 articles 文件夹和文章文件
@@ -323,4 +340,58 @@ public class UserInterface {
         frame.setVisible(true);
 
     }
+
+    private void queryWord() {
+        // 创建对话框
+        JDialog dialog = new JDialog((Frame) null, "查询单词", true);
+        dialog.setSize(300, 200);
+        dialog.setLayout(new GridLayout(4, 1));
+
+        // 翻译模式选择
+        JLabel modeLabel = new JLabel("选择翻译模式:");
+        dialog.add(modeLabel);
+
+        String[] modes = { "中译英", "英译中" };
+        JComboBox<String> modeComboBox = new JComboBox<>(modes);
+        dialog.add(modeComboBox);
+
+        // 输入单词区域
+        JLabel queryLabel = new JLabel("输入单词:");
+        dialog.add(queryLabel);
+
+        JTextField queryField = new JTextField();
+        dialog.add(queryField);
+
+        // 按钮面板
+        JPanel buttonPanel = new JPanel(new GridLayout(1, 2));
+
+        JButton translateButton = new JButton("翻译");
+        buttonPanel.add(translateButton);
+
+        JButton cancelButton = new JButton("取消");
+        buttonPanel.add(cancelButton);
+
+        dialog.add(buttonPanel);
+
+        // 翻译按钮的动作监听器
+        translateButton.addActionListener(e -> {
+            int mode = modeComboBox.getSelectedIndex() + 1; // JComboBox索引从0开始，translate方法的mode从1开始
+            String query = queryField.getText().trim();
+
+            if (!query.isEmpty()) {
+                String result = translator.translate(mode, query);
+                JOptionPane.showMessageDialog(dialog, "翻译结果: " + result, "翻译结果", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(dialog, "请输入一个单词。", "错误", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        // 取消按钮的动作监听器
+        cancelButton.addActionListener(e -> dialog.dispose());
+
+        // 显示对话框
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
+    }
+
 }
