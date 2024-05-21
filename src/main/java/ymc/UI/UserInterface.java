@@ -321,5 +321,6 @@ public class UserInterface {
 
         frame.getContentPane().add(new JScrollPane(textArea));
         frame.setVisible(true);
+
     }
 }
