@@ -1,32 +1,40 @@
 package ymc.basicelements;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class UserProgress implements Serializable {
-    private Map<String, Integer> wordFamiliarity;
-    private Map<String, LocalDate> lastReviewed;
+    private Set<Word> learnedWords;
+    private Map<Word, Integer> reviewCounts;
+    private static final int REVIEW_THRESHOLD = 5;
 
     public UserProgress() {
-        this.wordFamiliarity = new HashMap<>();
-        this.lastReviewed = new HashMap<>();
+        this.learnedWords = new HashSet<>();
+        this.reviewCounts = new HashMap<>();
     }
 
-    public Map<String, Integer> getWordFamiliarity() {
-        return wordFamiliarity;
+    public boolean isWordLearned(Word word) {
+        return learnedWords.contains(word);
     }
 
-    public Map<String, LocalDate> getLastReviewed() {
-        return lastReviewed;
+    public void learnWord(Word word) {
+        learnedWords.add(word);
+        reviewCounts.put(word, 0);
     }
 
-    public void setWordFamiliarity(Map<String, Integer> wordFamiliarity) {
-        this.wordFamiliarity = wordFamiliarity;
+    public void reviewWord(Word word) {
+        reviewCounts.put(word, reviewCounts.getOrDefault(word, 0) + 1);
     }
 
-    public void setLastReviewed(Map<String, LocalDate> lastReviewed) {
-        this.lastReviewed = lastReviewed;
+    public boolean needsReview(Word word) {
+        return reviewCounts.getOrDefault(word, 0) < REVIEW_THRESHOLD;
+    }
+
+    public Set<Word> getLearnedWords() {
+        return learnedWords;
     }
 }

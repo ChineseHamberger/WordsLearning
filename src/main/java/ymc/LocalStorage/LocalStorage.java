@@ -7,6 +7,9 @@ import ymc.config.UserConfig;
 
 import java.io.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class LocalStorage {
     private static final String CONFIG_FILE = "userConfig.dat";
@@ -67,4 +70,19 @@ public class LocalStorage {
             return null;
         }
     }
+
+
+    public List<String> listWordBooks() {
+        File wordBooksDir = new File(WORD_BOOK_DIR);
+        File[] wordBookFiles = wordBooksDir.listFiles((dir, name) -> name.toLowerCase().endsWith(".dat"));
+        List<String> wordBooks = new ArrayList<>();
+        if (wordBookFiles != null) {
+            for (File file : wordBookFiles) {
+                wordBooks.add(file.getName().replace(".dat", ""));
+            }
+        }
+        return wordBooks;
+    }
 }
+
+
