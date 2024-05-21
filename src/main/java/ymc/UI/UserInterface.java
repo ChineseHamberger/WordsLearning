@@ -89,6 +89,7 @@ public class UserInterface {
                 int dailyLearningQuota = Integer.parseInt(learningQuotaField.getText());
                 int dailyReviewQuota = Integer.parseInt(reviewQuotaField.getText());
 
+
                 UserConfig config = new UserConfig(selectedWordBook, dailyLearningQuota, dailyReviewQuota);
                 storage.saveUserConfig(config);
 
@@ -127,6 +128,7 @@ public class UserInterface {
         JButton translateButton = new JButton("查询单词");
         translateButton.addActionListener(e -> queryWord());
         panel.add(translateButton);
+
 
         JButton exitButton = new JButton("退出");
         exitButton.addActionListener(e -> {
@@ -262,6 +264,7 @@ public class UserInterface {
 
             JPanel panel = new JPanel(new GridLayout(0, 1));
 
+
             for (int i = 0; i < listOfFiles.length; i++) {
                 JButton articleButton = new JButton(listOfFiles[i].getName());
                 File file = listOfFiles[i];
@@ -292,6 +295,7 @@ public class UserInterface {
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "无法读取文章：" + e.getMessage());
         }
+
     }
 
     private void createAndShowArticleGUI(String content) {
