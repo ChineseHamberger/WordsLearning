@@ -1,9 +1,22 @@
 # 背单词
 
-## TODO List
+## 注意
 
-1. 解析json文件(zsj)
-2. 解析md文件(zsj)
+1.在你每次更新项目时,请在README中"更新"一栏写下具体更新内容和时间,
+在"请求"一栏写下你请求co-author需要实现的内容
+
+## 更新
+
+1. 解析json文件(zsj,doing,0518)
+2. 解析md文件(zsj,doing,0518)
+
+## 请求
+
+## 声明
+
+1.本项目为个人学习项目，仅供学习参考
+2.本项目部分资料来源于项目https://github.com/kajweb/dict以及https://github.com/guopenghui/obsidian-language-learner,
+在此感谢
 
 ## 模式
 
