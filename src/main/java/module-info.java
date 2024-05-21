@@ -12,6 +12,8 @@ module org.example.wordslearning {
     requires com.almasb.fxgl.all;
     requires org.jsoup;
     requires java.desktop;
+    requires java.net.http;
+    requires org.json;
 
     opens org.example.wordslearning to javafx.fxml;
     exports org.example.wordslearning;
