@@ -7,12 +7,13 @@
 
 ## TODO List
 
-1. 解析json文件(zsj) （留言：您解析完json后也许可以把ymc.init.WordBookInitializer实现一下，Word类应该需要加一些字段）
+1. 解析json文件(zsj,解决) （留言：您解析完json后也许可以把ymc.init.WordBookInitializer实现一下，Word类应该需要加一些字段 zsj:请求全部实现）
 2. 解析md文件(zsj)
 3. 背单词模式(ymc)
 4. 读文章模式(ymc)
 
-(留言：目前的GUI只是我为了测试读文章模式能不能运行简单写的，您还是按计划写一个FX的美观版GUI吧)
+(留言：目前的GUI只是我为了测试读文章模式能不能运行简单写的，您还是按计划写一个FX的美观版GUI吧
+zsj:好,我们这周先把基本逻辑理顺,预计下周或更早开始写界面)
 
 ## 模式
 
