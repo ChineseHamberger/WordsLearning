@@ -250,7 +250,7 @@ public class UserInterface {
     }
 
     private String getWordDetailMessage(Word word) {
-        return "单词详细信息：\n英文: " + word.getEnglish() + "\n中文: " + word.getDefinition() + "\n例句: " + word.getExampleSentence();
+        return "单词详细信息：\n英文: " + word.info();
     }
 
 
