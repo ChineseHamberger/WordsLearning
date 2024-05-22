@@ -2,10 +2,6 @@ package ymc.UI;
 
 import ymc.basicelements.Word;
 import ymc.basicelements.WordBook;
-import ymc.basicelements.UserProgress;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ArticleProcessor {
     private WordBook wordBook;
@@ -29,39 +25,5 @@ public class ArticleProcessor {
             }
         }
         return null;
-    }
-
-    public List<Word> getWordsForLearning(int dailyLearningQuota, UserProgress progress) {
-        List<Word> wordsForLearning = new ArrayList<>();
-        List<Word> allWords = wordBook.getWords();
-        int count = 0;
-
-        for (Word word : allWords) {
-            if (!progress.isWordLearned(word)) {
-                wordsForLearning.add(word);
-                count++;
-                if (count >= dailyLearningQuota) {
-                    break;
-                }
-            }
-        }
-        return wordsForLearning;
-    }
-
-    public List<Word> getWordsForReview(int dailyReviewQuota, UserProgress progress) {
-        List<Word> wordsForReview = new ArrayList<>();
-        List<Word> allWords = wordBook.getWords();
-        int count = 0;
-
-        for (Word word : allWords) {
-            if (progress.isWordLearned(word) && progress.needsReview(word)) {
-                wordsForReview.add(word);
-                count++;
-                if (count >= dailyReviewQuota) {
-                    break;
-                }
-            }
-        }
-        return wordsForReview;
     }
 }
