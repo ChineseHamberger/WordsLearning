@@ -7,24 +7,15 @@ import org.jsoup.nodes.Element;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Scanner;
 
 public class translator {
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("请选择模式（1，中译英；2，英译中）: ");
-        int mode = Integer.parseInt(scanner.nextLine());
-        System.out.print("请输入要翻译的单词: ");
-        String query = scanner.nextLine();
-        scanner.close();
-
+    public static String translate(int mode, String query) {
         try {
-            String translation = translate(query, mode);
-            System.out.println("翻译结果: " + translation);
+            return translate(query, mode);
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("翻译失败");
+            return "翻译失败";
         }
     }
 
