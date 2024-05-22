@@ -39,35 +39,41 @@ public class Word implements Serializable {
         this.ukspeech = ukspeech;
         this.usspeech = usspeech;
     }
+    public StringBuilder info(){
+        StringBuilder info = new StringBuilder();
+        info.append("**单词：" + english +"\n");
+        info.append("*中文释义：" + tranChinese+"\n");
+        info.append("*英文释义：" + tranEnglish+"\n");
+        info.append("*音标：" + getPhone()+"\n");
+        info.append("*来自词书: "+ bookId + "序号: "+ wordRank+"\n");
+        info.append("*发音参数: "+ukspeech+" "+usspeech+"\n");
 
-
-    public void showInfo(){
-        System.out.println("**单词：" + english);
-        System.out.println("*中文释义：" + tranChinese);
-        System.out.println("*英文释义：" + tranEnglish);
-        System.out.println("*音标：" + getPhone());
-        System.out.println("*来自词书: "+ bookId + "序号: "+ wordRank);
-        System.out.println("*发音参数: "+ukspeech+" "+usspeech); //待实现发音的流
-        for(Exam exam:exams){
-            exam.showInfo();
-        }
-        for(Sentence sentence:sentences){
-            sentence.showInfo();
-        }
-        for(Syno syno:synos){
-            syno.showInfo();
-        }
-        for(Phrase phrase:phrases){
-            phrase.showInfo();
+        for(Tran tran:trans){
+            info.append(tran.info());
         }
         for(RelWord rel:rels){
-            rel.showInfo();
+            info.append(rel.info());
         }
-        for(Tran tran:trans){
-            tran.showInfo();
+        for(Syno syno:synos){
+            info.append(syno.info());
         }
 
+        for (Phrase phrase:phrases){
+            info.append(phrase.info());
+        }
+        for(Sentence sentence:sentences){
+            info.append(sentence.info());
+        }
+        for(Exam exam:exams){
+            info.append(exam.info());
+        }
 
+        return info;
+
+    }
+
+    public void showInfo(){
+        System.out.println(info());
     }
 
     public String getEnglish() {
@@ -93,7 +99,5 @@ public class Word implements Serializable {
     public String getPhone(){
         return usphone + " " + ukphone;
     }
-    public String getExampleSentence() {
-        return " ";
-    }
+
 }

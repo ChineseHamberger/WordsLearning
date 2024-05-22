@@ -33,12 +33,19 @@ public class Exam implements Serializable {
     }
 
     public void showInfo() {
-        System.out.println("Exam Type: " + examType);
-        System.out.println("Question: " + question);
-        System.out.println("Answer: " + answer);
+        System.out.println(info());
+    }
+
+    public StringBuilder info() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("*Exam:").append("\n");
+        sb.append("Exam Type: ").append(examType).append("\n");
+        sb.append("Question: ").append(question).append("\n");
+        sb.append("Answer: ").append(answer).append("\n");
         for (int i = 0; i < choices.size(); i++) {
-            System.out.println("Choice " + (i + 1) + ": " + choices.get(i).getChoiceIndex()+ " " + choices.get(i).getChoice());
+            sb.append("Choice ").append(i + 1).append(": ").append(choices.get(i).getChoiceIndex()).append(" ").append(choices.get(i).getChoice()).append("\n");
         }
-        System.out.println("Right Index: " + rightIndex);
+        sb.append("Right Index: ").append(rightIndex);
+        return sb;
     }
 }

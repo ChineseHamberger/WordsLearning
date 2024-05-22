@@ -18,6 +18,12 @@ public class Sentence implements Serializable {
     }
 
     public void showInfo() {
-        System.out.println("*Sentence: " + sContent + " " + sCn);
+        System.out.println(info());
+    }
+
+    public StringBuilder info() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("*Sentence: ").append(sContent).append(" ").append(sCn).append("\n");
+        return sb;
     }
 }

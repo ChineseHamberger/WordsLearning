@@ -22,6 +22,12 @@ public class Tran implements Serializable {
     }
 
     public void showInfo() {
-        System.out.print("*Tran: "+pos + " " + tranCn + " " + tranEng);
+        System.out.print(info());
+    }
+
+    public StringBuilder info() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("*Tran: ").append(pos).append(" ").append(tranCn).append(" ").append(tranEng).append("\n");
+        return sb;
     }
 }

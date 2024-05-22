@@ -23,13 +23,17 @@ public class Syno implements Serializable {
     }
 
     public void showInfo() {
-        System.out.println("*Syno:");
-        System.out.println("pos: " + pos);
-        System.out.println("tran: " + tran);
-        for (String hwd : hwds) {
-            System.out.println("hwd: " + hwd);
-        }
-
+        System.out.println(info());
     }
 
+    public StringBuilder info() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("*Syno:").append("\n");
+        sb.append("pos: ").append(pos).append("\n");
+        sb.append("tran: ").append(tran).append("\n");
+        for (String hwd : hwds) {
+            sb.append("hwd: ").append(hwd).append("\n");
+        }
+        return sb;
+    }
 }

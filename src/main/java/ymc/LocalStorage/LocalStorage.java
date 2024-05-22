@@ -65,6 +65,7 @@ public class LocalStorage {
 
     public WordBook getWordBook(String name) {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(WORD_BOOK_DIR + "/" + name + ".dat"))) {
+            System.out.println(WORD_BOOK_DIR + "/" + name + ".dat");
             return (WordBook) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
             return null;

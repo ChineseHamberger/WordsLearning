@@ -24,9 +24,15 @@ public class RelWord implements Serializable {
     }
 
     public void showInfo() {
-        System.out.println("*RelWord: " + pos);
-        for (int i = 0; i < hwds.size(); i++) {
-            System.out.println("hwd: " + hwds.get(i) + " tran: " + trans.get(i));
+        System.out.println(info());
+    }
+
+    public StringBuilder info() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("*RelWord: " + pos + "\n");
+        for (int i = 0; i < hwds.size(); i++){
+            sb.append("hwd: " + hwds.get(i) + " tran: " + trans.get(i) + "\n");
         }
+        return sb;
     }
 }

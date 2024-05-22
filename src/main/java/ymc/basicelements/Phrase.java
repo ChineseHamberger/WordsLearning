@@ -17,7 +17,13 @@ public class Phrase implements Serializable {
     }
 
     public void showInfo() {
-        System.out.println("*Phrase: " + pContent + " " + pCn);
+        System.out.println(info());
+    }
+
+    public StringBuilder info() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("*Phrase: ").append(pContent).append(" ").append(pCn).append("\n");
+        return sb;
     }
 }
 

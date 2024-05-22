@@ -18,9 +18,9 @@ public class WordBookInitializer {
 
     public static void initializeBook(String bookName) throws IOException {
         WordBook wordBook = tools.JsonKit.jsonToWordBook(bookName);
-//        for (Word word : wordBook.getWords()) {
-//            word.showInfo();
-//        }
+        for (Word word : wordBook.getWords()) {
+            word.showInfo();
+        }
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("wordBooks/" + bookName + ".dat"))) {
             oos.writeObject(wordBook);
         } catch (IOException e) {

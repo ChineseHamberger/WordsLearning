@@ -83,9 +83,12 @@ public class UserInterface {
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                int defaultLearningQuota = 10;
+                int defaultReviewQuota = 5;
+
                 String selectedWordBook = (String) wordBookComboBox.getSelectedItem();
-                int dailyLearningQuota = Integer.parseInt(learningQuotaField.getText());
-                int dailyReviewQuota = Integer.parseInt(reviewQuotaField.getText());
+                int dailyLearningQuota = learningQuotaField.getText().isEmpty() ? defaultLearningQuota :Integer.parseInt(learningQuotaField.getText());
+                int dailyReviewQuota = reviewQuotaField.getText().isEmpty() ? defaultReviewQuota :Integer.parseInt(reviewQuotaField.getText());
 
                 UserConfig config = new UserConfig(selectedWordBook, dailyLearningQuota, dailyReviewQuota);
                 storage.saveUserConfig(config);
@@ -317,7 +320,7 @@ public class UserInterface {
 
         JTextArea textArea = new JTextArea();
         textArea.setEditable(false);
-        textArea.setText("单词：" + word.getEnglish() + "\n释义：" + word.getTranChinese() + "\n例句：" + word.getExampleSentence());
+        textArea.setText(word.info().toString());
 
         frame.getContentPane().add(new JScrollPane(textArea));
         frame.setVisible(true);
