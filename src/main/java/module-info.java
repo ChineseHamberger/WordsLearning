@@ -14,6 +14,7 @@ module org.example.wordslearning {
     requires java.desktop;
     requires java.net.http;
     requires org.json;
+    requires com.fasterxml.jackson.databind;
 
     opens org.example.wordslearning to javafx.fxml;
     exports org.example.wordslearning;

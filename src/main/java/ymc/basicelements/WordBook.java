@@ -5,13 +5,17 @@ import java.util.List;
 
 public class WordBook implements Serializable {
     private final String name;
-    private final List<Word> words;
+    private List<Word> words;
+
 
     public WordBook(String name, List<Word> words) {
         this.name = name;
         this.words = words;
     }
 
+    public void addWord(Word word) {
+        words.add(word);
+    }
     public List<Word> getWords() {
         return words;
     }

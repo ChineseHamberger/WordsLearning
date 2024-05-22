@@ -317,7 +317,7 @@ public class UserInterface {
 
         JTextArea textArea = new JTextArea();
         textArea.setEditable(false);
-        textArea.setText("单词：" + word.getEnglish() + "\n释义：" + word.getDefinition() + "\n例句：" + word.getExampleSentence());
+        textArea.setText("单词：" + word.getEnglish() + "\n释义：" + word.getTranChinese() + "\n例句：" + word.getExampleSentence());
 
         frame.getContentPane().add(new JScrollPane(textArea));
         frame.setVisible(true);
