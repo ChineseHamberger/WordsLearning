@@ -246,6 +246,7 @@ public class UserInterface {
         }
 
         // 显示单词详细信息
+        word.playUSSpeech();
         JOptionPane.showMessageDialog(null, getWordDetailMessage(word), "单词详情", JOptionPane.INFORMATION_MESSAGE);
     }
 

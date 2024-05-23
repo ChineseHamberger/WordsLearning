@@ -22,6 +22,7 @@ public class WordBookInitializer {
 //            word.showInfo();
 //        }
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("wordBooks/" + bookName + ".dat"))) {
+            System.out.println("Initialize"+bookName+" Done.");
             oos.writeObject(wordBook);
         } catch (IOException e) {
             e.printStackTrace();

@@ -1,5 +1,7 @@
 package ymc.basicelements;
 
+import tools.AudioKit;
+
 import javax.sound.sampled.*;
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -26,9 +28,6 @@ public class Word implements Serializable {
 
     private String usphone, ukphone;
     private String ukspeech,usspeech;
-
-    private int familiarity = 0; //熟悉,掌握程度评分
-    private int rareness = 0; //稀有程度评分
 
     public Word(String bookId, int wordRank, String english, String chinese, String tranEnglish, List<Exam> exams, List<Sentence> sentences, List<Syno> synos, List<Phrase> phrases, List<RelWord> rels, List<Tran> trans, String usphone, String ukphone, String ukspeech, String usspeech){
         this.bookId = bookId;
@@ -108,4 +107,26 @@ public class Word implements Serializable {
         return usphone + " " + ukphone;
     }
 
+    public void playUSSpeech(){
+        if(!usspeech.equals("[not found]")){
+            String mp3Url = AudioKit.getYoudaoApi()+usspeech;
+            //System.out.println(mp3Url);
+            AudioKit.playMP3fromURL(mp3Url);
+        }
+    }
+
+    public void playUKSpeech(){
+        if(!ukspeech.equals("[not found]")){
+            String mp3Url = AudioKit.getYoudaoApi()+ukspeech;
+            //System.out.println(mp3Url);
+            AudioKit.playMP3fromURL(mp3Url);
+        }
+    }
+
+    public String getUSSpeech() {
+        return usspeech;
+    }
+    public String getUKSpeech() {
+        return ukspeech;
+    }
 }

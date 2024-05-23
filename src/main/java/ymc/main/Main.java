@@ -8,10 +8,7 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        WordBookInitializer.initializeBook("SmallBook");
-        //WordBookInitializer.initializeBook("BEC_2");
-//        WordBookInitializer.getBookList();
-//        WordBookInitializer.initializeAll();
+        //此处无需WordBookInitializer.initializeAll()，因为UserInterface会自动调用loadWordBook(),会自动初始化选定的单词书
         UserInterface ui = new UserInterface();
         ui.start();
     }

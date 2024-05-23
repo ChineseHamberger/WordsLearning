@@ -11,7 +11,10 @@ import javazoom.jl.player.Player;
 
 public class AudioKit {
 
-
+    private static final String YOUDAO_API = "https://dict.youdao.com/dictvoice?audio=";
+    public static String getYoudaoApi(){
+        return YOUDAO_API;
+    }
     public static void downloadAndSaveMP3(String urlString, String savePath) {
         try {
             // 创建URL对象
