@@ -25,4 +25,26 @@ public class WordBook implements Serializable {
         return name;
     }
 
+    public Word searchWordInEng(String english) {
+        for (Word word : words){
+            if (word.getEnglish().equals(english)){
+                System.out.println("Word found" + word.getEnglish() +" "+ word.getTranChinese());
+                return word;
+            }
+        }
+        System.out.println("Word not found");
+        return null;
+    }
+
+    public Word searchWordInCh(String chinese) {
+        for (Word word : words){
+            if (word.getTranChinese().equals(chinese)){
+                System.out.println("Word found" + word.getEnglish() +" "+ word.getTranChinese());
+                return word;
+            }
+        }
+        System.out.println("Word not found");
+        return null;
+    }
+
 }
