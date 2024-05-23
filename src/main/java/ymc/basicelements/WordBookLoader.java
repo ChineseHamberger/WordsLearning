@@ -13,8 +13,8 @@ public class WordBookLoader {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(BOOKS_PATH + "SmallBook"+ ".dat"))) {
-            System.out.println("Loading " + bookName + "done");
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(BOOKS_PATH + bookName + ".dat"))) {
+            System.out.println("Loading " + bookName + " done");
             wordBook = (WordBook) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
