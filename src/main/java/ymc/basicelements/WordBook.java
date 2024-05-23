@@ -2,6 +2,7 @@ package ymc.basicelements;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.TreeSet;
 
 public class WordBook implements Serializable {
     private final String name;
