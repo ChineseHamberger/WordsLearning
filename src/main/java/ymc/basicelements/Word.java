@@ -1,6 +1,11 @@
 package ymc.basicelements;
 
+import javax.sound.sampled.*;
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
+import java.net.URL;
 import java.util.List;
 
 public class Word implements Serializable {
