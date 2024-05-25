@@ -31,7 +31,7 @@ public class WordSelectionAlgorithm {
     //根据y=exp(-ax)拟合
     public static double weightOf(ReviewData reviewData){
         int pivot = 100;
-        double a = reviewData.getMaxReviewCount() * Math.log(pivot);
+        double a = 1.0/reviewData.getMaxReviewCount() * Math.log(pivot);
         double weight = Math.exp(-a * reviewData.getReviewCount());
         Duration duration = Duration.between(reviewData.getFirstLearnTime(), LocalDateTime.now());
         int days = (int) (duration.toDays() + 1);
@@ -68,6 +68,10 @@ public class WordSelectionAlgorithm {
         System.out.println("<Begin>" + bookName);
         System.out.println("There are " + reviewCounts.size() + " words to review");
 
+        if (reviewCounts.size() < dailyReviewQuota) {
+            return new ArrayList<>(reviewCounts.keySet());
+        }
+
         // 计算总权重并为每个单词分配权重
         for (Word learnedWord : reviewCounts.keySet()) {
             ReviewData reviewData = reviewCounts.get(learnedWord);
@@ -82,14 +86,14 @@ public class WordSelectionAlgorithm {
         System.out.println("AllReviewWeight: " + allReviewWeight);
 
         // 如果没有单词需要复习，直接返回空列表
-        if (allReviewWeight == 0 || dailyReviewQuota <= 0) {
+        if (weights.isEmpty()) {
             return Collections.emptyList();
         }
 
         // 根据权重选择单词
         List<Word> selectedWords = new ArrayList<>();
         Random random = new Random();
-        while (selectedWords.size() < dailyReviewQuota && !reviewCounts.isEmpty()) {
+        while (selectedWords.size() < dailyReviewQuota && !weights.isEmpty()) {
             // 生成一个基于总权重的随机数
             double randomWeight = random.nextDouble(allReviewWeight);
             double currentWeight = 0;
@@ -110,6 +114,13 @@ public class WordSelectionAlgorithm {
             if (chosenWord != null) {
                 selectedWords.add(chosenWord);
                 // 减去已选单词的权重，防止重复选择
+//                System.out.println("***********");
+//                for (Word word : reviewCounts.keySet()) {
+//                    System.out.println("Word: " + word.getEnglish() + ", ReviewCount: " + reviewCounts.get(word).getReviewCount());
+//                }
+//                for (Word word : weights.keySet()){
+//                    System.out.println("Word: " + word.getEnglish() + ", Weight: " + weights.get(word));
+//                }
                 allReviewWeight -= weights.remove(chosenWord);
             }
         }

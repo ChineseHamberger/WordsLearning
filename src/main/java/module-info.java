@@ -19,4 +19,6 @@ module org.example.wordslearning {
 
     opens org.example.wordslearning to javafx.fxml;
     exports org.example.wordslearning;
+    exports app;
+    opens app to javafx.fxml;
 }
