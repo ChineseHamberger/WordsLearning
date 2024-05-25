@@ -109,6 +109,14 @@ public class UserInterface {
         frame.setVisible(true);
     }
 
+    private void loadProgressAndStartLearning(UserConfig config, UserProgress progress) {
+        // 重置休息标志
+        userWantsToRest = false;
+
+        // 重新开始学习任务
+        startLearning(config, progress);
+    }
+
     private void showMainMenu(UserConfig config, UserProgress progress) {
         JFrame frame = new JFrame("主菜单");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -117,7 +125,9 @@ public class UserInterface {
         JPanel panel = new JPanel(new GridLayout(0, 1));
 
         JButton startLearningButton = new JButton("开始学习");
-        startLearningButton.addActionListener(e -> startLearning(config, progress));
+        startLearningButton.addActionListener(e -> {
+            loadProgressAndStartLearning(config, progress);
+            startLearning(config, progress);});
         panel.add(startLearningButton);
 
         JButton updateConfigButton = new JButton("修改配置");
@@ -200,6 +210,8 @@ public class UserInterface {
         frame.setVisible(true);
     }
 
+    private boolean userWantsToRest = false; // 标志变量
+
     private void startLearning(UserConfig config, UserProgress progress) {
         JFrame frame = new JFrame("学习模式");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -212,40 +224,94 @@ public class UserInterface {
         WordBook wordBook = WordBookLoader.loadWordBook(selectedWordBook);
 
         // 获取今日需要学习和复习的单词
-        List<Word> wordsToLearn = WordSelectionAlgorithm.getWordsForLearning(wordBook,progress,config);
-        List<Word> wordsToReview = WordSelectionAlgorithm.getWordsForReview(wordBook,progress,config);
+        int dailyLearningQuota = config.getDailyLearningQuota();
+        List<Word> wordsToLearn = WordSelectionAlgorithm.getWordsForLearning(wordBook, progress, config);
+        List<Word> wordsToReview = WordSelectionAlgorithm.getWordsForReview(wordBook, progress, config);
+
+        // 计算剩余的学习配额
+        int remainingLearningQuota = dailyLearningQuota - progress.getWordsLearnedToday();
 
         // 弹出学习单词窗口
         for (Word word : wordsToLearn) {
-            showWordDialog(word, progress, selectedWordBook, true);
+            if (userWantsToRest || remainingLearningQuota <= 0) {
+                break; // 检查用户是否选择休息或者学习配额已满
+            }
+            showWordDialog(frame, word, progress, selectedWordBook, true);
+            remainingLearningQuota--; // 学习一个单词，剩余配额减一
         }
 
         // 弹出复习单词窗口
         for (Word word : wordsToReview) {
-            showWordDialog(word, progress, selectedWordBook, false);
+            if (userWantsToRest) {
+                break; // 检查用户是否选择休息
+            }
+            showWordDialog(frame, word, progress, selectedWordBook, false);
         }
 
-        JLabel finishLabel = new JLabel("恭喜你完成今日学习任务");
-        panel.add(finishLabel);
+        if (remainingLearningQuota <= 0) {
+            JLabel finishLabel = new JLabel("恭喜你完成今日学习任务");
+            panel.add(finishLabel);
+        }
 
         frame.getContentPane().add(panel);
         frame.setVisible(true);
     }
 
-    private void showWordDialog(Word word, UserProgress progress, String selectedWordBook, boolean isLearning) {
-        int option = JOptionPane.showConfirmDialog(null, "你认识这个单词吗？\n" + word.getEnglish(), "单词测试", JOptionPane.YES_NO_OPTION);
+    private void showWordDialog(JFrame frame, Word word, UserProgress progress, String selectedWordBook, boolean isLearning) {
+        JPanel panel = new JPanel(new BorderLayout());
+        JLabel messageLabel = new JLabel("你认识这个单词吗？\n" + word.getEnglish());
+        panel.add(messageLabel, BorderLayout.CENTER);
 
-        if (option == JOptionPane.YES_OPTION) {
-            if (isLearning) {
-                progress.learnWord(selectedWordBook, word);
-            } else {
-                progress.reviewWord(selectedWordBook, word);
+        JPanel buttonPanel = new JPanel();
+        JButton yesButton = new JButton("是");
+        JButton noButton = new JButton("否");
+        JButton restButton = new JButton("休息一会儿");
+
+        buttonPanel.add(yesButton);
+        buttonPanel.add(noButton);
+        buttonPanel.add(restButton);
+        panel.add(buttonPanel, BorderLayout.SOUTH);
+
+        JDialog dialog = new JDialog(frame, "单词测试", true);
+        dialog.setContentPane(panel);
+        dialog.pack();
+
+        yesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (isLearning) {
+                    progress.learnWord(selectedWordBook, word);
+                } else {
+                    progress.reviewWord(selectedWordBook, word);
+                }
+                storage.saveUserProgress(progress, username);
+                dialog.dispose();
+                showWordDetails(word);
             }
-            storage.saveUserProgress(progress,username);
-            //progress.saveProgress("username"); // 保存进度，假设用户名为"username"
-        }
+        });
 
-        // 显示单词详细信息
+        noButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dialog.dispose();
+                showWordDetails(word);
+            }
+        });
+
+        restButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                saveProgressAndExit(frame, progress);
+                userWantsToRest = true; // 设置标志变量为true
+                dialog.dispose();
+            }
+        });
+
+        dialog.setLocationRelativeTo(frame);
+        dialog.setVisible(true);
+    }
+
+    private void showWordDetails(Word word) {
         word.playUSSpeech();
         JOptionPane.showMessageDialog(null, getWordDetailMessage(word), "单词详情", JOptionPane.INFORMATION_MESSAGE);
     }
@@ -254,20 +320,28 @@ public class UserInterface {
         return "单词详细信息：\n英文: " + word.info();
     }
 
-
+    private void saveProgressAndExit(JFrame frame, UserProgress progress) {
+        storage.saveUserProgress(progress, username);
+        frame.dispose();
+    }
 
     private void readArticles() {
-        articleFetcher.fetchArticles();  // 生成 articles 文件夹和文章文件
+        // 生成 articles 文件夹和文章文件
+        articleFetcher.fetchArticles();
         File folder = new File("articles");
         File[] listOfFiles = folder.listFiles((dir, name) -> name.toLowerCase().endsWith(".md"));
 
         if (listOfFiles != null && listOfFiles.length > 0) {
+            // 弹出对话框询问用户是否要加粗正在学习的单词
+            int choice = JOptionPane.showConfirmDialog(null, "是否加粗正在学习的单词?", "选择", JOptionPane.YES_NO_OPTION);
+            boolean boldLearningWords = (choice == JOptionPane.YES_OPTION);
+            articleProcessor.setBoldLearningWords(boldLearningWords);
+
             JFrame frame = new JFrame("选择文章");
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             frame.setSize(400, 300);
 
             JPanel panel = new JPanel(new GridLayout(0, 1));
-
 
             for (int i = 0; i < listOfFiles.length; i++) {
                 JButton articleButton = new JButton(listOfFiles[i].getName());
@@ -295,12 +369,58 @@ public class UserInterface {
             }
             String processedArticle = articleProcessor.processArticle(content.toString());
 
-            SwingUtilities.invokeLater(() -> createAndShowArticleGUI(processedArticle));
+            JTextPane textPane = new JTextPane();
+            textPane.setContentType("text/html");
+            textPane.setText(processedArticle);
+            textPane.setEditable(false);
+            textPane.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    int pos = textPane.viewToModel2D(e.getPoint());
+                    Document doc = textPane.getDocument();
+                    if (doc instanceof HTMLDocument) {
+                        HTMLDocument htmlDoc = (HTMLDocument) doc;
+                        Element elem = htmlDoc.getCharacterElement(pos);
+                        AttributeSet as = elem.getAttributes();
+                        String href = (String) as.getAttribute(HTML.Attribute.HREF);
+//                        System.out.println(href);
+                        String word;
+                        if (href != null) {
+                            word = href.substring(href.lastIndexOf('/') + 1);
+                        } else {
+                            try {
+                                int startOffset = elem.getStartOffset();
+                                int endOffset = elem.getEndOffset();
+                                word = doc.getText(startOffset, endOffset - startOffset).trim();
+                            } catch (BadLocationException ex) {
+                                ex.printStackTrace();
+                                return;
+                            }
+                        }
+                        translateAndDisplay(word);
+                    }
+                }
+            });
+
+
+            JScrollPane scrollPane = new JScrollPane(textPane);
+
+            JFrame frame = new JFrame("文章阅读");
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.setSize(800, 600);
+            frame.getContentPane().add(scrollPane);
+            frame.setVisible(true);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "无法读取文章：" + e.getMessage());
         }
-
     }
+
+    private void translateAndDisplay(String word) {
+//        System.out.println("Translating word: " + word);
+        String translation = translator.translate(2, word); // 中译英
+        JOptionPane.showMessageDialog(null, "单词 \"" + word + "\" 的翻译是：" + translation);
+    }
+
 
     private void createAndShowArticleGUI(String content) {
         JFrame frame = new JFrame("文章阅读");

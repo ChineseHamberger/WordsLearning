@@ -10,16 +10,21 @@ public class UserProgress implements Serializable {
 
     private Map<String, Set<Word>> learnedWords;
     private Map<String, Map<Word, ReviewData>> reviewCounts;
-    private static final int REVIEW_THRESHOLD = 5;
+    private int wordsLearnedToday;
 
     public UserProgress() {
         this.learnedWords = new HashMap<>();
         this.reviewCounts = new HashMap<>();
+        this.wordsLearnedToday = 0; // 初始化为0
     }
 
     public Set<Word> getLearnedWords(String bookName) {
         Set<Word> emptyLearnedWords = new HashSet<>();
         return learnedWords.getOrDefault(bookName, emptyLearnedWords);
+    }
+
+    public int getWordsLearnedToday() {
+        return wordsLearnedToday;
     }
 
     public Map<Word, ReviewData> getReviewCounts(String bookName) {
@@ -29,6 +34,10 @@ public class UserProgress implements Serializable {
 
     public boolean isWordLearned(String bookName, Word word) {
         return learnedWords.getOrDefault(bookName, Collections.emptySet()).contains(word);
+    }
+
+    public void setWordsLearnedToday(int wordsLearnedToday) {
+        this.wordsLearnedToday = wordsLearnedToday;
     }
 
     public void learnWord(String bookName, Word word) {
