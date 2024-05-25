@@ -13,7 +13,7 @@
 3. 背单词模式(ymc)
 4. 读文章模式(ymc)
 5. audio(zsj,已实现)
-6. selectedWords(zsj,正在做)
+6. selectedWords(zsj,已实现)
 7. FX界面(zsj,正在做)
 
 (留言：目前的GUI只是我为了测试读文章模式能不能运行简单写的，您还是按计划写一个FX的美观版GUI吧
@@ -21,6 +21,7 @@ zsj:好,我们这周先把基本逻辑理顺,预计下周或更早开始写界�
 (zsj:我们的demo在运行时是单线程的,我今天加入了声音播放,声音播放和内容显示不能同时进行,所以我准备在以后的fx逻辑中加入多线程,实现音效播放和内容显示同时进行)
 (zsj:WordBook中新增了searchWordInEng和searchWordInCh,可以在本地词书中搜索)
 (zsj:修改了UserProgress中的private Map<String, Map<Word, ReviewData>> reviewCounts;根据ReviewData确定是否需要复习)
+(zsj:实现了选择算法,排除了一些空指针错误,优化了一部分逻辑,demo应该能完整比较流畅的运行,现在demo体验感不好的地方是不能**中途退出下次进来继续保留进度**,希望您能给我一些接口)
 
 ## 模式
 
