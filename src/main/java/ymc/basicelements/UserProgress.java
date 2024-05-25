@@ -1,16 +1,30 @@
 package ymc.basicelements;
 
+import ymc.algo.WordSelectionAlgorithm;
+
 import java.io.*;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class UserProgress implements Serializable {
+
     private Map<String, Set<Word>> learnedWords;
-    private Map<String, Map<Word, Integer>> reviewCounts;
+    private Map<String, Map<Word, ReviewData>> reviewCounts;
     private static final int REVIEW_THRESHOLD = 5;
 
     public UserProgress() {
         this.learnedWords = new HashMap<>();
         this.reviewCounts = new HashMap<>();
+    }
+
+    public Set<Word> getLearnedWords(String bookName) {
+        Set<Word> emptyLearnedWords = new HashSet<>();
+        return learnedWords.getOrDefault(bookName, emptyLearnedWords);
+    }
+
+    public Map<Word, ReviewData> getReviewCounts(String bookName) {
+        Map<Word, ReviewData> emptyReviewCounts = new HashMap<>();
+        return reviewCounts.getOrDefault(bookName, emptyReviewCounts);
     }
 
     public boolean isWordLearned(String bookName, Word word) {
@@ -19,62 +33,37 @@ public class UserProgress implements Serializable {
 
     public void learnWord(String bookName, Word word) {
         learnedWords.computeIfAbsent(bookName, k -> new HashSet<>()).add(word);
-        reviewCounts.computeIfAbsent(bookName, k -> new HashMap<>()).put(word, 0);
+        ReviewData reviewData = new ReviewData(LocalDateTime.now());
+        System.out.println("Learned word: " + word.getEnglish());
+        reviewData.showInfo();
+        reviewCounts.computeIfAbsent(bookName, k -> new HashMap<>()).put(word, reviewData);
     }
 
     public void reviewWord(String bookName, Word word) {
-        reviewCounts.computeIfAbsent(bookName, k -> new HashMap<>())
-                .put(word, reviewCounts.get(bookName).getOrDefault(word, 0) + 1);
-    }
-
-    public boolean needsReview(String bookName, Word word) {
-        return reviewCounts.getOrDefault(bookName, Collections.emptyMap()).getOrDefault(word, 0) < REVIEW_THRESHOLD;
-    }
-
-    public List<Word> getWordsForLearning(String bookName, List<Word> allWords, int dailyLearningQuota) {
-        List<Word> wordsToLearn = new ArrayList<>();
-        for (Word word : allWords) {
-            if (!isWordLearned(bookName, word)) {
-                wordsToLearn.add(word);
-                if (wordsToLearn.size() >= dailyLearningQuota) {
-                    break;
-                }
-            }
+        ReviewData reviewData = reviewCounts.getOrDefault(bookName, Collections.emptyMap()).get(word);
+        if (reviewData == null){
+            throw new IllegalArgumentException("Word not found in review counts");
         }
-        return wordsToLearn;
+        reviewData.addReviewCount();
+        reviewData.setLastReviewTime(LocalDateTime.now());
+        reviewData.showInfo();
+        reviewCounts.get(bookName).put(word, reviewData);
     }
 
-    public List<Word> getWordsForReview(String bookName, int dailyReviewQuota) {
-        List<Word> wordsToReview = new ArrayList<>();
-        Set<Word> learnedSet = learnedWords.getOrDefault(bookName, Collections.emptySet());
-        for (Word word : learnedSet) {
-            if (needsReview(bookName, word)) {
-                wordsToReview.add(word);
-                if (wordsToReview.size() >= dailyReviewQuota) {
-                    break;
-                }
-            }
+
+
+    public void showInfo(String bookName) {
+        Set<Word> myLearnedWords = getLearnedWords(bookName);
+        System.out.println("Learned words for " + bookName + ":");
+        for (Word word : myLearnedWords) {
+            System.out.println("    "+word.getEnglish() +" "+word.getTranChinese());
         }
-        return wordsToReview;
-    }
-
-    // Save and load user progress from file
-    public static UserProgress loadProgress(String username) {
-        UserProgress progress = null;
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("Progress/" + username + ".dat"))) {
-            progress = (UserProgress) ois.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-            progress = new UserProgress();
-        }
-        return progress;
-    }
-
-    public void saveProgress(String username) {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("Progress/" + username + ".dat"))) {
-            oos.writeObject(this);
-        } catch (IOException e) {
-            e.printStackTrace();
+        Map<Word, ReviewData> myReviewCounts = getReviewCounts(bookName);
+        System.out.println("Review counts for " + bookName + ":");
+        for (Map.Entry<Word, ReviewData> entry : myReviewCounts.entrySet()) {
+            Word word = entry.getKey();
+            ReviewData reviewData = entry.getValue();
+            System.out.println("    " + word.getEnglish() + " 's reviewCount is " + reviewData.getReviewCount());
         }
     }
 }

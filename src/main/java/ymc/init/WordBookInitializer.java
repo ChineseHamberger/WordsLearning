@@ -20,7 +20,7 @@ public class WordBookInitializer {
 //            word.showInfo();
 //        }
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
-            System.out.println("Initialize"+bookName+" Done.");
+            System.out.println("Initialize "+bookName+" Done.");
             oos.writeObject(wordBook);
         } catch (IOException e) {
             e.printStackTrace();
@@ -31,7 +31,7 @@ public class WordBookInitializer {
     public static void initializeAll() throws IOException {
         for (String book : bookList){
             initializeBook(book);
-            System.out.println("Initialize"+book+" Done.");
+            System.out.println("Initialize "+book+" Done.");
         }
     }
 

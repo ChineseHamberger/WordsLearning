@@ -20,6 +20,7 @@
 zsj:好,我们这周先把基本逻辑理顺,预计下周或更早开始写界面)
 (zsj:我们的demo在运行时是单线程的,我今天加入了声音播放,声音播放和内容显示不能同时进行,所以我准备在以后的fx逻辑中加入多线程,实现音效播放和内容显示同时进行)
 (zsj:WordBook中新增了searchWordInEng和searchWordInCh,可以在本地词书中搜索)
+(zsj:修改了UserProgress中的private Map<String, Map<Word, ReviewData>> reviewCounts;根据ReviewData确定是否需要复习)
 
 ## 模式
 

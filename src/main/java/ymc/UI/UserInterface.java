@@ -1,6 +1,7 @@
 package ymc.UI;
 
 import ymc.LocalStorage.LocalStorage;
+import ymc.algo.WordSelectionAlgorithm;
 import ymc.basicelements.UserProgress;
 import ymc.basicelements.Word;
 import ymc.basicelements.WordBook;
@@ -27,12 +28,14 @@ public class UserInterface {
     private ArticleProcessor articleProcessor;
     private ArticleFetcher articleFetcher = new ArticleFetcher();
 
+    private String username = "user";
+
     public void start() {
         SwingUtilities.invokeLater(() -> {
 
             // 加载配置和进度
-            UserConfig config = storage.loadUserConfig();
-            UserProgress progress = storage.loadUserProgress();
+            UserConfig config = storage.loadUserConfig(username);
+            UserProgress progress = storage.loadUserProgress(username);
 
             // 如果没有配置，则初始化
             if (config == null) {
@@ -85,16 +88,13 @@ public class UserInterface {
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int defaultLearningQuota = 10;
-                int defaultReviewQuota = 5;
 
                 String selectedWordBook = (String) wordBookComboBox.getSelectedItem();
-                int dailyLearningQuota = learningQuotaField.getText().isEmpty() ? defaultLearningQuota :Integer.parseInt(learningQuotaField.getText());
-                int dailyReviewQuota = reviewQuotaField.getText().isEmpty() ? defaultReviewQuota :Integer.parseInt(reviewQuotaField.getText());
-
+                int dailyLearningQuota = learningQuotaField.getText().isEmpty() ? UserConfig.getDefaultDailyLearningQuota() :Integer.parseInt(learningQuotaField.getText());
+                int dailyReviewQuota = reviewQuotaField.getText().isEmpty() ? UserConfig.getDefaultDailyReviewQuota() :Integer.parseInt(reviewQuotaField.getText());
 
                 UserConfig config = new UserConfig(selectedWordBook, dailyLearningQuota, dailyReviewQuota);
-                storage.saveUserConfig(config);
+                storage.saveUserConfig(config,username);
 
                 WordBook wordBook = storage.getWordBook(config.getSelectedWordBook());
                 articleProcessor = new ArticleProcessor(wordBook);
@@ -135,7 +135,7 @@ public class UserInterface {
 
         JButton exitButton = new JButton("退出");
         exitButton.addActionListener(e -> {
-            storage.saveUserProgress(progress);
+            storage.saveUserProgress(progress,username);
             frame.dispose();
             System.exit(0);
         });
@@ -186,7 +186,7 @@ public class UserInterface {
                 config.setSelectedWordBook(selectedWordBook);
                 config.setDailyLearningQuota(dailyLearningQuota);
                 config.setDailyReviewQuota(dailyReviewQuota);
-                storage.saveUserConfig(config);
+                storage.saveUserConfig(config,username);
 
                 WordBook wordBook = storage.getWordBook(config.getSelectedWordBook());
                 articleProcessor = new ArticleProcessor(wordBook);
@@ -210,11 +210,10 @@ public class UserInterface {
         // 加载选定的单词书
         String selectedWordBook = config.getSelectedWordBook();
         WordBook wordBook = WordBookLoader.loadWordBook(selectedWordBook);
-        List<Word> allWords = wordBook.getWords();
 
         // 获取今日需要学习和复习的单词
-        List<Word> wordsToLearn = progress.getWordsForLearning(selectedWordBook, allWords, config.getDailyLearningQuota());
-        List<Word> wordsToReview = progress.getWordsForReview(selectedWordBook, config.getDailyReviewQuota());
+        List<Word> wordsToLearn = WordSelectionAlgorithm.getWordsForLearning(wordBook,progress,config);
+        List<Word> wordsToReview = WordSelectionAlgorithm.getWordsForReview(wordBook,progress,config);
 
         // 弹出学习单词窗口
         for (Word word : wordsToLearn) {
@@ -242,7 +241,8 @@ public class UserInterface {
             } else {
                 progress.reviewWord(selectedWordBook, word);
             }
-            progress.saveProgress("username"); // 保存进度，假设用户名为"username"
+            storage.saveUserProgress(progress,username);
+            //progress.saveProgress("username"); // 保存进度，假设用户名为"username"
         }
 
         // 显示单词详细信息

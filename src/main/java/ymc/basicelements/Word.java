@@ -9,6 +9,9 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.List;
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 
 public class Word implements Serializable {
 
@@ -28,6 +31,7 @@ public class Word implements Serializable {
 
     private String usphone, ukphone;
     private String ukspeech,usspeech;
+
 
     public Word(String bookId, int wordRank, String english, String chinese, String tranEnglish, List<Exam> exams, List<Sentence> sentences, List<Syno> synos, List<Phrase> phrases, List<RelWord> rels, List<Tran> trans, String usphone, String ukphone, String ukspeech, String usspeech){
         this.bookId = bookId;

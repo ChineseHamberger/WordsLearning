@@ -12,8 +12,9 @@ import java.util.List;
 
 
 public class LocalStorage {
-    private static final String CONFIG_FILE = "userConfig.dat";
-    private static final String PROGRESS_FILE = "userProgress.dat";
+    private static final String USER_DIR = "users/";
+    private static final String CONFIG_FILE = "/Config.dat";
+    private static final String PROGRESS_FILE = "/Progress.dat";
     private static final String WORD_BOOK_DIR = "wordBooks";
 
     public LocalStorage() {
@@ -23,33 +24,59 @@ public class LocalStorage {
         }
     }
 
-    public void saveUserConfig(UserConfig config) {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(CONFIG_FILE))) {
+
+    public void saveUserConfig(UserConfig config, String username) {
+        File dir = new File(USER_DIR+username);
+        if(!dir.exists()){
+            dir.mkdirs();
+        }
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(USER_DIR+username+CONFIG_FILE))) {
+            System.out.println("save config");
+            config.showInfo();
             oos.writeObject(config);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public UserConfig loadUserConfig() {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(CONFIG_FILE))) {
-            return (UserConfig) ois.readObject();
+
+    public UserConfig loadUserConfig(String username) {
+        File dir = new File(USER_DIR+username);
+        if(!dir.exists()){
+            dir.mkdirs();
+        }
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(USER_DIR+username+CONFIG_FILE))) {
+            UserConfig config = (UserConfig) ois.readObject();
+            System.out.println("load config done");
+            config.showInfo();
+            return config;
         } catch (IOException | ClassNotFoundException e) {
             return null;
         }
     }
 
-    public void saveUserProgress(UserProgress progress) {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(PROGRESS_FILE))) {
+    public void saveUserProgress(UserProgress progress,String username) {
+        File dir = new File(USER_DIR+username);
+        if(!dir.exists()){
+            dir.mkdirs();
+        }
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(USER_DIR+username+PROGRESS_FILE))) {
+            System.out.println("save progress");
             oos.writeObject(progress);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public UserProgress loadUserProgress() {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(PROGRESS_FILE))) {
-            return (UserProgress) ois.readObject();
+    public UserProgress loadUserProgress(String username) {
+        File dir = new File(USER_DIR+username);
+        if(!dir.exists()){
+            dir.mkdirs();
+        }
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(USER_DIR+username+PROGRESS_FILE))) {
+            UserProgress progress = (UserProgress) ois.readObject();
+            System.out.println("load progress done");
+            return progress;
         } catch (IOException | ClassNotFoundException e) {
             return null;
         }
@@ -65,7 +92,7 @@ public class LocalStorage {
 
     public WordBook getWordBook(String name) {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(WORD_BOOK_DIR + "/" + name + ".dat"))) {
-            System.out.println(WORD_BOOK_DIR + "/" + name + ".dat");
+            System.out.println("The selected word_book is "+ name);
             return (WordBook) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
             return null;
