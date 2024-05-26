@@ -41,10 +41,7 @@ public class LocalStorage {
 
 
     public UserConfig loadUserConfig(String username) {
-        File dir = new File(USER_DIR+username);
-        if(!dir.exists()){
-            dir.mkdirs();
-        }
+
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(USER_DIR+username+CONFIG_FILE))) {
             UserConfig config = (UserConfig) ois.readObject();
             System.out.println("load config done");
@@ -56,10 +53,7 @@ public class LocalStorage {
     }
 
     public void saveUserProgress(UserProgress progress,String username) {
-        File dir = new File(USER_DIR+username);
-        if(!dir.exists()){
-            dir.mkdirs();
-        }
+
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(USER_DIR+username+PROGRESS_FILE))) {
             System.out.println("save progress");
             oos.writeObject(progress);

@@ -28,7 +28,7 @@ public class UserInterface {
     private ArticleProcessor articleProcessor;
     private ArticleFetcher articleFetcher = new ArticleFetcher();
 
-    private String username = "user";
+    private String username = "a";
 
     public void start() {
         SwingUtilities.invokeLater(() -> {

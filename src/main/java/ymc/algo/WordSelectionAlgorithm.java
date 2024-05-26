@@ -53,6 +53,7 @@ public class WordSelectionAlgorithm {
             if (!userProgress.isWordLearned(wordBook.getName(), word)) {
                 wordsForLearning.add(word);
             }
+            cnt++;
         }
         return wordsForLearning;
     }
@@ -114,13 +115,6 @@ public class WordSelectionAlgorithm {
             if (chosenWord != null) {
                 selectedWords.add(chosenWord);
                 // 减去已选单词的权重，防止重复选择
-//                System.out.println("***********");
-//                for (Word word : reviewCounts.keySet()) {
-//                    System.out.println("Word: " + word.getEnglish() + ", ReviewCount: " + reviewCounts.get(word).getReviewCount());
-//                }
-//                for (Word word : weights.keySet()){
-//                    System.out.println("Word: " + word.getEnglish() + ", Weight: " + weights.get(word));
-//                }
                 allReviewWeight -= weights.remove(chosenWord);
             }
         }
