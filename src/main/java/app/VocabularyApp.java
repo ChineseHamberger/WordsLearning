@@ -1,11 +1,14 @@
 package app;
+import effects.Shadows;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import modules.login.LoginPane;
 import org.example.wordslearning.HelloApplication;
 import ymc.LocalStorage.LocalStorage;
 import ymc.UI.ArticleProcessor;
@@ -21,12 +24,19 @@ public class VocabularyApp extends Application {
     private int currentWordIndex = 0;
 
     @Override
-    public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(VocabularyApp.class.getResource("VocabularyApp.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 680, 600);
-        stage.setTitle("Words Learning");
-        stage.setScene(scene);
-        stage.show();
+    public void start(Stage primayStage) throws IOException {
+        primayStage.setTitle("Login");
+        BorderPane root = new BorderPane();
+        root.setStyle("-fx-background-color: white");
+        root.setEffect(Shadows.WINDOW_SHADOW);
+
+        Scene scene = new Scene(root,600,500);
+
+        LoginPane loginPane = new LoginPane();
+        root.setCenter(loginPane);
+        primayStage.setScene(scene);
+        primayStage.show();
+
     }
 
     public static void main(String[] args) {
