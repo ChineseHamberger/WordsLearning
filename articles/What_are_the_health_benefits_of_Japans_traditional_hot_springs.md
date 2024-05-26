@@ -66,5 +66,3 @@ Haroun Khan at Japan Rail Pass provides expert commentary on the popularity of O
 
 Banner: Kusatsu Onsen in Gunma, Japan
 
-Keep up with the top stories from Reader's Digest by subscribing to our weekly newsletter
-

@@ -1,0 +1,63 @@
+/* 样式表用于定义UI元素的外观和样式 */
+
+/* 定义#username-field的样式，使其背景透明，边框颜色为灰色，边框宽度为2px，边框圆角为5px */
+#username-field {
+    -fx-background-color: transparent;
+    -fx-border-color: #767676;
+    -fx-border-radius: 5px;
+    -fx-border-width: 2px;
+}
+
+/* 以下注释掉的代码块是用于调整#username-field在不同状态（如聚焦、未聚焦、悬停）下的样式的 */
+/* #username-field:focused { -fx-border-color: #0D90EE; } */
+
+/* #username-field:focused #icon { -fx-text-fill: #0D90EE; } */
+
+/* #username-field:unfocused { -fx-border-color: #767676; } */
+
+/* #username-field:unfocused #icon { -fx-text-fill: #767676; } */
+
+/* #username-field:hover { -fx-border-color: #0D90EE; } */
+
+/* #username-field:hover #icon { -fx-text-fill: #0D90EE; } */
+
+/* #username-field:hover #text-field{ -fx-text-fill: #0D90EE; -fx-prompt-text-fill: #0D90EE; } */
+
+/* 定义#icon的文本颜色为灰色 */
+#icon {
+    -fx-text-fill: #767676;
+}
+
+/* 定义#text-field的样式，包括背景色、字体大小、字体家庭、提示文本颜色和文本颜色 */
+#text-field {
+    -fx-background-color: transparent;
+    -fx-font-size: 16px;
+    -fx-font-family: "Microsoft YaHei UI";
+    -fx-prompt-text-fill: #767676;
+    -fx-text-fill: #1A1A1A;
+}
+
+/* 定义#label的样式，包括字体家庭、文本颜色和字体大小 */
+#label {
+    -fx-font-family: "Microsoft YaHei UI";
+    -fx-text-fill: #767676;
+    -fx-font-size: 14px;
+}
+
+/* 定义#loginButton的样式，使其背景透明，边框颜色为灰色，边框宽度为2px，边框圆角为5px，文本颜色为灰色，字体大小和家庭同#text-field */
+#loginButton {
+    -fx-background-color: transparent;
+    -fx-border-color: #767676;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+    -fx-text-fill: #767676;
+    -fx-font-size: 16px;
+    -fx-font-family: "Microsoft YaHei UI";
+}
+
+/* 当鼠标悬停在#loginButton上时，改变边框颜色和文本颜色，同时设置光标为手型 */
+#loginButton:hover {
+    -fx-border-color: #0D90EE;
+    -fx-text-fill: #0D90EE;
+    -fx-cursor: hand;
+}

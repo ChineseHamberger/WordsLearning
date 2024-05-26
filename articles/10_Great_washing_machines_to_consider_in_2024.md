@@ -24,8 +24,6 @@ Special feature – child lock, drum cap
 
 Item weight – 62kg
 
-View the product
-
 ## Hisense-WFQP901 freestanding washing machine
 
 Hisense WFQ machine
@@ -135,6 +133,4 @@ Special feature – Ironfast, anti-allergy program
 Item weight – 73kg
 
 Introductory offer for Reader's Digest customers. Get a 12-month Which? subscription from just £39.50
-
-Keep up with the top stories from Reader's Digest by subscribing to our weekly newsletter
 

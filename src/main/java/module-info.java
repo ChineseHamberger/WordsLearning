@@ -18,7 +18,8 @@ module org.example.wordslearning {
     requires jlayer;
 
     opens org.example.wordslearning to javafx.fxml;
+    opens app to javafx.fxml;
     exports org.example.wordslearning;
     exports app;
-    opens app to javafx.fxml;
+
 }

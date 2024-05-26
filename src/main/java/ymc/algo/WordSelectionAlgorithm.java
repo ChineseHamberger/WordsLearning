@@ -83,6 +83,7 @@ public class WordSelectionAlgorithm {
 
             if (chosenWord != null) {
                 selectedWords.add(chosenWord);
+                // 减去已选单词的权重，防止重复选择
                 allReviewWeight -= weights.remove(chosenWord);
             }
         }

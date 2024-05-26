@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.text.*;
 import javax.swing.text.html.*;
@@ -29,14 +28,13 @@ import javax.swing.text.html.*;
 public class UserInterface {
     private LocalStorage storage = new LocalStorage();
     private ArticleProcessor articleProcessor;
-    private ArticleFetcher articleFetcher = new ArticleFetcher();
-
+    private String username = "a";
     public void start() {
         SwingUtilities.invokeLater(() -> {
 
             // 加载配置和进度
-            UserConfig config = storage.loadUserConfig();
-            UserProgress progress = config != null? storage.loadUserProgress(config.getSelectedWordBook()): null;
+            UserConfig config = storage.loadUserConfig(username);
+            UserProgress progress = config != null? storage.loadUserProgress(username, config.getSelectedWordBook()): null;
 
             // 如果没有配置，则初始化
             if (config == null) {
@@ -95,7 +93,7 @@ public class UserInterface {
                 int dailyReviewQuota = reviewQuotaField.getText().isEmpty() ? UserConfig.getDefaultDailyReviewQuota() :Integer.parseInt(reviewQuotaField.getText());
 
                 UserConfig config = new UserConfig(selectedWordBook, dailyLearningQuota, dailyReviewQuota);
-                storage.saveUserConfig(config);
+                storage.saveUserConfig(username, config);
 
                 WordBook wordBook = storage.getWordBook(config.getSelectedWordBook());
                 articleProcessor = new ArticleProcessor(wordBook);
@@ -138,7 +136,7 @@ public class UserInterface {
 
         JButton exitButton = new JButton("退出");
         exitButton.addActionListener(e -> {
-            storage.saveUserProgress(progress, config.getSelectedWordBook());
+            storage.saveUserProgress(username ,progress, config.getSelectedWordBook());
             frame.dispose();
             System.exit(0);
         });
@@ -189,7 +187,7 @@ public class UserInterface {
                 config.setSelectedWordBook(selectedWordBook);
                 config.setDailyLearningQuota(dailyLearningQuota);
                 config.setDailyReviewQuota(dailyReviewQuota);
-                storage.saveUserConfig(config);
+                storage.saveUserConfig(username, config);
 
                 WordBook wordBook = storage.getWordBook(config.getSelectedWordBook());
                 articleProcessor = new ArticleProcessor(wordBook);
@@ -305,9 +303,10 @@ public class UserInterface {
             @Override
             public void actionPerformed(ActionEvent e) {
                 progress.ignoreWord(selectedWordBook, word);
-                storage.saveUserProgress(progress, selectedWordBook);
+                storage.saveUserProgress(username, progress, selectedWordBook);
                 dialog.dispose();
                 showWordDetails(word);
+                rest.set(1);
             }
         });
 
@@ -319,7 +318,7 @@ public class UserInterface {
                 } else {
                     progress.reviewWord(selectedWordBook, word);
                 }
-                storage.saveUserProgress(progress, selectedWordBook);
+                storage.saveUserProgress(username, progress, selectedWordBook);
                 dialog.dispose();
                 showWordDetails(word);
                 rest.set(1);
@@ -337,7 +336,7 @@ public class UserInterface {
         restButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                storage.saveUserProgress(progress, selectedWordBook);
+                storage.saveUserProgress(username, progress, selectedWordBook);
                 rest.set(2);
                 dialog.dispose();
             }
