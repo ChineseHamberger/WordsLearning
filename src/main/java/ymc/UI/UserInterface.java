@@ -20,6 +20,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.text.*;
 import javax.swing.text.html.*;
 
@@ -28,14 +31,12 @@ public class UserInterface {
     private ArticleProcessor articleProcessor;
     private ArticleFetcher articleFetcher = new ArticleFetcher();
 
-    private String username = "user";
-
     public void start() {
         SwingUtilities.invokeLater(() -> {
 
             // 加载配置和进度
-            UserConfig config = storage.loadUserConfig(username);
-            UserProgress progress = storage.loadUserProgress(username);
+            UserConfig config = storage.loadUserConfig();
+            UserProgress progress = config != null? storage.loadUserProgress(config.getSelectedWordBook()): null;
 
             // 如果没有配置，则初始化
             if (config == null) {
@@ -94,7 +95,7 @@ public class UserInterface {
                 int dailyReviewQuota = reviewQuotaField.getText().isEmpty() ? UserConfig.getDefaultDailyReviewQuota() :Integer.parseInt(reviewQuotaField.getText());
 
                 UserConfig config = new UserConfig(selectedWordBook, dailyLearningQuota, dailyReviewQuota);
-                storage.saveUserConfig(config,username);
+                storage.saveUserConfig(config);
 
                 WordBook wordBook = storage.getWordBook(config.getSelectedWordBook());
                 articleProcessor = new ArticleProcessor(wordBook);
@@ -109,13 +110,7 @@ public class UserInterface {
         frame.setVisible(true);
     }
 
-    private void loadProgressAndStartLearning(UserConfig config, UserProgress progress) {
-        // 重置休息标志
-        userWantsToRest = false;
 
-        // 重新开始学习任务
-        startLearning(config, progress);
-    }
 
     private void showMainMenu(UserConfig config, UserProgress progress) {
         JFrame frame = new JFrame("主菜单");
@@ -125,9 +120,7 @@ public class UserInterface {
         JPanel panel = new JPanel(new GridLayout(0, 1));
 
         JButton startLearningButton = new JButton("开始学习");
-        startLearningButton.addActionListener(e -> {
-            loadProgressAndStartLearning(config, progress);
-            startLearning(config, progress);});
+        startLearningButton.addActionListener(e -> startLearning(config, progress));
         panel.add(startLearningButton);
 
         JButton updateConfigButton = new JButton("修改配置");
@@ -145,7 +138,7 @@ public class UserInterface {
 
         JButton exitButton = new JButton("退出");
         exitButton.addActionListener(e -> {
-            storage.saveUserProgress(progress,username);
+            storage.saveUserProgress(progress, config.getSelectedWordBook());
             frame.dispose();
             System.exit(0);
         });
@@ -196,7 +189,7 @@ public class UserInterface {
                 config.setSelectedWordBook(selectedWordBook);
                 config.setDailyLearningQuota(dailyLearningQuota);
                 config.setDailyReviewQuota(dailyReviewQuota);
-                storage.saveUserConfig(config,username);
+                storage.saveUserConfig(config);
 
                 WordBook wordBook = storage.getWordBook(config.getSelectedWordBook());
                 articleProcessor = new ArticleProcessor(wordBook);
@@ -210,8 +203,6 @@ public class UserInterface {
         frame.setVisible(true);
     }
 
-    private boolean userWantsToRest = false; // 标志变量
-
     private void startLearning(UserConfig config, UserProgress progress) {
         JFrame frame = new JFrame("学习模式");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -219,54 +210,88 @@ public class UserInterface {
 
         JPanel panel = new JPanel(new GridLayout(0, 1));
 
-        // 加载选定的单词书
+        boolean finished = true;
+        List<Word> wordsToLearn = null;
+        List<Word> wordsToReview = null;
         String selectedWordBook = config.getSelectedWordBook();
-        WordBook wordBook = WordBookLoader.loadWordBook(selectedWordBook);
 
-        // 获取今日需要学习和复习的单词
-        int dailyLearningQuota = config.getDailyLearningQuota();
-        List<Word> wordsToLearn = WordSelectionAlgorithm.getWordsForLearning(wordBook, progress, config);
-        List<Word> wordsToReview = WordSelectionAlgorithm.getWordsForReview(wordBook, progress, config);
-
-        // 计算剩余的学习配额
-        int remainingLearningQuota = dailyLearningQuota - progress.getWordsLearnedToday();
-
-        // 弹出学习单词窗口
-        for (Word word : wordsToLearn) {
-            if (userWantsToRest || remainingLearningQuota <= 0) {
-                break; // 检查用户是否选择休息或者学习配额已满
+        if (progress.IsTodaySet()) {
+            wordsToLearn = progress.getWordsToLearn();
+            wordsToReview = progress.getWordsToReview();
+        } else {
+            // 加载选定的单词书
+            WordBook wordBook = WordBookLoader.loadWordBook(selectedWordBook);
+            wordsToLearn = WordSelectionAlgorithm.getWordsForLearning(wordBook, progress, config);
+            wordsToReview = WordSelectionAlgorithm.getWordsForReview(wordBook, progress, config);
+            progress.setWordsToLearn(wordsToLearn);
+            progress.setWordsToReview(wordsToReview);
+            progress.updateLastLearningDate();
+        }
+        String text;
+        if (wordsToLearn.isEmpty() && wordsToReview.isEmpty()){
+            text = "今日任务已完成，积少成多别贪心！";
+        } else {
+            // 弹出学习单词窗口
+            ShowWords:
+            while (! (wordsToLearn.isEmpty() && wordsToReview.isEmpty())) {
+                deleteWord:{
+                    Random random = new Random();
+                    int randomNumber = random.nextInt(2) + 1;
+                    if (randomNumber == 1) {
+                        for (Word word : wordsToLearn) {
+                            int flag = showWordDialog(frame, word, progress, selectedWordBook, true);
+                            if (flag == 2) {
+                                finished = false;
+                                break ShowWords;
+                            } else if (flag == 1) {
+                                wordsToLearn.remove(word);
+                                break deleteWord;
+                            }
+                        }
+                    } else {
+                        // 弹出复习单词窗口
+                        for (Word word : wordsToReview) {
+                            int flag = showWordDialog(frame, word, progress, selectedWordBook, false);
+                            if (flag == 2) {
+                                finished = false;
+                                break ShowWords;
+                            } else if (flag == 1) {
+                                wordsToReview.remove(word);
+                                break deleteWord;
+                            }
+                        }
+                    }
+                }
             }
-            showWordDialog(frame, word, progress, selectedWordBook, true);
-            remainingLearningQuota--; // 学习一个单词，剩余配额减一
-        }
 
-        // 弹出复习单词窗口
-        for (Word word : wordsToReview) {
-            if (userWantsToRest) {
-                break; // 检查用户是否选择休息
+            if (finished) {
+                text = "恭喜你完成今日学习任务！";
+            } else {
+                text = "坚持就是胜利，休息之后要回来继续学哦！";
             }
-            showWordDialog(frame, word, progress, selectedWordBook, false);
         }
-
-        if (remainingLearningQuota <= 0) {
-            JLabel finishLabel = new JLabel("恭喜你完成今日学习任务");
-            panel.add(finishLabel);
-        }
+        JLabel finishLabel = new JLabel(text);
+        panel.add(finishLabel);
 
         frame.getContentPane().add(panel);
         frame.setVisible(true);
     }
 
-    private void showWordDialog(JFrame frame, Word word, UserProgress progress, String selectedWordBook, boolean isLearning) {
+    private int showWordDialog(JFrame frame, Word word, UserProgress progress, String selectedWordBook, boolean isLearning) {
         JPanel panel = new JPanel(new BorderLayout());
         JLabel messageLabel = new JLabel("你认识这个单词吗？\n" + word.getEnglish());
         panel.add(messageLabel, BorderLayout.CENTER);
 
+        AtomicInteger rest = new AtomicInteger(0);
         JPanel buttonPanel = new JPanel();
         JButton yesButton = new JButton("是");
+        JButton ignoreButton = new JButton("太简单了");
         JButton noButton = new JButton("否");
         JButton restButton = new JButton("休息一会儿");
 
+        if (isLearning) {
+            buttonPanel.add(ignoreButton);
+        }
         buttonPanel.add(yesButton);
         buttonPanel.add(noButton);
         buttonPanel.add(restButton);
@@ -276,6 +301,16 @@ public class UserInterface {
         dialog.setContentPane(panel);
         dialog.pack();
 
+        ignoreButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                progress.ignoreWord(selectedWordBook, word);
+                storage.saveUserProgress(progress, selectedWordBook);
+                dialog.dispose();
+                showWordDetails(word);
+            }
+        });
+
         yesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -284,9 +319,10 @@ public class UserInterface {
                 } else {
                     progress.reviewWord(selectedWordBook, word);
                 }
-                storage.saveUserProgress(progress, username);
+                storage.saveUserProgress(progress, selectedWordBook);
                 dialog.dispose();
                 showWordDetails(word);
+                rest.set(1);
             }
         });
 
@@ -301,14 +337,15 @@ public class UserInterface {
         restButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                saveProgressAndExit(frame, progress);
-                userWantsToRest = true; // 设置标志变量为true
+                storage.saveUserProgress(progress, selectedWordBook);
+                rest.set(2);
                 dialog.dispose();
             }
         });
 
         dialog.setLocationRelativeTo(frame);
         dialog.setVisible(true);
+        return rest.get();
     }
 
     private void showWordDetails(Word word) {
@@ -320,14 +357,9 @@ public class UserInterface {
         return "单词详细信息：\n英文: " + word.info();
     }
 
-    private void saveProgressAndExit(JFrame frame, UserProgress progress) {
-        storage.saveUserProgress(progress, username);
-        frame.dispose();
-    }
-
     private void readArticles() {
         // 生成 articles 文件夹和文章文件
-        articleFetcher.fetchArticles();
+        ArticleFetcher.fetchArticles();
         File folder = new File("articles");
         File[] listOfFiles = folder.listFiles((dir, name) -> name.toLowerCase().endsWith(".md"));
 
@@ -343,12 +375,11 @@ public class UserInterface {
 
             JPanel panel = new JPanel(new GridLayout(0, 1));
 
-            for (int i = 0; i < listOfFiles.length; i++) {
-                JButton articleButton = new JButton(listOfFiles[i].getName());
-                File file = listOfFiles[i];
+            for (File listOfFile : listOfFiles) {
+                JButton articleButton = new JButton(listOfFile.getName());
                 articleButton.addActionListener(e -> {
                     frame.dispose();
-                    displayArticle(file);
+                    displayArticle(listOfFile);
                 });
                 panel.add(articleButton);
             }
@@ -378,8 +409,7 @@ public class UserInterface {
                 public void mouseClicked(MouseEvent e) {
                     int pos = textPane.viewToModel2D(e.getPoint());
                     Document doc = textPane.getDocument();
-                    if (doc instanceof HTMLDocument) {
-                        HTMLDocument htmlDoc = (HTMLDocument) doc;
+                    if (doc instanceof HTMLDocument htmlDoc) {
                         Element elem = htmlDoc.getCharacterElement(pos);
                         AttributeSet as = elem.getAttributes();
                         String href = (String) as.getAttribute(HTML.Attribute.HREF);
@@ -436,8 +466,7 @@ public class UserInterface {
             public void mouseClicked(MouseEvent e) {
                 int pos = textPane.viewToModel2D(e.getPoint());
                 Document doc = textPane.getDocument();
-                if (doc instanceof HTMLDocument) {
-                    HTMLDocument htmlDoc = (HTMLDocument) doc;
+                if (doc instanceof HTMLDocument htmlDoc) {
                     Element elem = htmlDoc.getCharacterElement(pos);
                     AttributeSet as = elem.getAttributes();
                     String word = (String) as.getAttribute(HTML.Attribute.HREF);

@@ -118,5 +118,3 @@ Frame material – Allow steel
 
 This post contains affiliate links, so we may earn a small commission when you make a purchase through links on our site at no additional cost to you.
 
-Keep up with the top stories from Reader's Digest by subscribing to our weekly newsletter
-

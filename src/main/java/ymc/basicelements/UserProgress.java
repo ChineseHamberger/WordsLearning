@@ -1,7 +1,5 @@
 package ymc.basicelements;
 
-import ymc.algo.WordSelectionAlgorithm;
-
 import java.io.*;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -9,22 +7,45 @@ import java.util.*;
 public class UserProgress implements Serializable {
 
     private Map<String, Set<Word>> learnedWords;
+    private Map<String, Set<Word>> ignoredWords;
     private Map<String, Map<Word, ReviewData>> reviewCounts;
-    private int wordsLearnedToday;
+    private LocalDateTime LastLearningDate;
+    private List<Word> wordsToLearn;
+    private List<Word> wordsToReview;
 
     public UserProgress() {
-        this.learnedWords = new HashMap<>();
-        this.reviewCounts = new HashMap<>();
-        this.wordsLearnedToday = 0; // 初始化为0
+        learnedWords = new HashMap<>();
+        ignoredWords = new HashMap<>();
+        reviewCounts = new HashMap<>();
+        LastLearningDate = null;
+        wordsToLearn = new ArrayList<>();
+        wordsToReview = new ArrayList<>();
+    }
+
+    public boolean IsTodaySet() {
+        LocalDateTime now = LocalDateTime.now();
+        return LastLearningDate != null && LastLearningDate.getYear() == now.getYear()  && LastLearningDate.getDayOfYear() == now.getDayOfYear();
+    }
+    public List<Word> getWordsToLearn(){
+        return wordsToLearn;
+    }
+    public void setWordsToLearn(List<Word> wordsToLearn){
+        this.wordsToLearn = wordsToLearn;
+    }
+
+    public void setWordsToReview(List<Word> wordsToReview){
+        this.wordsToReview = wordsToReview;
+    }
+    public List<Word> getWordsToReview(){
+        return wordsToReview;
+    }
+    public void updateLastLearningDate(){
+        this.LastLearningDate = LocalDateTime.now();
     }
 
     public Set<Word> getLearnedWords(String bookName) {
         Set<Word> emptyLearnedWords = new HashSet<>();
         return learnedWords.getOrDefault(bookName, emptyLearnedWords);
-    }
-
-    public int getWordsLearnedToday() {
-        return wordsLearnedToday;
     }
 
     public Map<Word, ReviewData> getReviewCounts(String bookName) {
@@ -33,11 +54,7 @@ public class UserProgress implements Serializable {
     }
 
     public boolean isWordLearned(String bookName, Word word) {
-        return learnedWords.getOrDefault(bookName, Collections.emptySet()).contains(word);
-    }
-
-    public void setWordsLearnedToday(int wordsLearnedToday) {
-        this.wordsLearnedToday = wordsLearnedToday;
+        return learnedWords.getOrDefault(bookName, Collections.emptySet()).contains(word) || ignoredWords.getOrDefault(bookName, Collections.emptySet()).contains(word);
     }
 
     public void learnWord(String bookName, Word word) {
@@ -46,6 +63,12 @@ public class UserProgress implements Serializable {
         System.out.println("Learned word: " + word.getEnglish());
         reviewData.showInfo();
         reviewCounts.computeIfAbsent(bookName, k -> new HashMap<>()).put(word, reviewData);
+        wordsToLearn.remove(word);
+    }
+
+    public void ignoreWord(String bookName, Word word) {
+        ignoredWords.computeIfAbsent(bookName, k -> new HashSet<>()).add(word);
+        wordsToLearn.remove(word);
     }
 
     public void reviewWord(String bookName, Word word) {
@@ -57,9 +80,8 @@ public class UserProgress implements Serializable {
         reviewData.setLastReviewTime(LocalDateTime.now());
         reviewData.showInfo();
         reviewCounts.get(bookName).put(word, reviewData);
+        wordsToReview.remove(word);
     }
-
-
 
     public void showInfo(String bookName) {
         Set<Word> myLearnedWords = getLearnedWords(bookName);

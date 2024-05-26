@@ -16,8 +16,6 @@ With two zipped compartments, a back compartment and a handy strapped buckle, th
 
 The bag is made from a high-quality water-resistant material and conveniently has a scratch-proof inner pocket, in case you’re carrying any sharper objects like keys.
 
-View the product
-
 ## Enxou bum bag
 
 Enxou bum bag

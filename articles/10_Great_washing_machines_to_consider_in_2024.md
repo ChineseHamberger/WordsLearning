@@ -136,3 +136,5 @@ Item weight – 73kg
 
 Introductory offer for Reader's Digest customers. Get a 12-month Which? subscription from just £39.50
 
+Keep up with the top stories from Reader's Digest by subscribing to our weekly newsletter
+

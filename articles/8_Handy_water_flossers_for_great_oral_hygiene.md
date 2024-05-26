@@ -20,6 +20,8 @@ Special feature:
 
 . Multiple pressure settings
 
+View the product
+
 ## Insmart water flosser
 
 Insmart flosser
