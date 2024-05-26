@@ -44,6 +44,34 @@
     -fx-font-size: 14px;
 }
 
+
+/*
+样式定义块：startButton
+该块主要定义了一个ID为startButton的按钮的样式，包括按钮的背景色、边框色、边框宽度、边框圆角、文字颜色、字体大小和字体家族。
+*/
+
+#startButton{
+    -fx-background-color: transparent; /* 设置按钮背景为透明 */
+    -fx-border-color: #767676; /* 设置按钮边框颜色为灰色 */
+    -fx-border-width: 2px; /* 设置按钮边框宽度为2px */
+    -fx-border-radius: 5px; /* 设置按钮边框圆角为5px */
+    -fx-text-fill: #767676; /* 设置按钮文字颜色为灰色 */
+    -fx-font-size: 16px; /* 设置按钮文字大小为16px */
+    -fx-font-family: "Microsoft YaHei UI"; /* 设置按钮文字字体为Microsoft YaHei UI */
+}
+
+/*
+样式定义块：startButton:hover
+该块定义了鼠标悬停在ID为startButton的按钮上时的样式变化，主要包括边框颜色、文字颜色和鼠标指针形状的改变。
+*/
+
+#startButton:hover{
+    -fx-border-color: #0D90EE; /* 鼠标悬停时按钮边框颜色变为蓝色 */
+    -fx-text-fill: #0D90EE; /* 鼠标悬停时按钮文字颜色变为蓝色 */
+    -fx-cursor: hand; /* 鼠标悬停时指针形状变为手型 */
+}
+
+
 /* 定义#loginButton的样式，使其背景透明，边框颜色为灰色，边框宽度为2px，边框圆角为5px，文本颜色为灰色，字体大小和家庭同#text-field */
 #loginButton {
     -fx-background-color: transparent;
