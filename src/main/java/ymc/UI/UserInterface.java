@@ -20,22 +20,21 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.text.*;
 import javax.swing.text.html.*;
 
 public class UserInterface {
     private LocalStorage storage = new LocalStorage();
     private ArticleProcessor articleProcessor;
-    private ArticleFetcher articleFetcher = new ArticleFetcher();
-
     private String username = "a";
-
     public void start() {
         SwingUtilities.invokeLater(() -> {
 
             // 加载配置和进度
             UserConfig config = storage.loadUserConfig(username);
-            UserProgress progress = storage.loadUserProgress(username);
+            UserProgress progress = config != null? storage.loadUserProgress(username, config.getSelectedWordBook()): null;
 
             // 如果没有配置，则初始化
             if (config == null) {
@@ -94,7 +93,7 @@ public class UserInterface {
                 int dailyReviewQuota = reviewQuotaField.getText().isEmpty() ? UserConfig.getDefaultDailyReviewQuota() :Integer.parseInt(reviewQuotaField.getText());
 
                 UserConfig config = new UserConfig(selectedWordBook, dailyLearningQuota, dailyReviewQuota);
-                storage.saveUserConfig(config,username);
+                storage.saveUserConfig(username, config);
 
                 WordBook wordBook = storage.getWordBook(config.getSelectedWordBook());
                 articleProcessor = new ArticleProcessor(wordBook);
@@ -108,6 +107,8 @@ public class UserInterface {
         frame.getContentPane().add(panel);
         frame.setVisible(true);
     }
+
+
 
     private void showMainMenu(UserConfig config, UserProgress progress) {
         JFrame frame = new JFrame("主菜单");
@@ -135,7 +136,7 @@ public class UserInterface {
 
         JButton exitButton = new JButton("退出");
         exitButton.addActionListener(e -> {
-            storage.saveUserProgress(progress,username);
+            storage.saveUserProgress(username ,progress, config.getSelectedWordBook());
             frame.dispose();
             System.exit(0);
         });
@@ -177,8 +178,10 @@ public class UserInterface {
 
         JButton submitButton = new JButton("提交");
         submitButton.addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(ActionEvent e) {
+                System.out.println("submit");
                 String selectedWordBook = (String) wordBookComboBox.getSelectedItem();
                 int dailyLearningQuota = Integer.parseInt(learningQuotaField.getText());
                 int dailyReviewQuota = Integer.parseInt(reviewQuotaField.getText());
@@ -186,7 +189,7 @@ public class UserInterface {
                 config.setSelectedWordBook(selectedWordBook);
                 config.setDailyLearningQuota(dailyLearningQuota);
                 config.setDailyReviewQuota(dailyReviewQuota);
-                storage.saveUserConfig(config,username);
+                storage.saveUserConfig(username, config);
 
                 WordBook wordBook = storage.getWordBook(config.getSelectedWordBook());
                 articleProcessor = new ArticleProcessor(wordBook);
@@ -207,45 +210,146 @@ public class UserInterface {
 
         JPanel panel = new JPanel(new GridLayout(0, 1));
 
-        // 加载选定的单词书
+        boolean finished = true;
+        List<Word> wordsToLearn = null;
+        List<Word> wordsToReview = null;
         String selectedWordBook = config.getSelectedWordBook();
-        WordBook wordBook = WordBookLoader.loadWordBook(selectedWordBook);
 
-        // 获取今日需要学习和复习的单词
-        List<Word> wordsToLearn = WordSelectionAlgorithm.getWordsForLearning(wordBook,progress,config);
-        List<Word> wordsToReview = WordSelectionAlgorithm.getWordsForReview(wordBook,progress,config);
-
-        // 弹出学习单词窗口
-        for (Word word : wordsToLearn) {
-            showWordDialog(word, progress, selectedWordBook, true);
+        if (progress.IsTodaySet()) {
+            wordsToLearn = progress.getWordsToLearn();
+            wordsToReview = progress.getWordsToReview();
+        } else {
+            // 加载选定的单词书
+            WordBook wordBook = WordBookLoader.loadWordBook(selectedWordBook);
+            wordsToLearn = WordSelectionAlgorithm.getWordsForLearning(wordBook, progress, config);
+            wordsToReview = WordSelectionAlgorithm.getWordsForReview(wordBook, progress, config);
+            progress.setWordsToLearn(wordsToLearn);
+            progress.setWordsToReview(wordsToReview);
+            progress.updateLastLearningDate();
         }
+        String text;
+        if (wordsToLearn.isEmpty() && wordsToReview.isEmpty()){
+            text = "今日任务已完成，积少成多别贪心！";
+        } else {
+            // 弹出学习单词窗口
+            ShowWords:
+            while (! (wordsToLearn.isEmpty() && wordsToReview.isEmpty())) {
+                deleteWord:{
+                    Random random = new Random();
+                    int randomNumber = random.nextInt(2) + 1;
+                    if (randomNumber == 1) {
+                        for (Word word : wordsToLearn) {
+                            int flag = showWordDialog(frame, word, progress, selectedWordBook, true);
+                            if (flag == 2) {
+                                finished = false;
+                                break ShowWords;
+                            } else if (flag == 1) {
+                                wordsToLearn.remove(word);
+                                break deleteWord;
+                            }
+                        }
+                    } else {
+                        // 弹出复习单词窗口
+                        for (Word word : wordsToReview) {
+                            int flag = showWordDialog(frame, word, progress, selectedWordBook, false);
+                            if (flag == 2) {
+                                finished = false;
+                                break ShowWords;
+                            } else if (flag == 1) {
+                                wordsToReview.remove(word);
+                                break deleteWord;
+                            }
+                        }
+                    }
+                }
+            }
 
-        // 弹出复习单词窗口
-        for (Word word : wordsToReview) {
-            showWordDialog(word, progress, selectedWordBook, false);
+            if (finished) {
+                text = "恭喜你完成今日学习任务！";
+            } else {
+                text = "坚持就是胜利，休息之后要回来继续学哦！";
+            }
         }
-
-        JLabel finishLabel = new JLabel("恭喜你完成今日学习任务");
+        JLabel finishLabel = new JLabel(text);
         panel.add(finishLabel);
 
         frame.getContentPane().add(panel);
         frame.setVisible(true);
     }
 
-    private void showWordDialog(Word word, UserProgress progress, String selectedWordBook, boolean isLearning) {
-        int option = JOptionPane.showConfirmDialog(null, "你认识这个单词吗？\n" + word.getEnglish(), "单词测试", JOptionPane.YES_NO_OPTION);
+    private int showWordDialog(JFrame frame, Word word, UserProgress progress, String selectedWordBook, boolean isLearning) {
+        JPanel panel = new JPanel(new BorderLayout());
+        JLabel messageLabel = new JLabel("你认识这个单词吗？\n" + word.getEnglish());
+        panel.add(messageLabel, BorderLayout.CENTER);
 
-        if (option == JOptionPane.YES_OPTION) {
-            if (isLearning) {
-                progress.learnWord(selectedWordBook, word);
-            } else {
-                progress.reviewWord(selectedWordBook, word);
-            }
-            storage.saveUserProgress(progress,username);
-            //progress.saveProgress("username"); // 保存进度，假设用户名为"username"
+        AtomicInteger rest = new AtomicInteger(0);
+        JPanel buttonPanel = new JPanel();
+        JButton yesButton = new JButton("是");
+        JButton ignoreButton = new JButton("太简单了");
+        JButton noButton = new JButton("否");
+        JButton restButton = new JButton("休息一会儿");
+
+        if (isLearning) {
+            buttonPanel.add(ignoreButton);
         }
+        buttonPanel.add(yesButton);
+        buttonPanel.add(noButton);
+        buttonPanel.add(restButton);
+        panel.add(buttonPanel, BorderLayout.SOUTH);
 
-        // 显示单词详细信息
+        JDialog dialog = new JDialog(frame, "单词测试", true);
+        dialog.setContentPane(panel);
+        dialog.pack();
+
+        ignoreButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                progress.ignoreWord(selectedWordBook, word);
+                storage.saveUserProgress(username, progress, selectedWordBook);
+                dialog.dispose();
+                showWordDetails(word);
+                rest.set(1);
+            }
+        });
+
+        yesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (isLearning) {
+                    progress.learnWord(selectedWordBook, word);
+                } else {
+                    progress.reviewWord(selectedWordBook, word);
+                }
+                storage.saveUserProgress(username, progress, selectedWordBook);
+                dialog.dispose();
+                showWordDetails(word);
+                rest.set(1);
+            }
+        });
+
+        noButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dialog.dispose();
+                showWordDetails(word);
+            }
+        });
+
+        restButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                storage.saveUserProgress(username, progress, selectedWordBook);
+                rest.set(2);
+                dialog.dispose();
+            }
+        });
+
+        dialog.setLocationRelativeTo(frame);
+        dialog.setVisible(true);
+        return rest.get();
+    }
+
+    private void showWordDetails(Word word) {
         word.playUSSpeech();
         JOptionPane.showMessageDialog(null, getWordDetailMessage(word), "单词详情", JOptionPane.INFORMATION_MESSAGE);
     }
@@ -254,27 +358,29 @@ public class UserInterface {
         return "单词详细信息：\n英文: " + word.info();
     }
 
-
-
     private void readArticles() {
-        articleFetcher.fetchArticles();  // 生成 articles 文件夹和文章文件
+        // 生成 articles 文件夹和文章文件
+        ArticleFetcher.fetchArticles();
         File folder = new File("articles");
         File[] listOfFiles = folder.listFiles((dir, name) -> name.toLowerCase().endsWith(".md"));
 
         if (listOfFiles != null && listOfFiles.length > 0) {
+            // 弹出对话框询问用户是否要加粗正在学习的单词
+            int choice = JOptionPane.showConfirmDialog(null, "是否加粗正在学习的单词?", "选择", JOptionPane.YES_NO_OPTION);
+            boolean boldLearningWords = (choice == JOptionPane.YES_OPTION);
+            articleProcessor.setBoldLearningWords(boldLearningWords);
+
             JFrame frame = new JFrame("选择文章");
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             frame.setSize(400, 300);
 
             JPanel panel = new JPanel(new GridLayout(0, 1));
 
-
-            for (int i = 0; i < listOfFiles.length; i++) {
-                JButton articleButton = new JButton(listOfFiles[i].getName());
-                File file = listOfFiles[i];
+            for (File listOfFile : listOfFiles) {
+                JButton articleButton = new JButton(listOfFile.getName());
                 articleButton.addActionListener(e -> {
                     frame.dispose();
-                    displayArticle(file);
+                    displayArticle(listOfFile);
                 });
                 panel.add(articleButton);
             }
@@ -295,12 +401,57 @@ public class UserInterface {
             }
             String processedArticle = articleProcessor.processArticle(content.toString());
 
-            SwingUtilities.invokeLater(() -> createAndShowArticleGUI(processedArticle));
+            JTextPane textPane = new JTextPane();
+            textPane.setContentType("text/html");
+            textPane.setText(processedArticle);
+            textPane.setEditable(false);
+            textPane.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    int pos = textPane.viewToModel2D(e.getPoint());
+                    Document doc = textPane.getDocument();
+                    if (doc instanceof HTMLDocument htmlDoc) {
+                        Element elem = htmlDoc.getCharacterElement(pos);
+                        AttributeSet as = elem.getAttributes();
+                        String href = (String) as.getAttribute(HTML.Attribute.HREF);
+//                        System.out.println(href);
+                        String word;
+                        if (href != null) {
+                            word = href.substring(href.lastIndexOf('/') + 1);
+                        } else {
+                            try {
+                                int startOffset = elem.getStartOffset();
+                                int endOffset = elem.getEndOffset();
+                                word = doc.getText(startOffset, endOffset - startOffset).trim();
+                            } catch (BadLocationException ex) {
+                                ex.printStackTrace();
+                                return;
+                            }
+                        }
+                        translateAndDisplay(word);
+                    }
+                }
+            });
+
+
+            JScrollPane scrollPane = new JScrollPane(textPane);
+
+            JFrame frame = new JFrame("文章阅读");
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.setSize(800, 600);
+            frame.getContentPane().add(scrollPane);
+            frame.setVisible(true);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "无法读取文章：" + e.getMessage());
         }
-
     }
+
+    private void translateAndDisplay(String word) {
+//        System.out.println("Translating word: " + word);
+        String translation = translator.translate(2, word); // 中译英
+        JOptionPane.showMessageDialog(null, "单词 \"" + word + "\" 的翻译是：" + translation);
+    }
+
 
     private void createAndShowArticleGUI(String content) {
         JFrame frame = new JFrame("文章阅读");
@@ -316,8 +467,7 @@ public class UserInterface {
             public void mouseClicked(MouseEvent e) {
                 int pos = textPane.viewToModel2D(e.getPoint());
                 Document doc = textPane.getDocument();
-                if (doc instanceof HTMLDocument) {
-                    HTMLDocument htmlDoc = (HTMLDocument) doc;
+                if (doc instanceof HTMLDocument htmlDoc) {
                     Element elem = htmlDoc.getCharacterElement(pos);
                     AttributeSet as = elem.getAttributes();
                     String word = (String) as.getAttribute(HTML.Attribute.HREF);

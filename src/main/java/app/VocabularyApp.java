@@ -13,7 +13,7 @@ import modules.login.LoginStage;
 import modules.primary.StartPane;
 import org.example.wordslearning.HelloApplication;
 import ymc.LocalStorage.LocalStorage;
-import ymc.UI.ArticleProcessor;
+
 
 import java.io.IOException;
 
@@ -55,4 +55,4 @@ public class VocabularyApp extends Application {
     public static void main(String[] args) {
         launch();
     }
-}
+
