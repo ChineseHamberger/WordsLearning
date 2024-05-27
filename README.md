@@ -2,9 +2,8 @@
 
 ## 注意
 
-1.在你每次更新项目时,请在README中"更新"一栏写下具体更新内容和时间,
-在"请求"一栏写下你请求co-author需要实现的内容
-!记得及时拉取项目的最新状态和更新项目的README,谢谢!
+在你每次更新项目时,**请在README中"update"一栏写下具体更新内容和时间**,
+!记得**及时拉取项目的最新状态**和更新项目的README,谢谢!
 
 ## TODO List
 
@@ -16,17 +15,23 @@
 6. selectedWords(zsj,已实现)
 7. FX界面(zsj,正在做)
 
-(留言：目前的GUI只是我为了测试读文章模式能不能运行简单写的，您还是按计划写一个FX的美观版GUI吧
+## update
+
+5.27 ymc:基本完成demo,学习单词功能基本稳定 zsj:fx逻辑正在完善,新增全局设置GlobalSetting
+
+## log
+
+1.Done-(留言：目前的GUI只是我为了测试读文章模式能不能运行简单写的，您还是按计划写一个FX的美观版GUI吧
 zsj:好,我们这周先把基本逻辑理顺,预计下周或更早开始写界面)
-(zsj:我们的demo在运行时是单线程的,我今天加入了声音播放,声音播放和内容显示不能同时进行,所以我准备在以后的fx逻辑中加入多线程,实现音效播放和内容显示同时进行)
-(zsj:WordBook中新增了searchWordInEng和searchWordInCh,可以在本地词书中搜索)
-(zsj:修改了UserProgress中的private Map<String, Map<Word, ReviewData>> reviewCounts;根据ReviewData确定是否需要复习)
-(已实现)(zsj:实现了选择算法,排除了一些空指针错误,优化了一部分逻辑,demo应该能完整比较流畅的运行,现在demo体验感不好的地方是不能**中途退出下次进来继续保留进度**,希望您能给我一些接口)
-(ymc:实现了阅读文章时的点击查词功能)
-(ymc:实现了中途退出功能)
-(ymc:修复了一个bug：wordSelectionAlgo里面getWordsForLearning方法中，计数器cnt没有递增，导致无法正确判断是否达到每日学习配额。)
-(ymc:对Storage储存逻辑进行了大修，现在不同单词书的进度独立保存了）
-(ymc:修复了学习单词时的许多bug，目前学习单词功能基本稳定了)
+2.Done-(zsj:我们的demo在运行时是单线程的,我今天加入了声音播放,声音播放和内容显示不能同时进行,所以我准备在以后的fx逻辑中加入多线程,实现音效播放和内容显示同时进行)
+3.Done-(zsj:WordBook中新增了searchWordInEng和searchWordInCh,可以在本地词书中搜索)
+4.Done-(zsj:修改了UserProgress中的private Map<String, Map<Word, ReviewData>> reviewCounts;根据ReviewData确定是否需要复习)
+5.Done-(已实现)(zsj:实现了选择算法,排除了一些空指针错误,优化了一部分逻辑,demo应该能完整比较流畅的运行,现在demo体验感不好的地方是不能**中途退出下次进来继续保留进度**,希望您能给我一些接口)
+6.Done-(ymc:实现了阅读文章时的点击查词功能)
+7.Done-(ymc:实现了中途退出功能)
+8.Done-(ymc:修复了一个bug：wordSelectionAlgo里面getWordsForLearning方法中，计数器cnt没有递增，导致无法正确判断是否达到每日学习配额。)
+9.Done-(ymc:对Storage储存逻辑进行了大修，现在不同单词书的进度独立保存了）
+10.Done-(ymc:修复了学习单词时的许多bug，目前学习单词功能基本稳定了)
 
 
 ## 模式
