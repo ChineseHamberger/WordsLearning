@@ -4,6 +4,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.geometry.Pos;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import tools.StringKit;
 
 public class LoginPane extends BorderPane {
     BooleanProperty loginProperty;
@@ -15,8 +16,7 @@ public class LoginPane extends BorderPane {
         LoginButton loginButton = new LoginButton("Login");
         loginProperty = loginButton.loginProperty;
         loginButton.setOnAction(e->{
-            username = usernameField.textField.getText();
-            System.out.println(username);
+            username = StringKit.sanitizeForFileName(usernameField.textField.getText());
             loginProperty.setValue(true);
         });
 

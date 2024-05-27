@@ -9,6 +9,7 @@ import modules.login.LoginPane;
 import modules.main.NavigationPane;
 import modules.start.StartPane;
 import ymc.LocalStorage.LocalStorage;
+import ymc.UI.ArticleProcessor;
 
 
 import java.io.IOException;
@@ -17,6 +18,7 @@ public class VocabularyApp extends Application {
     private int width = 600,height = 500;
 
     private LocalStorage localStorage = new LocalStorage();
+    private ArticleProcessor articleProcessor;
     private String username = "test";
 
     private String[] words = {"Hello", "World", "Java", "FX", "Vocabulary"}; // 示例单词列表
@@ -51,8 +53,9 @@ public class VocabularyApp extends Application {
         loginPane.loginProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
                 username = loginPane.getUsername();
+                System.out.println("username="+username);
                 loginStage.close();
-                showLoadingStage();
+                showMainStage();
             }
         });
         loginStage.show();

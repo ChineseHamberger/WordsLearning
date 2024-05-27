@@ -3,6 +3,7 @@ package modules.loading;
 import com.almasb.fxgl.core.UpdatableRunner;
 import effects.SelfDefinedColors;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.layout.BorderPane;
 import javafx.animation.*;
 import javafx.geometry.Pos;
@@ -17,6 +18,8 @@ import javafx.util.Duration;
 import java.util.Objects;
 
 public class LoadingPane extends BorderPane {
+    BooleanProperty loadConfigDone = new SimpleBooleanProperty(false);
+    BooleanProperty loadProgressDone = new SimpleBooleanProperty(false);
     public LoadingPane() {
         this.setMaxSize(100,100);
         ImageView imageView = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/Loading.png"))));
