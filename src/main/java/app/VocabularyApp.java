@@ -9,6 +9,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import modules.login.LoginPane;
+import modules.login.LoginStage;
 import modules.primary.StartPane;
 import org.example.wordslearning.HelloApplication;
 import ymc.LocalStorage.LocalStorage;
@@ -26,7 +27,7 @@ public class VocabularyApp extends Application {
 
     @Override
     public void start(Stage primayStage) throws IOException {
-        primayStage.setTitle("Login");
+        primayStage.setTitle("Start");
 
         StartPane startPane = new StartPane();
         startPane.setStyle("-fx-background-color: white");
@@ -46,7 +47,8 @@ public class VocabularyApp extends Application {
     }
 
     public void showLoginStage(){
-        LoginPane loginPane = new LoginPane();
+        LoginStage loginStage = new LoginStage();
+
 
     }
 
