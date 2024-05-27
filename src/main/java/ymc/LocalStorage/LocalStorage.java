@@ -12,9 +12,9 @@ import java.util.List;
 
 
 public class LocalStorage {
-    private static final String USER_DIR = "users/";
+    private static final String USERS_DIR = "users/";
     private static final String CONFIG_FILE = "Config.dat";
-    private static final String PROGRESSES_DIR = "/Progresses/";
+    private static final String PROGRESSES_DIR = "Progresses/";
     private static final String WORD_BOOK_DIR = "wordBooks";
 
     public LocalStorage() {
@@ -22,9 +22,13 @@ public class LocalStorage {
         if (!dir.exists()) {
             dir.mkdir();
         }
+        File usersDir = new File(USERS_DIR);
+        if (!usersDir.exists()) {
+            usersDir.mkdir();
+        }
     }
     public void saveUserConfig(String username, UserConfig config) {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(USER_DIR+username+CONFIG_FILE))) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(USERS_DIR+username+"/"+CONFIG_FILE))) {
             System.out.println("save config");
             config.showInfo();
             oos.writeObject(config);
@@ -33,7 +37,16 @@ public class LocalStorage {
         }
     }
     public UserConfig loadUserConfig(String username) {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(USER_DIR+username+CONFIG_FILE))) {
+        File dir = new File(USERS_DIR+username+"/");
+        if (!dir.exists()) {
+            dir.mkdir(); // 创建USER_DIR目录
+        }
+        File file = new File(USERS_DIR+ username +"/"+ CONFIG_FILE);
+        if (!file.exists()) {
+            System.out.println("Config file does not exist.");
+            return null;
+        }
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(USERS_DIR+username+"/"+CONFIG_FILE))) {
             UserConfig config = (UserConfig) ois.readObject();
             System.out.println("load config");
             config.showInfo();
@@ -45,7 +58,7 @@ public class LocalStorage {
     }
 
     public void saveUserProgress(String username, UserProgress progress, String bookname) {
-        File dir = new File(USER_DIR+ username + PROGRESSES_DIR);
+        File dir = new File(USERS_DIR+ username +"/"+ PROGRESSES_DIR);
         if (!dir.exists()) {
             dir.mkdirs();
         }
@@ -59,7 +72,12 @@ public class LocalStorage {
         }
     }
     public UserProgress loadUserProgress(String username, String bookname) {
-        File file = new File(USER_DIR+ username + PROGRESSES_DIR + bookname + ".dat");
+        File userDirFile = new File(USERS_DIR);
+        if (!userDirFile.exists()) {
+            userDirFile.mkdir(); // 创建USER_DIR目录
+        }
+
+        File file = new File(USERS_DIR+ username +"/"+ PROGRESSES_DIR + bookname + ".dat");
         if (!file.exists()) {
             System.out.println("Progress file for book " + bookname + " does not exist.");
             return null;

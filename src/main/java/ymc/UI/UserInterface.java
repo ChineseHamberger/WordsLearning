@@ -178,8 +178,10 @@ public class UserInterface {
 
         JButton submitButton = new JButton("提交");
         submitButton.addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(ActionEvent e) {
+                System.out.println("submit");
                 String selectedWordBook = (String) wordBookComboBox.getSelectedItem();
                 int dailyLearningQuota = Integer.parseInt(learningQuotaField.getText());
                 int dailyReviewQuota = Integer.parseInt(reviewQuotaField.getText());
