@@ -10,6 +10,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import modules.login.LoginPane;
+import ymc.LocalStorage.LocalStorage;
 
 
 import java.io.IOException;
@@ -39,7 +40,7 @@ public class VocabularyApp extends Application {
 
 
 
-    public static void main(String[] args) {
-        launch();
-    }
-}
+//    public static void main(String[] args) {
+//        launch();
+//    }
+}}

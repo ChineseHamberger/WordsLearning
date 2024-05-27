@@ -13,8 +13,8 @@ import java.util.List;
 
 public class LocalStorage {
     private static final String USER_DIR = "users/";
-    private static final String CONFIG_FILE = "/Config.dat";
-    private static final String PROGRESS_FILE = "/Progress.dat";
+    private static final String CONFIG_FILE = "Config.dat";
+    private static final String PROGRESSES_DIR = "/Progresses/";
     private static final String WORD_BOOK_DIR = "wordBooks";
 
     public LocalStorage() {
@@ -23,13 +23,7 @@ public class LocalStorage {
             dir.mkdir();
         }
     }
-
-
-    public void saveUserConfig(UserConfig config, String username) {
-        File dir = new File(USER_DIR+username);
-        if(!dir.exists()){
-            dir.mkdirs();
-        }
+    public void saveUserConfig(String username, UserConfig config) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(USER_DIR+username+CONFIG_FILE))) {
             System.out.println("save config");
             config.showInfo();
@@ -38,49 +32,46 @@ public class LocalStorage {
             e.printStackTrace();
         }
     }
-
-
     public UserConfig loadUserConfig(String username) {
-
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(USER_DIR+username+CONFIG_FILE))) {
             UserConfig config = (UserConfig) ois.readObject();
-            System.out.println("load config done");
+            System.out.println("load config");
             config.showInfo();
             return config;
         } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
             return null;
         }
     }
 
-    public void saveUserProgress(UserProgress progress,String username) {
+    public void saveUserProgress(String username, UserProgress progress, String bookname) {
+        File dir = new File(USER_DIR+ username + PROGRESSES_DIR);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
 
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(USER_DIR+username+PROGRESS_FILE))) {
-            System.out.println("save progress");
+        File file = new File(dir, bookname + ".dat");
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
+            System.out.println("save progress for book: " + bookname);
             oos.writeObject(progress);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-    public UserProgress loadUserProgress(String username) {
-        File dir = new File(USER_DIR+username);
-        if(!dir.exists()){
-            dir.mkdirs();
-        }
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(USER_DIR+username+PROGRESS_FILE))) {
-            UserProgress progress = (UserProgress) ois.readObject();
-            System.out.println("load progress done");
-            return progress;
-        } catch (IOException | ClassNotFoundException e) {
+    public UserProgress loadUserProgress(String username, String bookname) {
+        File file = new File(USER_DIR+ username + PROGRESSES_DIR + bookname + ".dat");
+        if (!file.exists()) {
+            System.out.println("Progress file for book " + bookname + " does not exist.");
             return null;
         }
-    }
 
-    public void addWordBook(WordBook wordBook) {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(WORD_BOOK_DIR + "/" + wordBook.getName() + ".dat"))) {
-            oos.writeObject(wordBook);
-        } catch (IOException e) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
+            UserProgress progress = (UserProgress) ois.readObject();
+            System.out.println("load progress for book: " + bookname);
+            return progress;
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
+            return null;
         }
     }
 
@@ -92,7 +83,6 @@ public class LocalStorage {
             return null;
         }
     }
-
 
     public List<String> listWordBooks() {
         File wordBooksDir = new File(WORD_BOOK_DIR);
