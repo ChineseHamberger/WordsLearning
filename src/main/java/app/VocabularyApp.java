@@ -91,7 +91,7 @@ public class VocabularyApp extends Application {
         root.setStyle("-fx-background-color: white");
         root.setEffect(Shadows.WINDOW_SHADOW);
 
-        NavigationPane navigationPane = new NavigationPane("Home","User","Support");
+        NavigationPane navigationPane = new NavigationPane("学习/复习新单词","读文章","查单词","设置");
         root.setLeft(navigationPane);
 
         Scene scene = new Scene(root,width,height);
