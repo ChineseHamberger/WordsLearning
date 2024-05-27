@@ -37,6 +37,7 @@ public class LocalStorage {
         }
     }
     public UserConfig loadUserConfig(String username) {
+
         File dir = new File(USERS_DIR+username+"/");
         if (!dir.exists()) {
             dir.mkdir(); // 创建USER_DIR目录
@@ -66,6 +67,7 @@ public class LocalStorage {
         File file = new File(dir, bookname + ".dat");
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
             System.out.println("save progress for book: " + bookname);
+
             oos.writeObject(progress);
         } catch (IOException e) {
             e.printStackTrace();

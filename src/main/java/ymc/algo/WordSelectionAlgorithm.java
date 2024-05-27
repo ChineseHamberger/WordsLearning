@@ -39,6 +39,7 @@ public class WordSelectionAlgorithm {
                 wordsForLearning.add(word);
                 cnt++;
             }
+            cnt++;
         }
         return wordsForLearning;
     }
