@@ -1,6 +1,5 @@
-package modules.primary;
+package modules.start;
 
-import com.almasb.fxgl.core.UpdatableRunner;
 import javafx.beans.property.BooleanProperty;
 import javafx.geometry.Pos;
 import javafx.scene.layout.BorderPane;

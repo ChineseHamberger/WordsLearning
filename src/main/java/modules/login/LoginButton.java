@@ -22,7 +22,7 @@ public class LoginButton extends Button {
         this.setMaxSize(100,30); // 设置按钮的最大大小为宽度100，高度30
         this.setId("loginButton"); // 设置按钮的ID为"loginButton"
         // 添加CSS样式表到按钮，确保按钮的外观符合登录页面的样式要求
-        this.getStylesheets().add(String.valueOf(getClass().getResource("/CSS/Login/Login.css")));
+        this.getStylesheets().add(String.valueOf(getClass().getResource("/CSS/Login.css")));
         // 为按钮添加一个鼠标点击事件处理器，当按钮被点击时，将loginProperty的值设置为true
         this.addEventHandler(MouseEvent.MOUSE_CLICKED,event -> {
             loginProperty.set(true);

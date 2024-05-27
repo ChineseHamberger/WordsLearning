@@ -25,11 +25,11 @@ public class UsernameField extends BorderPane {
         // 设置用户名字段的最大大小，设置ID，并添加CSS样式表
         usernameField.setMaxSize(280,40);
         usernameField.setId("username-field");
-        usernameField.getStylesheets().add(String.valueOf(getClass().getResource("/CSS/Login/Login.css")));
+        usernameField.getStylesheets().add(String.valueOf(getClass().getResource("/CSS/Login.css")));
 
         // 定义颜色变量
         String ColorBlueHex = SelfDefinedColors.ColorBlueHex;
-        String ColorGreyHex = SelfDefinedColors.ColorGreyHex;
+        String ColorGreyHex = SelfDefinedColors.ColorGrayHex;
 
         // 鼠标进入文本字段时改变样式
         usernameField.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
@@ -50,23 +50,23 @@ public class UsernameField extends BorderPane {
         });
 
         // 加载字体并设置图标样式
-        Font font = Font.loadFont(getClass().getResourceAsStream("/Icons/icomoon.ttf"),28);
+        Font font = Font.loadFont(getClass().getResourceAsStream("/Icons/userIcon.ttf"),28);
         icon.setFont(font);
         icon.setText("\ue908");
-        icon.setTextFill(SelfDefinedColors.GREY);
+        icon.setTextFill(SelfDefinedColors.GRAY);
         icon.setId("icon");
-        icon.getStylesheets().add(String.valueOf(getClass().getResource("/CSS/Login/Login.css")));
+        icon.getStylesheets().add(String.valueOf(getClass().getResource("/CSS/Login.css")));
 
         // 设置分隔线样式
         line = new Rectangle(1.5,26);
-        line.setFill(SelfDefinedColors.GREY);
+        line.setFill(SelfDefinedColors.GRAY);
         line.fillProperty().bind(icon.textFillProperty());
 
         // 设置文本字段属性
         textField.setPrefHeight(40);
         textField.setPromptText("Press your username");
         textField.setId("text-field");
-        textField.getStylesheets().add(String.valueOf(getClass().getResource("/CSS/Login/Login.css")));
+        textField.getStylesheets().add(String.valueOf(getClass().getResource("/CSS/Login.css")));
 
         // 监听文本字段的焦点变化，以改变样式
         textField.focusedProperty().addListener((observable, oldValue, newValue) -> {
