@@ -40,19 +40,19 @@ public class NavigationButton extends BorderPane {
     private int index;
 
 
-    public NavigationButton(String string) {
-        this.setMaxSize(232,60);
-        this.setPrefSize(232,60);
+    public NavigationButton(double width, double height, String string) {
+        this.setMaxSize(width,height);
+        this.setPrefSize(width,height);
         label = new Label(string);
         label.setTextFill(label_default);
-        label.setFont(Font.font("Microsoft YaHei UI Light",FontWeight.NORMAL,28));
-        rectangle = new Rectangle(232,60,btn_default);
+        label.setFont(Font.font("Microsoft YaHei UI Light",FontWeight.NORMAL,(int)width/8));
+        rectangle = new Rectangle(width,height,btn_default);
         rectangle.setArcWidth(10);rectangle.setArcHeight(10);
         BorderPane align = new BorderPane();
-        align.setPrefSize(232,60);
+        align.setPrefSize(width,height);
         align.setCenter(label);
         Pane innerPane = new Pane(rectangle,align);
-        innerPane.setPrefSize(232,60);
+        innerPane.setPrefSize(width,height);
         btnTransition1 = new FillTransition(Duration.seconds(0.2),rectangle,btn_default, btn_hover);
         btnTransition2 = new FillTransition(Duration.seconds(0.2),rectangle, btn_hover,btn_default);
         labelTransition1 = new Timeline(new KeyFrame(Duration.seconds(0.2),

@@ -1,20 +1,22 @@
 package modules.main;
 
-import javafx.scene.layout.Pane;
-import ymc.LocalStorage.LocalStorage;
-import ymc.algo.WordSelectionAlgorithm;
+import javafx.scene.layout.BorderPane;
 import ymc.basicelements.UserProgress;
 import ymc.basicelements.Word;
-import ymc.basicelements.WordBook;
 import ymc.config.UserConfig;
-
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
-public class LearningPage extends Pane {
+public class LearningPage extends BorderPane {
     boolean isFinished = false;
     public LearningPage(UserConfig config, UserProgress progress, List<Word> wordsToLearn)
     {
+        List<String> learnNames = new ArrayList<>();
+        for (Word word : wordsToLearn) {
+            learnNames.add(word.getEnglish());
+        }
+        NavigationPane wordsNavigationPane = new NavigationPane(120,600,learnNames,false);
+        setRight(wordsNavigationPane);
 
         String text;
         if (wordsToLearn.isEmpty()){

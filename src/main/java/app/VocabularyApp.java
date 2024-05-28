@@ -1,4 +1,7 @@
 package app;
+import effects.MyButton;
+import effects.MyLabel;
+import effects.MyTextField;
 import effects.Shadows;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -22,6 +25,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class VocabularyApp extends Application {
@@ -162,34 +166,18 @@ public class VocabularyApp extends Application {
         dialogRoot.setStyle("-fx-background-color: white;");
         dialogRoot.setEffect(Shadows.WINDOW_SHADOW);
 
-        Label label = new Label("请选择一个单词书：");
-        label.getStyleClass().add("myLabel");
-        label.getStylesheets().add(String.valueOf(getClass().getResource("/CSS/Style.css")));
+        MyLabel label = new MyLabel("请选择一个单词书：");
 
         ComboBox<String> wordBookComboBox = new ComboBox<>();
         List<String> wordBooks = storage.listWordBooks();
         wordBooks.forEach(wordBookComboBox.getItems()::add);
 
-        Label learningQuotaLabel = new Label("请输入每日学习量："); 
-        learningQuotaLabel.getStyleClass().add("myLabel");
-        learningQuotaLabel.getStylesheets().add(String.valueOf(getClass().getResource("/CSS/Style.css")));
+        MyLabel learningQuotaLabel = new MyLabel("请输入每日学习量：");
+        MyTextField learningQuotaField = new MyTextField();
+        MyLabel reviewQuotaLabel = new MyLabel("请输入每日复习量：");
+        MyTextField reviewQuotaField = new MyTextField();
 
-        TextField learningQuotaField = new TextField();
-        learningQuotaField.getStyleClass().add("MyTextField");
-        learningQuotaField.getStylesheets().add(String.valueOf(getClass().getResource("/CSS/Style.css")));
-
-        Label reviewQuotaLabel = new Label("请输入每日复习量：");
-        reviewQuotaLabel.getStyleClass().add("myLabel");
-        reviewQuotaLabel.getStylesheets().add(String.valueOf(getClass().getResource("/CSS/Style.css")));
-
-        TextField reviewQuotaField = new TextField();
-        reviewQuotaField.getStyleClass().add("MyTextField");
-        reviewQuotaField.getStylesheets().add(String.valueOf(getClass().getResource("/CSS/Style.css")));
-
-        Button submitButton = new Button("提交");
-        submitButton.setId("submitButton");
-        submitButton.getStyleClass().add("button");
-        submitButton.getStylesheets().add(String.valueOf(getClass().getResource("/CSS/Style.css")));
+        MyButton submitButton = new MyButton("提交");
 
         submitButton.setOnAction(e -> {
             String selectedWordBook = wordBookComboBox.getValue()==null ? wordBooks.get(0) : wordBookComboBox.getValue();
@@ -231,7 +219,13 @@ public class VocabularyApp extends Application {
         StackPane contentPane = new StackPane();
         root.setCenter(contentPane);
 
-        NavigationPane navigationPane = new NavigationPane("学习新单词","复习单词","读文章","查单词","设置");
+        List<String> menuNames = new ArrayList<>();
+        menuNames.add("学习新单词");
+        menuNames.add("复习单词");
+        menuNames.add("读文章");
+        menuNames.add("查单词");
+        menuNames.add("设置");
+        NavigationPane navigationPane = new NavigationPane(200,600,menuNames,true);
         navigationPane.getSelectedProperty ().addListener((observable, oldValue, newValue) -> {
             int newIndex = newValue.intValue();
             switch (newIndex) {

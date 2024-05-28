@@ -64,7 +64,7 @@
 */
 
 
-.button{
+.myButton{
 -fx-background-color: transparent; /* 设置按钮背景为透明 */
     -fx-border-color: #767676; /* 设置按钮边框颜色为灰色 */
     -fx-border-width: 2px; /* 设置按钮边框宽度为2px */

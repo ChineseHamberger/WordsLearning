@@ -14,7 +14,7 @@ public class StartButton extends Button {
 
         this.setId("startButton"); // 设置按钮的ID为"loginButton"
         // 添加CSS样式表到按钮，确保按钮的外观符合登录页面的样式要求
-        this.getStyleClass().add("button");
+        this.getStyleClass().add("myButton");
         this.getStylesheets().add(String.valueOf(getClass().getResource("/CSS/Style.css")));
 
         // 为按钮添加一个鼠标点击事件处理器，当按钮被点击时，将loginProperty的值设置为true
