@@ -14,12 +14,10 @@ public class BookKit {
     {
         //从目录中读取书的名字
         File directory = new File(BOOKS_DIR);
+        String[] book = directory.list();
+        System.out.println(book);
 
-        String[] bookNames = directory.list(new FilenameFilter() {
-            public boolean accept(File dir, String name) {
-                return name.endsWith(".json");
-            }
-        });
+        String[] bookNames = directory.list((dir, name) -> name.endsWith(".json"));
         assert bookNames != null;
         for (int i = 0; i < bookNames.length; i++) {
             bookNames[i] = bookNames[i].substring(0, bookNames[i].length() - 5);

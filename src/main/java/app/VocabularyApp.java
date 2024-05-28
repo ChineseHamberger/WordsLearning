@@ -12,7 +12,9 @@ import modules.main.*;
 import modules.start.StartPane;
 import ymc.LocalStorage.LocalStorage;
 import ymc.UI.ArticleProcessor;
+import ymc.algo.WordSelectionAlgorithm;
 import ymc.basicelements.UserProgress;
+import ymc.basicelements.Word;
 import ymc.basicelements.WordBook;
 import ymc.config.UserConfig;
 import javafx.concurrent.Task;
@@ -29,10 +31,14 @@ public class VocabularyApp extends Application {
     private ArticleProcessor articleProcessor;
     private UserConfig config;
     private UserProgress progress;
+
+    private WordBook wordBook;
     private String username;
 
     private String[] words = {"Hello", "World", "Java", "FX", "Vocabulary"}; // 示例单词列表
     private int currentWordIndex = 0;
+    private List<Word> wordsToLearn;
+    private List<Word> wordsToReview;
 
     @Override
     public void start(Stage primayStage) throws IOException {
@@ -85,8 +91,19 @@ public class VocabularyApp extends Application {
                     progress = new UserProgress();
                 }
                 // 获取用户选择的单词书
-                WordBook wordBook = storage.loadWordBook(config.getSelectedWordBook());
+                wordBook = storage.loadWordBook(config.getSelectedWordBook());
                 articleProcessor = new ArticleProcessor(wordBook);
+
+                if (progress.IsTodaySet()) {
+                    wordsToLearn = progress.getWordsToLearn();
+                    wordsToReview = progress.getWordsToReview();
+                } else {
+                    wordsToLearn = WordSelectionAlgorithm.getWordsForLearning(wordBook, progress, config);
+                    wordsToReview = WordSelectionAlgorithm.getWordsForReview(wordBook, progress, config);
+                    progress.setWordsToLearn(wordsToLearn);
+                    progress.setWordsToReview(wordsToReview);
+                    progress.updateLastLearningDate();
+                }
 
                 return null;
             }
@@ -175,7 +192,7 @@ public class VocabularyApp extends Application {
         submitButton.getStylesheets().add(String.valueOf(getClass().getResource("/CSS/Style.css")));
 
         submitButton.setOnAction(e -> {
-            String selectedWordBook = wordBookComboBox.getValue()==null ? wordBooks.getFirst() : wordBookComboBox.getValue();
+            String selectedWordBook = wordBookComboBox.getValue()==null ? wordBooks.get(0) : wordBookComboBox.getValue();
             int dailyLearningQuota = learningQuotaField.getText().isEmpty() ? UserConfig.getDefaultDailyLearningQuota() : Integer.parseInt(learningQuotaField.getText());
             int dailyReviewQuota = reviewQuotaField.getText().isEmpty() ? UserConfig.getDefaultDailyReviewQuota() : Integer.parseInt(reviewQuotaField.getText());
 
@@ -219,11 +236,11 @@ public class VocabularyApp extends Application {
             int newIndex = newValue.intValue();
             switch (newIndex) {
                 case 0:
-                    contentPane.getChildren().setAll(new LearningPage(config,progress));
+                    contentPane.getChildren().setAll(new LearningPage(config,progress,wordsToLearn));
                     System.out.println("LearningPane showed");
                     break;
                 case 1:
-                    contentPane.getChildren().setAll(new ReviewPage());
+                    contentPane.getChildren().setAll(new ReviewPage(config,progress,wordsToReview));
                     System.out.println("ReviewPage showed");
                 case 2:
                     contentPane.getChildren().setAll(new ReadingPage());
