@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
-public class translator {
+public class Translator {
 
     public static String translate(int mode, String query) {
         try {

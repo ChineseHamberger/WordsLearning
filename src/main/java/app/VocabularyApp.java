@@ -229,7 +229,7 @@ public class VocabularyApp extends Application {
         root.setEffect(Shadows.WINDOW_SHADOW);
 
         StackPane contentPane = new StackPane();
-        root.setRight(contentPane);
+        root.setCenter(contentPane);
 
         NavigationPane navigationPane = new NavigationPane("学习新单词","复习单词","读文章","查单词","设置");
         navigationPane.getSelectedProperty ().addListener((observable, oldValue, newValue) -> {
@@ -247,7 +247,7 @@ public class VocabularyApp extends Application {
                     System.out.println("ReadingPage showed");
                     break;
                 case 3:
-                    contentPane.getChildren().setAll(new DictionaryPage());
+                    contentPane.getChildren().setAll(new QueryBox());
                     System.out.println("DictionaryPage showed");
                     break;
                 case 4:
