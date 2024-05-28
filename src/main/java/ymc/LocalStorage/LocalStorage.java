@@ -1,9 +1,11 @@
 package ymc.LocalStorage;
 
 import settings.GlobalSetting;
+import tools.BookKit;
 import ymc.basicelements.UserProgress;
 import ymc.basicelements.WordBook;
 import ymc.config.UserConfig;
+import ymc.init.WordBookInitializer;
 
 import java.io.*;
 
@@ -143,25 +145,29 @@ public class LocalStorage {
         }
     }
 
-    public WordBook getWordBook(String name) {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(WORD_BOOK_DIR + "/" + name + ".dat"))) {
-            System.out.println("The selected word_book is "+ name);
+    public WordBook loadWordBook(String bookName) {
+        File file = new File(WORD_BOOK_DIR +"/"+bookName +".dat");
+        if (!file.exists()) {
+            try{
+                WordBookInitializer.initializeBook(bookName);
+            }catch (Exception e){
+                System.out.println("Word book file does not exist.");
+                return null;
+            }
+        }
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
+            System.out.println("The selected word_book is "+ bookName);
             return (WordBook) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
+            System.out.println("load word book error");
+            e.printStackTrace();
+            System.exit(-1);
             return null;
         }
     }
 
     public List<String> listWordBooks() {
-        File wordBooksDir = new File(WORD_BOOK_DIR);
-        File[] wordBookFiles = wordBooksDir.listFiles((dir, name) -> name.toLowerCase().endsWith(".dat"));
-        List<String> wordBooks = new ArrayList<>();
-        if (wordBookFiles != null) {
-            for (File file : wordBookFiles) {
-                wordBooks.add(file.getName().replace(".dat", ""));
-            }
-        }
-        return wordBooks;
+        return BookKit.getBookList();
     }
 }
 

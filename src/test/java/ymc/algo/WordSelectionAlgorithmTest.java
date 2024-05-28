@@ -7,9 +7,6 @@ import ymc.basicelements.Word;
 import ymc.basicelements.WordBook;
 import ymc.config.UserConfig;
 
-import java.io.ObjectInputFilter;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,7 +16,7 @@ class WordSelectionAlgorithmTest {
     @Test
     void getWordsForReview() {
         LocalStorage storage = new LocalStorage();
-        WordBook wordBook = storage.getWordBook("SmallBook");
+        WordBook wordBook = storage.loadWordBook("SmallBook");
         UserConfig config = new UserConfig("SmallBook",2,2);
         config.showInfo();
         UserProgress progress = new UserProgress();

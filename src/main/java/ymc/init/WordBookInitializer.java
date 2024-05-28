@@ -5,9 +5,10 @@ import ymc.basicelements.WordBook;
 
 import java.io.*;
 import java.util.Arrays;
+import java.util.List;
 
 public class WordBookInitializer {
-    static String[] bookList;
+    static List<String> bookList;
 
     public static void getBookList(){
        bookList = tools.BookKit.getBookList();

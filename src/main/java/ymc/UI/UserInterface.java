@@ -5,7 +5,6 @@ import ymc.algo.WordSelectionAlgorithm;
 import ymc.basicelements.UserProgress;
 import ymc.basicelements.Word;
 import ymc.basicelements.WordBook;
-import ymc.basicelements.WordBookLoader;
 import ymc.init.ArticleFetcher;
 import ymc.config.UserConfig;
 import ymc.translator.translator;
@@ -46,7 +45,7 @@ public class UserInterface {
                 }
 
                 // 获取用户选择的单词书
-                WordBook wordBook = storage.getWordBook(config.getSelectedWordBook());
+                WordBook wordBook = storage.loadWordBook(config.getSelectedWordBook());
                 articleProcessor = new ArticleProcessor(wordBook);
 
                 showMainMenu(config, progress);
@@ -95,7 +94,7 @@ public class UserInterface {
                 UserConfig config = new UserConfig(selectedWordBook, dailyLearningQuota, dailyReviewQuota);
                 storage.saveUserConfig(username, config);
 
-                WordBook wordBook = storage.getWordBook(config.getSelectedWordBook());
+                WordBook wordBook = storage.loadWordBook(config.getSelectedWordBook());
                 articleProcessor = new ArticleProcessor(wordBook);
 
                 frame.dispose();
@@ -191,7 +190,7 @@ public class UserInterface {
                 config.setDailyReviewQuota(dailyReviewQuota);
                 storage.saveUserConfig(username, config);
 
-                WordBook wordBook = storage.getWordBook(config.getSelectedWordBook());
+                WordBook wordBook = storage.loadWordBook(config.getSelectedWordBook());
                 articleProcessor = new ArticleProcessor(wordBook);
 
                 frame.dispose();
@@ -220,7 +219,7 @@ public class UserInterface {
             wordsToReview = progress.getWordsToReview();
         } else {
             // 加载选定的单词书
-            WordBook wordBook = WordBookLoader.loadWordBook(selectedWordBook);
+            WordBook wordBook = storage.loadWordBook(selectedWordBook);
             wordsToLearn = WordSelectionAlgorithm.getWordsForLearning(wordBook, progress, config);
             wordsToReview = WordSelectionAlgorithm.getWordsForReview(wordBook, progress, config);
             progress.setWordsToLearn(wordsToLearn);

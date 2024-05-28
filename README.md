@@ -18,6 +18,7 @@
 ## update
 
 5.27 ymc:基本完成demo,学习单词功能基本稳定 zsj:fx逻辑正在完善,新增全局设置GlobalSetting
+5.28 zsj:删除了WordBookLoader类,这个功能与localStorage中的getWordBook重复,将这个方法改名为loadWordBook
 
 ## log
 
