@@ -18,6 +18,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -210,9 +211,9 @@ public class UserInterface {
         JPanel panel = new JPanel(new GridLayout(0, 1));
 
         boolean finished = true;
-        List<Word> wordsToLearn = null;
-        List<Word> wordsToReview = null;
-        List<Word> wordsToReviewWithProblems = null;
+        List<Word> wordsToLearn;
+        List<Word> wordsToReview;
+        List<Word> wordsToReviewWithProblems;
         String selectedWordBook = config.getSelectedWordBook();
         WordBook wordBook = storage.loadWordBook(selectedWordBook);
 
@@ -225,6 +226,7 @@ public class UserInterface {
             wordsToReview = WordSelectionAlgorithm.getWordsForReview(wordBook, progress, config);
             progress.setWordsToLearn(wordsToLearn);
             progress.setWordsToReview(wordsToReview);
+            wordsToReviewWithProblems = new ArrayList<>();
             progress.clearWordsToReviewWithProblems();
             progress.updateLastLearningDate();
         }
