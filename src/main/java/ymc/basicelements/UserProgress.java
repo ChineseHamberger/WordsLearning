@@ -12,6 +12,7 @@ public class UserProgress implements Serializable {
     private LocalDateTime LastLearningDate;
     private List<Word> wordsToLearn;
     private List<Word> wordsToReview;
+    private List<Word> wordsToReviewWithProblems;
 
     public UserProgress() {
         learnedWords = new HashMap<>();
@@ -20,6 +21,7 @@ public class UserProgress implements Serializable {
         LastLearningDate = null;
         wordsToLearn = new ArrayList<>();
         wordsToReview = new ArrayList<>();
+        wordsToReviewWithProblems = new ArrayList<>();
     }
 
     public boolean IsTodaySet() {
@@ -33,12 +35,16 @@ public class UserProgress implements Serializable {
         this.wordsToLearn = wordsToLearn;
     }
 
+    // just for test;
+    public void clearStudyRecord(){ this.LastLearningDate = null; }
     public void setWordsToReview(List<Word> wordsToReview){
         this.wordsToReview = wordsToReview;
     }
     public List<Word> getWordsToReview(){
         return wordsToReview;
     }
+    public List<Word> getWordsToReviewWithProblems() { return wordsToReviewWithProblems; }
+    public void clearWordsToReviewWithProblems() { wordsToReviewWithProblems = new ArrayList<>(); }
     public void updateLastLearningDate(){
         this.LastLearningDate = LocalDateTime.now();
     }
@@ -81,6 +87,11 @@ public class UserProgress implements Serializable {
         reviewData.showInfo();
         reviewCounts.get(bookName).put(word, reviewData);
         wordsToReview.remove(word);
+        wordsToReviewWithProblems.add(word);
+    }
+
+    public void reviewWordWithProblem(Word word) {
+        wordsToReviewWithProblems.remove(word);
     }
 
     public void showInfo(String bookName) {
