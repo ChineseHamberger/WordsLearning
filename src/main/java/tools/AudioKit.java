@@ -91,6 +91,12 @@ public class AudioKit {
         }).start();
 
     }
+    public static void playUSSpeech(String wordName){
+        playMP3fromURL(getYoudaoApi()+wordName+"&type=2");
+    }
+    public static void playUKSpeech(String wordName){
+        playMP3fromURL(getYoudaoApi()+wordName+"&type=1");
+    }
     /**
      * 从指定文件播放MP3。
      *

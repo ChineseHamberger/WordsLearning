@@ -7,7 +7,7 @@ import ymc.basicelements.Word;
 import ymc.basicelements.WordBook;
 import ymc.init.ArticleFetcher;
 import ymc.config.UserConfig;
-import ymc.translator.translator;
+import ymc.translator.Translator;
 
 import javax.swing.*;
 import java.awt.*;
@@ -447,7 +447,7 @@ public class UserInterface {
 
     private void translateAndDisplay(String word) {
 //        System.out.println("Translating word: " + word);
-        String translation = translator.translate(2, word); // 中译英
+        String translation = Translator.translate(2, word); // 中译英
         JOptionPane.showMessageDialog(null, "单词 \"" + word + "\" 的翻译是：" + translation);
     }
 
@@ -536,7 +536,7 @@ public class UserInterface {
             String query = queryField.getText().trim();
 
             if (!query.isEmpty()) {
-                String result = translator.translate(mode, query);
+                String result = Translator.translate(mode, query);
                 JOptionPane.showMessageDialog(dialog, "翻译结果: " + result, "翻译结果", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(dialog, "请输入一个单词。", "错误", JOptionPane.ERROR_MESSAGE);
