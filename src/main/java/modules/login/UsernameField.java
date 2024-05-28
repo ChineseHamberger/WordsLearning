@@ -25,7 +25,7 @@ public class UsernameField extends BorderPane {
         // 设置用户名字段的最大大小，设置ID，并添加CSS样式表
         usernameField.setMaxSize(280,40);
         usernameField.setId("username-field");
-        usernameField.getStylesheets().add(String.valueOf(getClass().getResource("/CSS/Login.css")));
+        usernameField.getStylesheets().add(String.valueOf(getClass().getResource("/CSS/Style.css")));
 
         // 定义颜色变量
         String ColorBlueHex = SelfDefinedColors.ColorBlueHex;
@@ -55,7 +55,7 @@ public class UsernameField extends BorderPane {
         icon.setText("\ue908");
         icon.setTextFill(SelfDefinedColors.GRAY);
         icon.setId("icon");
-        icon.getStylesheets().add(String.valueOf(getClass().getResource("/CSS/Login.css")));
+        icon.getStylesheets().add(String.valueOf(getClass().getResource("/CSS/Style.css")));
 
         // 设置分隔线样式
         line = new Rectangle(1.5,26);
@@ -66,7 +66,7 @@ public class UsernameField extends BorderPane {
         textField.setPrefHeight(40);
         textField.setPromptText("Press your username");
         textField.setId("text-field");
-        textField.getStylesheets().add(String.valueOf(getClass().getResource("/CSS/Login.css")));
+        textField.getStylesheets().add(String.valueOf(getClass().getResource("/CSS/Style.css")));
 
         // 监听文本字段的焦点变化，以改变样式
         textField.focusedProperty().addListener((observable, oldValue, newValue) -> {

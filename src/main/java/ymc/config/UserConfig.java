@@ -7,7 +7,6 @@ public class UserConfig implements Serializable {
     private String selectedWordBook;
     private Map<String, Integer> dailyLearningQuota = new HashMap<>();
     private Map<String, Integer> dailyReviewQuota = new HashMap<>();
-
     private static final int DefaultDailyLearningQuota = 20;
     private static final int DefaultDailyReviewQuota = 100;
 

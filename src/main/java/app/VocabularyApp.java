@@ -8,7 +8,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import modules.loading.LoadingPane;
 import modules.login.LoginPane;
-import modules.main.NavigationPane;
+import modules.main.*;
 import modules.start.StartPane;
 import ymc.LocalStorage.LocalStorage;
 import ymc.UI.ArticleProcessor;
@@ -143,21 +143,39 @@ public class VocabularyApp extends Application {
         VBox dialogRoot = new VBox(10);
         dialogRoot.setPadding(new Insets(10));
         dialogRoot.setStyle("-fx-background-color: white;");
+        dialogRoot.setEffect(Shadows.WINDOW_SHADOW);
 
         Label label = new Label("请选择一个单词书：");
+        label.getStyleClass().add("myLabel");
+        label.getStylesheets().add(String.valueOf(getClass().getResource("/CSS/Style.css")));
+
         ComboBox<String> wordBookComboBox = new ComboBox<>();
         List<String> wordBooks = storage.listWordBooks();
         wordBooks.forEach(wordBookComboBox.getItems()::add);
 
-        Label learningQuotaLabel = new Label("请输入每日学习量：");
+        Label learningQuotaLabel = new Label("请输入每日学习量："); 
+        learningQuotaLabel.getStyleClass().add("myLabel");
+        learningQuotaLabel.getStylesheets().add(String.valueOf(getClass().getResource("/CSS/Style.css")));
+
         TextField learningQuotaField = new TextField();
+        learningQuotaField.getStyleClass().add("MyTextField");
+        learningQuotaField.getStylesheets().add(String.valueOf(getClass().getResource("/CSS/Style.css")));
 
         Label reviewQuotaLabel = new Label("请输入每日复习量：");
+        reviewQuotaLabel.getStyleClass().add("myLabel");
+        reviewQuotaLabel.getStylesheets().add(String.valueOf(getClass().getResource("/CSS/Style.css")));
+
         TextField reviewQuotaField = new TextField();
+        reviewQuotaField.getStyleClass().add("MyTextField");
+        reviewQuotaField.getStylesheets().add(String.valueOf(getClass().getResource("/CSS/Style.css")));
 
         Button submitButton = new Button("提交");
+        submitButton.setId("submitButton");
+        submitButton.getStyleClass().add("button");
+        submitButton.getStylesheets().add(String.valueOf(getClass().getResource("/CSS/Style.css")));
+
         submitButton.setOnAction(e -> {
-            String selectedWordBook = wordBookComboBox.getValue();
+            String selectedWordBook = wordBookComboBox.getValue()==null ? wordBooks.getFirst() : wordBookComboBox.getValue();
             int dailyLearningQuota = learningQuotaField.getText().isEmpty() ? UserConfig.getDefaultDailyLearningQuota() : Integer.parseInt(learningQuotaField.getText());
             int dailyReviewQuota = reviewQuotaField.getText().isEmpty() ? UserConfig.getDefaultDailyReviewQuota() : Integer.parseInt(reviewQuotaField.getText());
 
@@ -193,11 +211,43 @@ public class VocabularyApp extends Application {
         root.setStyle("-fx-background-color: white");
         root.setEffect(Shadows.WINDOW_SHADOW);
 
-        NavigationPane navigationPane = new NavigationPane("学习/复习新单词","读文章","查单词","设置");
+        StackPane contentPane = new StackPane();
+        root.setRight(contentPane);
+
+        NavigationPane navigationPane = new NavigationPane("学习新单词","复习单词","读文章","查单词","设置");
+        navigationPane.getSelectedProperty ().addListener((observable, oldValue, newValue) -> {
+            int newIndex = newValue.intValue();
+            switch (newIndex) {
+                case 0:
+                    contentPane.getChildren().setAll(new LearningPage(config,progress));
+                    System.out.println("LearningPane showed");
+                    break;
+                case 1:
+                    contentPane.getChildren().setAll(new ReviewPage());
+                    System.out.println("ReviewPage showed");
+                case 2:
+                    contentPane.getChildren().setAll(new ReadingPage());
+                    System.out.println("ReadingPage showed");
+                    break;
+                case 3:
+                    contentPane.getChildren().setAll(new DictionaryPage());
+                    System.out.println("DictionaryPage showed");
+                    break;
+                case 4:
+                    contentPane.getChildren().setAll(new SettingsPage());
+                    System.out.println("SettingsPage showed");
+                    break;
+                }
+        });
         root.setLeft(navigationPane);
 
         Scene scene = new Scene(root,width,height);
         mainStage.setScene(scene);
+
+        mainStage.setOnCloseRequest(event -> {
+            storage.saveUserConfig(username, config);
+            storage.saveUserProgress(username, progress, config.getSelectedWordBook());
+        });
         mainStage.show();
     }
 
