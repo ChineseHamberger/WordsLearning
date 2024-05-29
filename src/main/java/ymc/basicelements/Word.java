@@ -52,12 +52,12 @@ public class Word implements Serializable {
     }
     public StringBuilder info(){
         StringBuilder info = new StringBuilder();
-        info.append("**单词：" + english +"\n");
-        info.append("*中文释义：" + tranChinese+"\n");
-        info.append("*英文释义：" + tranEnglish+"\n");
-        info.append("*音标：" + getPhone()+"\n");
-        info.append("*来自词书: "+ bookId + "序号: "+ wordRank+"\n");
-        info.append("*发音参数: "+ukspeech+" "+usspeech+"\n");
+        info.append("**单词：").append(english).append("\n");
+        info.append("*中文释义：").append(tranChinese).append("\n");
+        info.append("*英文释义：").append(tranEnglish).append("\n");
+        info.append("*音标：").append(getPhone()).append("\n");
+        info.append("*来自词书: ").append(bookId).append("序号: ").append(wordRank).append("\n");
+        info.append("*发音参数: ").append(ukspeech).append(" ").append(usspeech).append("\n");
 
         for(Tran tran:trans){
             info.append(tran.info());
@@ -94,6 +94,8 @@ public class Word implements Serializable {
     public String getTranChinese() {
         return tranChinese;
     }
+
+    public List<Sentence> getSentences() { return sentences; }
 
     public String getTranEnglish() {
         return tranEnglish;

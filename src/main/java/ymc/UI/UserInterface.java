@@ -18,6 +18,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -47,7 +48,7 @@ public class UserInterface {
                 // 获取用户选择的单词书
                 WordBook wordBook = storage.loadWordBook(config.getSelectedWordBook());
                 articleProcessor = new ArticleProcessor(wordBook);
-
+                progress.clearStudyRecord();
                 showMainMenu(config, progress);
             }
         });
@@ -210,20 +211,23 @@ public class UserInterface {
         JPanel panel = new JPanel(new GridLayout(0, 1));
 
         boolean finished = true;
-        List<Word> wordsToLearn = null;
-        List<Word> wordsToReview = null;
+        List<Word> wordsToLearn;
+        List<Word> wordsToReview;
+        List<Word> wordsToReviewWithProblems;
         String selectedWordBook = config.getSelectedWordBook();
+        WordBook wordBook = storage.loadWordBook(selectedWordBook);
 
         if (progress.IsTodaySet()) {
             wordsToLearn = progress.getWordsToLearn();
             wordsToReview = progress.getWordsToReview();
+            wordsToReviewWithProblems = progress.getWordsToReviewWithProblems();
         } else {
-            // 加载选定的单词书
-            WordBook wordBook = storage.loadWordBook(selectedWordBook);
             wordsToLearn = WordSelectionAlgorithm.getWordsForLearning(wordBook, progress, config);
             wordsToReview = WordSelectionAlgorithm.getWordsForReview(wordBook, progress, config);
             progress.setWordsToLearn(wordsToLearn);
             progress.setWordsToReview(wordsToReview);
+            wordsToReviewWithProblems = new ArrayList<>();
+            progress.clearWordsToReviewWithProblems();
             progress.updateLastLearningDate();
         }
         String text;
@@ -235,7 +239,7 @@ public class UserInterface {
             while (! (wordsToLearn.isEmpty() && wordsToReview.isEmpty())) {
                 deleteWord:{
                     Random random = new Random();
-                    int randomNumber = random.nextInt(2) + 1;
+                    int randomNumber = random.nextInt(3) + 1;
                     if (randomNumber == 1) {
                         for (Word word : wordsToLearn) {
                             int flag = showWordDialog(frame, word, progress, selectedWordBook, true);
@@ -247,7 +251,7 @@ public class UserInterface {
                                 break deleteWord;
                             }
                         }
-                    } else {
+                    } else if (randomNumber == 2) {
                         // 弹出复习单词窗口
                         for (Word word : wordsToReview) {
                             int flag = showWordDialog(frame, word, progress, selectedWordBook, false);
@@ -256,7 +260,23 @@ public class UserInterface {
                                 break ShowWords;
                             } else if (flag == 1) {
                                 wordsToReview.remove(word);
+                                wordsToReviewWithProblems.add(word);
                                 break deleteWord;
+                            }
+                        }
+                    } else {
+                        if (wordsToReviewWithProblems != null)
+                        {
+                            for (Word word : wordsToReviewWithProblems) {
+                                RandomChoice problem = new RandomChoice(wordBook, word, progress, username);
+                                int flag = problem.show();
+                                if (flag == 2) {
+                                    finished = false;
+                                    break ShowWords;
+                                } else if (flag == 1) {
+                                    wordsToReviewWithProblems.remove(word);
+                                    break deleteWord;
+                                }
                             }
                         }
                     }
