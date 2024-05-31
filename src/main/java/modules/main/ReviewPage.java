@@ -9,7 +9,10 @@ import ymc.basicelements.Word;
 import ymc.basicelements.WordBook;
 import ymc.config.UserConfig;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class ReviewPage extends BorderPane {
     boolean isFinished;
@@ -18,8 +21,12 @@ public class ReviewPage extends BorderPane {
     public ReviewPage(String username, WordBook wordBook, UserConfig config, UserProgress progress, List<Word> wordsToReview, GlobalSetting globalSetting)
     {
         setting = globalSetting;
-        List<String> reviewNames = wordsToReview.stream().map(Word::getEnglish).toList();
-        NavigationPane wordsNavigationPane = new NavigationPane(120,600,reviewNames,false);
+
+        List<String> reviewNamesMask = new ArrayList<>();
+        for(int i = 0; i<wordsToReview.size(); i++){
+            reviewNamesMask.add(Integer.toString(i));
+        }
+        NavigationPane wordsNavigationPane = new NavigationPane(120,600,reviewNamesMask,false);
         setRight(wordsNavigationPane);
 
         MyVbox centerVbox = new MyVbox();

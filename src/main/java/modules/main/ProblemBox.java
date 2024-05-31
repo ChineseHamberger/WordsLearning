@@ -87,7 +87,7 @@ public class ProblemBox extends MyVbox {
                     generateOptions(correctAnswer, false);
                 } else {
                     // If there are no sentences, fallback to English to Chinese
-                    question = "The meaning of " + word.getEnglish() + " is:";
+                    question = "这个单词 " + word.getEnglish() + " 的含义是:";
                     correctAnswer = word.getTranChinese();
                     generateOptions(correctAnswer, true);
                 }
@@ -109,12 +109,12 @@ public class ProblemBox extends MyVbox {
             getChildren().add(optionButton);
         }
 
-        MyButton restButton = new MyButton("休息一会儿");
-        restButton.setOnAction(e -> {
-            flag = 2;
-            showAlert("错误","回答错误",Alert.AlertType.ERROR);
-        });
-        getChildren().add(restButton);
+//        MyButton restButton = new MyButton("休息一会儿");
+//        restButton.setOnAction(e -> {
+//            flag = 2;
+//            showAlert("错误","回答错误",Alert.AlertType.ERROR);
+//        });
+//        getChildren().add(restButton);
     }
 
     private void generateOptions(String correctAnswer, boolean isChinese) {

@@ -64,7 +64,7 @@ public class UserProgress implements Serializable {
     }
 
     public void learnWord(String bookName, Word word) {
-        if (learnedWords.values().stream().noneMatch(set -> set.contains(word))) {
+        if (!isWordLearned(bookName, word)) {
             learnedWords.computeIfAbsent(bookName, k -> new HashSet<>()).add(word);
             ReviewData reviewData = new ReviewData(LocalDateTime.now());
             reviewData.showInfo();

@@ -225,6 +225,7 @@ public class VocabularyApp extends Application {
     public void showMainStage() {
         System.out.println("username="+username);
         System.out.println("showMainStage");
+        progress.showInfo("CET6_1");
 
         Stage mainStage = new Stage();
         mainStage.setTitle("Main");
