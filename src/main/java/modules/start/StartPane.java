@@ -20,7 +20,7 @@ public class StartPane extends BorderPane {
      */
     public StartPane(){
         // 创建开始按钮并设置其文本为"Start"
-        StartButton startButton = new StartButton("Let's Start!");
+        StartButton startButton = new StartButton("开始你的单词学习之旅!");
         startButton.setMaxSize(300,50);
         // 初始化startProperty为开始按钮的startProperty
         startProperty = startButton.startProperty;

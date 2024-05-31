@@ -38,7 +38,7 @@ public class Exam implements Serializable {
 
     public StringBuilder info() {
         StringBuilder sb = new StringBuilder();
-        sb.append("*Exam:").append("\n");
+        sb.append("*测验:").append("\n");
         sb.append("Exam Type: ").append(examType).append("\n");
         sb.append("Question: ").append(question).append("\n");
         sb.append("Answer: ").append(answer).append("\n");

@@ -113,6 +113,7 @@ public class Word implements Serializable {
         return usphone + " " + ukphone;
     }
 
+
     public void playUSSpeech(){
         if(!usspeech.equals("[not found]")){
             String mp3Url = AudioKit.getYoudaoApi()+usspeech;
@@ -135,4 +136,21 @@ public class Word implements Serializable {
     public String getUKSpeech() {
         return ukspeech;
     }
+
+    public List<Exam> getExams() {
+        return exams;
+    }
+    public List<Phrase> getPhrases() {
+        return phrases;
+    }
+    public List<RelWord> getRels() {
+        return rels;
+    }
+    public List<Syno> getSynos() {
+        return synos;
+    }
+    public List<Tran> getTrans() {
+        return trans;
+    }
+
 }

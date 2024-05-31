@@ -13,6 +13,7 @@ import modules.loading.LoadingPane;
 import modules.login.LoginPane;
 import modules.main.*;
 import modules.start.StartPane;
+import settings.GlobalSetting;
 import ymc.LocalStorage.LocalStorage;
 import ymc.UI.ArticleProcessor;
 import ymc.algo.WordSelectionAlgorithm;
@@ -26,10 +27,12 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class VocabularyApp extends Application {
     private int width = 1000,height = 600;
+    private GlobalSetting globalSetting;
 
     private LocalStorage storage = new LocalStorage();
     private ArticleProcessor articleProcessor;
@@ -41,12 +44,12 @@ public class VocabularyApp extends Application {
 
     private String[] words = {"Hello", "World", "Java", "FX", "Vocabulary"}; // 示例单词列表
     private int currentWordIndex = 0;
-    private List<Word> wordsToLearn;
-    private List<Word> wordsToReview;
+    private List<Word> wordsToLearnCopy;
+    private List<Word> wordsToReviewCopy;
 
     @Override
     public void start(Stage primayStage) throws IOException {
-        primayStage.setTitle("Start");
+        primayStage.setTitle("开始");
 
         StartPane startPane = new StartPane();
         startPane.setStyle("-fx-background-color: white");
@@ -55,6 +58,9 @@ public class VocabularyApp extends Application {
         Scene scene = new Scene(startPane, width, height);
         primayStage.setScene(scene);
         primayStage.show();
+
+        globalSetting = storage.loadGlobalSettings();
+        System.out.println("globalSetting="+globalSetting.getPlayUSSpeechFirst());
 
         startPane.startProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
@@ -98,16 +104,27 @@ public class VocabularyApp extends Application {
                 wordBook = storage.loadWordBook(config.getSelectedWordBook());
                 articleProcessor = new ArticleProcessor(wordBook);
 
-                if (progress.IsTodaySet()) {
-                    wordsToLearn = progress.getWordsToLearn();
-                    wordsToReview = progress.getWordsToReview();
-                } else {
-                    wordsToLearn = WordSelectionAlgorithm.getWordsForLearning(wordBook, progress, config);
-                    wordsToReview = WordSelectionAlgorithm.getWordsForReview(wordBook, progress, config);
-                    progress.setWordsToLearn(wordsToLearn);
-                    progress.setWordsToReview(wordsToReview);
-                    progress.updateLastLearningDate();
-                }
+                // 如果今天已经学习过单词，则从进度中获取
+//                if (progress.IsTodaySet()) {
+//                    wordsToLearn = progress.getWordsToLearn();
+//                    wordsToReview = progress.getWordsToReview();
+//                } else {
+//                    wordsToLearn = WordSelectionAlgorithm.getWordsForLearning(wordBook, progress, config);
+//                    wordsToReview = WordSelectionAlgorithm.getWordsForReview(wordBook, progress, config);
+//                    progress.setWordsToLearn(wordsToLearn);
+//                    progress.setWordsToReview(wordsToReview);
+//                    progress.updateLastLearningDate();
+//                }
+                // 测试时使用
+                List<Word> wordsToLearn = WordSelectionAlgorithm.getWordsForLearning(wordBook, progress, config);
+                wordsToLearnCopy = new ArrayList<>(wordsToLearn);
+                Collections.copy(wordsToLearnCopy, wordsToLearn);
+                List<Word> wordsToReview = WordSelectionAlgorithm.getWordsForReview(wordBook, progress, config);
+                wordsToReviewCopy = new ArrayList<>(wordsToReview);
+                Collections.copy(wordsToReviewCopy, wordsToReview);
+                progress.setWordsToLearn(wordsToLearn);
+                progress.setWordsToReview(wordsToReview);
+                progress.updateLastLearningDate();
 
                 return null;
             }
@@ -230,12 +247,13 @@ public class VocabularyApp extends Application {
             int newIndex = newValue.intValue();
             switch (newIndex) {
                 case 0:
-                    contentPane.getChildren().setAll(new LearningPage(config,progress,wordsToLearn));
+                    contentPane.getChildren().setAll(new LearningPage(username,wordBook,config,progress,wordsToLearnCopy));
                     System.out.println("LearningPane showed");
                     break;
                 case 1:
-                    contentPane.getChildren().setAll(new ReviewPage(config,progress,wordsToReview));
+                    contentPane.getChildren().setAll(new ReviewPage(username,wordBook,config,progress,wordsToReviewCopy,globalSetting));
                     System.out.println("ReviewPage showed");
+                    break;
                 case 2:
                     contentPane.getChildren().setAll(new ReadingPage());
                     System.out.println("ReadingPage showed");
@@ -245,7 +263,7 @@ public class VocabularyApp extends Application {
                     System.out.println("DictionaryPage showed");
                     break;
                 case 4:
-                    contentPane.getChildren().setAll(new SettingsPage());
+                    contentPane.getChildren().setAll(new SettingsPage(globalSetting));
                     System.out.println("SettingsPage showed");
                     break;
                 }

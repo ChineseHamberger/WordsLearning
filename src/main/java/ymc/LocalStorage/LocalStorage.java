@@ -40,6 +40,7 @@ public class LocalStorage {
         File file = new File(SETTINGS_DIR+"/"+GLOBAL_SETTING_FILE);
         if (!file.exists()) {
             System.out.println("Global setting file does not exist.");
+            System.out.println("Creating new default global setting file.");
             return new GlobalSetting();
         }
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {

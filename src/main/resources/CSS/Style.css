@@ -99,3 +99,12 @@
     -fx-text-fill: #0D90EE;
     -fx-cursor: hand;
 }
+
+.myVbox{
+    -fx-background-color: transparent;
+    -fx-padding: 10px;
+    -fx-spacing: 10px;
+    -fx-font-family: "Microsoft YaHei UI";
+    -fx-text-fill: #767676;
+    -fx-font-size: 14px;
+}

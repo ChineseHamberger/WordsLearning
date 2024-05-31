@@ -23,7 +23,7 @@ public class Sentence implements Serializable {
 
     public StringBuilder info() {
         StringBuilder sb = new StringBuilder();
-        sb.append("*Sentence: ").append(sContent).append(" ").append(sCn).append("\n");
+        sb.append("*例句: ").append(sContent).append(" ").append(sCn).append("\n");
         return sb;
     }
 }

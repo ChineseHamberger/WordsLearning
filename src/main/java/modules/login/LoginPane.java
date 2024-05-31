@@ -13,7 +13,7 @@ public class LoginPane extends BorderPane {
     {
         UsernameField usernameField = new UsernameField();
 
-        LoginButton loginButton = new LoginButton("Login");
+        LoginButton loginButton = new LoginButton("确认用户");
         loginProperty = loginButton.loginProperty;
         loginButton.setOnAction(e->{
             username = StringKit.sanitizeForFileName(usernameField.textField.getText());

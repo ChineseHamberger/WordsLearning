@@ -45,7 +45,7 @@ public class NavigationButton extends BorderPane {
         this.setPrefSize(width,height);
         label = new Label(string);
         label.setTextFill(label_default);
-        label.setFont(Font.font("Microsoft YaHei UI Light",FontWeight.NORMAL,(int)width/8));
+        label.setFont(Font.font("Microsoft YaHei UI Light",FontWeight.NORMAL, width /8));
         rectangle = new Rectangle(width,height,btn_default);
         rectangle.setArcWidth(10);rectangle.setArcHeight(10);
         BorderPane align = new BorderPane();
