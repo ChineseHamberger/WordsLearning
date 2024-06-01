@@ -8,7 +8,7 @@ public class UserConfig implements Serializable {
     private Map<String, Integer> dailyLearningQuota = new HashMap<>();
     private Map<String, Integer> dailyReviewQuota = new HashMap<>();
     private static final int DefaultDailyLearningQuota = 20;
-    private static final int DefaultDailyReviewQuota = 100;
+    private static final int DefaultDailyReviewQuota = 20;
 
     public static int getDefaultDailyLearningQuota() {
         return DefaultDailyLearningQuota;

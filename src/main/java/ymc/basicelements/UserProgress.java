@@ -64,12 +64,16 @@ public class UserProgress implements Serializable {
     }
 
     public void learnWord(String bookName, Word word) {
-        learnedWords.computeIfAbsent(bookName, k -> new HashSet<>()).add(word);
-        ReviewData reviewData = new ReviewData(LocalDateTime.now());
-        System.out.println("Learned word: " + word.getEnglish());
-        reviewData.showInfo();
-        reviewCounts.computeIfAbsent(bookName, k -> new HashMap<>()).put(word, reviewData);
-        wordsToLearn.remove(word);
+        if (!isWordLearned(bookName, word)) {
+            learnedWords.computeIfAbsent(bookName, k -> new HashSet<>()).add(word);
+            ReviewData reviewData = new ReviewData(LocalDateTime.now());
+            reviewData.showInfo();
+            reviewCounts.computeIfAbsent(bookName, k -> new HashMap<>()).put(word, reviewData);
+            wordsToLearn.remove(word);
+            System.out.println("Learn word done: " + word.getEnglish());
+        } else {
+            System.out.println("Word already learned: " + word.getEnglish());
+        }
     }
 
     public void ignoreWord(String bookName, Word word) {
@@ -88,6 +92,8 @@ public class UserProgress implements Serializable {
         reviewCounts.get(bookName).put(word, reviewData);
         wordsToReview.remove(word);
         wordsToReviewWithProblems.add(word);
+        System.out.println("Review word done: " + word.getEnglish());
+
     }
 
     public void reviewWordWithProblem(Word word) {

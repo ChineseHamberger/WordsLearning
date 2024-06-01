@@ -75,7 +75,7 @@ public class UsernameField extends BorderPane {
                 usernameField.setStyle("-fx-border-color: " + ColorBlueHex);
                 icon.setStyle("-fx-text-fill: " + ColorBlueHex);
             } else{
-                textField.setPromptText("Press your username");
+                textField.setPromptText("请输入用户名");
                 textField.setStyle("-fx-prompt-text-fill: " + ColorGreyHex);
                 usernameField.setStyle("-fx-border-color: " + ColorGreyHex);
                 icon.setStyle("-fx-text-fill: " + ColorGreyHex);
@@ -87,7 +87,7 @@ public class UsernameField extends BorderPane {
         hBox.setAlignment(Pos.CENTER_LEFT);
         usernameField.setCenter(hBox);
 
-        Label label = new Label("Username(仅支持英文)");
+        Label label = new Label("用户名(仅支持英文)");
         label.setId("label");
         VBox vBox = new VBox(label,usernameField);
         vBox.setAlignment(Pos.CENTER_LEFT);

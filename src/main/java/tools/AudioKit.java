@@ -62,6 +62,10 @@ public class AudioKit {
             throw new RuntimeException(e);
         }
     }
+    public static void playParam(String param){
+        String mp3Url = getYoudaoApi()+param;
+        playMP3fromURL(mp3Url);
+    }
     /**
      * 在新线程中从给定的URL播放MP3文件。
      * @param mp3Url MP3文件的URL地址。

@@ -28,11 +28,11 @@ public class Syno implements Serializable {
 
     public StringBuilder info() {
         StringBuilder sb = new StringBuilder();
-        sb.append("*Syno:").append("\n");
-        sb.append("pos: ").append(pos).append("\n");
-        sb.append("tran: ").append(tran).append("\n");
+        sb.append("*近义词:").append("\n");
+        sb.append("词性: ").append(pos).append("\n");
+        sb.append("中文: ").append(tran).append("\n");
         for (String hwd : hwds) {
-            sb.append("hwd: ").append(hwd).append("\n");
+            sb.append("词根: ").append(hwd).append("\n");
         }
         return sb;
     }

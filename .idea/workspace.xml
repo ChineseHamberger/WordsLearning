@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="68c959b2-b931-4e7e-ab81-940ba4d8475b" name="Changes" comment="0531">
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/settings/GlobalSetting.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/effects/MyButton.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/effects/MyLabel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/effects/MyScrollPane.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/effects/MyTextField.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/effects/MyVbox.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/modules/main/InfoBox.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/modules/main/ProblemBox.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/tools/WordKit.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/app/VocabularyApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/VocabularyApp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/modules/login/LoginPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/modules/login/LoginPane.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/modules/login/UsernameField.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/modules/login/UsernameField.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/modules/main/LearningPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/modules/main/LearningPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/modules/main/NavigationButton.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/modules/main/NavigationButton.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/modules/main/NavigationPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/modules/main/NavigationPane.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/modules/main/QueryBox.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/modules/main/QueryBox.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/modules/main/ReviewPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/modules/main/ReviewPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/modules/main/SettingsPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/modules/main/SettingsPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/modules/start/StartButton.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/modules/start/StartButton.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/modules/start/StartPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/modules/start/StartPane.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/settings/GlobalSetting.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/settings/GlobalSetting.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tools/AudioKit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tools/AudioKit.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ymc/LocalStorage/LocalStorage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ymc/LocalStorage/LocalStorage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ymc/algo/WordSelectionAlgorithm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ymc/algo/WordSelectionAlgorithm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ymc/basicelements/Exam.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ymc/basicelements/Exam.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ymc/basicelements/Phrase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ymc/basicelements/Phrase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ymc/basicelements/RelWord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ymc/basicelements/RelWord.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ymc/basicelements/Sentence.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ymc/basicelements/Sentence.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ymc/basicelements/Syno.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ymc/basicelements/Syno.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ymc/basicelements/Tran.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ymc/basicelements/Tran.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ymc/basicelements/UserProgress.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ymc/basicelements/UserProgress.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ymc/basicelements/Word.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ymc/basicelements/Word.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ymc/basicelements/WordBook.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ymc/basicelements/WordBook.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ymc/config/UserConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ymc/config/UserConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/CSS/Style.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/CSS/Style.css" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="2h7UXaAJhivYlNUoCk0umfUZzeq" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Application.VocabularyApp.executor&quot;: &quot;Run&quot;,
+    &quot;Application.mainAPP.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/CloudDisk/IDEA_Java/Learning/CopyWords&quot;
+  }
+}</component>
+  <component name="RunManager">
+    <configuration name="mainAPP" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="app.VocabularyApp" />
+      <module name="WordsLearning" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-21.0.2-openjdk-21.0.2-4caba194b151-4f524021" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="68c959b2-b931-4e7e-ab81-940ba4d8475b" name="Changes" comment="" />
+      <created>1716944649741</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1716944649741</updated>
+    </task>
+    <task id="LOCAL-00001" summary="0528">
+      <option name="closed" value="true" />
+      <created>1716944750603</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1716944750603</updated>
+    </task>
+    <task id="LOCAL-00002" summary="0531">
+      <option name="closed" value="true" />
+      <created>1717162999363</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1717162999364</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="0528" />
+    <MESSAGE value="0531" />
+    <option name="LAST_COMMIT_MESSAGE" value="0531" />
+  </component>
+</project>

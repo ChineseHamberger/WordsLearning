@@ -29,9 +29,9 @@ public class RelWord implements Serializable {
 
     public StringBuilder info() {
         StringBuilder sb = new StringBuilder();
-        sb.append("*RelWord: " + pos + "\n");
+        sb.append("*词根: " + pos + "\n");
         for (int i = 0; i < hwds.size(); i++){
-            sb.append("hwd: " + hwds.get(i) + " tran: " + trans.get(i) + "\n");
+            sb.append("词根: " + hwds.get(i) + " " + trans.get(i) + "\n");
         }
         return sb;
     }

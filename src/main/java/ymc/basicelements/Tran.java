@@ -27,7 +27,8 @@ public class Tran implements Serializable {
 
     public StringBuilder info() {
         StringBuilder sb = new StringBuilder();
-        sb.append("*Tran: ").append(pos).append(" ").append(tranCn).append(" ").append(tranEng).append("\n");
+        sb.append("*中文释义: ").append(pos).append(" ").append(tranCn).append("\n");
+        sb.append("*英文释义: ").append(tranEng).append("\n");
         return sb;
     }
 }

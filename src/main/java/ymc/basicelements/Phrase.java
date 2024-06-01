@@ -22,7 +22,7 @@ public class Phrase implements Serializable {
 
     public StringBuilder info() {
         StringBuilder sb = new StringBuilder();
-        sb.append("*Phrase: ").append(pContent).append(" ").append(pCn).append("\n");
+        sb.append("*短语: ").append(pContent).append(" ").append(pCn).append("\n");
         return sb;
     }
 }

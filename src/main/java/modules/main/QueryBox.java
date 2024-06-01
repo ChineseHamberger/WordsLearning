@@ -1,5 +1,6 @@
 package modules.main;
 
+import effects.MyLabel;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -13,22 +14,25 @@ public class QueryBox extends VBox {
     private ComboBox<String> modeComboBox;
     private TextField queryField;
     private Button translateButton;
-    private Label resultLabel;
+    private MyLabel resultLabel;
 
     public QueryBox() {
+
         // 初始化UI组件
-        Label modeLabel = new Label("选择翻译模式:");
+        MyLabel modeLabel = new MyLabel("选择翻译模式:");
+
         this.modeComboBox = new ComboBox<>();
         this.modeComboBox.getItems().addAll("中译英", "英译中");
         this.modeComboBox.setValue("英译中");
 
-        Label queryLabel = new Label("输入单词:");
+        MyLabel queryLabel = new MyLabel("输入单词:");
+
         this.queryField = new TextField();
         this.queryField.setMaxSize(200, 30);
 
         this.translateButton = new Button("翻译");
 
-        this.resultLabel = new Label();
+        this.resultLabel = new MyLabel();
         this.resultLabel.setWrapText(true);
         resultLabel.setMaxSize(400, 200);
 
@@ -52,7 +56,7 @@ public class QueryBox extends VBox {
         int mode = modeComboBox.getSelectionModel().getSelectedIndex() + 1; // 索引调整
         String query = queryField.getText().trim();
         if (mode==2){
-            AudioKit.playUSSpeech(query);
+            //AudioKit.playUSSpeech(query);
         }
         if (!query.isEmpty()) {
             String result = Translator.translate(mode, query);
