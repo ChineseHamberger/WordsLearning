@@ -1,5 +1,6 @@
 package ymc.LocalStorage;
 
+import javafx.application.Platform;
 import settings.GlobalSetting;
 import tools.BookKit;
 import ymc.basicelements.UserProgress;
@@ -35,7 +36,7 @@ public class LocalStorage {
     public GlobalSetting loadGlobalSettings(){
         File dir = new File(SETTINGS_DIR);
         if (!dir.exists()) {
-            dir.mkdir(); // 创建USER_DIR目录
+            dir.mkdir();
         }
         File file = new File(SETTINGS_DIR+"/"+GLOBAL_SETTING_FILE);
         if (!file.exists()) {
@@ -53,8 +54,7 @@ public class LocalStorage {
             System.out.println("load global setting error");
             e.printStackTrace();
             System.err.println("An error occurred. Exiting the program.");
-            System.exit(-1); // 终止程序
-            return null;
+            return new GlobalSetting();
         }
     }
     public void saveGlobalSettings(GlobalSetting setting){

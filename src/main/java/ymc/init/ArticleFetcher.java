@@ -16,6 +16,7 @@ public class ArticleFetcher {
     public static void fetchArticles() {
         String url = "https://www.readersdigest.co.uk/";
         try {
+            System.out.println("正在连接到URL：" + url);
             // 使用Jsoup连接到指定的URL
             Document doc = Jsoup.connect(url).get();
 
@@ -40,6 +41,7 @@ public class ArticleFetcher {
             // 启动文章解析爬虫
             ArticleParser parser = new ArticleParser(articleLinks);
             parser.startParsing();
+            System.out.println("文章解析爬虫已启动。");
 
         } catch (UnknownHostException e) {
             System.out.println("无法连接到网络，请检查您的网络连接。");

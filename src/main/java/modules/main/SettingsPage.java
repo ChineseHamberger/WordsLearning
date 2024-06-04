@@ -17,8 +17,8 @@
            setting = globalSetting;
 
            ToggleGroup playUSSpeechFirstGroup = new ToggleGroup();
-           RadioButton playUSSpeechFirstRadioButton = new RadioButton("Play US Speech First");
-           RadioButton playUKSpeechFirstRadioButton = new RadioButton("Play UK Speech First");
+           RadioButton playUSSpeechFirstRadioButton = new RadioButton("优先播放美式发音");
+           RadioButton playUKSpeechFirstRadioButton = new RadioButton("优先播放英式发音");
 
            playUSSpeechFirstRadioButton.setToggleGroup(playUSSpeechFirstGroup);
            playUKSpeechFirstRadioButton.setToggleGroup(playUSSpeechFirstGroup);
@@ -32,11 +32,11 @@
            playUSSpeechFirstGroup.selectedToggleProperty().addListener((obs, oldValue, newValue) -> {
                if (newValue != null){
                    if (playUSSpeechFirstRadioButton.isSelected()) {
-                       setting.setUSSpeechFirst();
+                       setting.setUSSpeechFirst(true);
                        System.out.println("Set US Speech First");
                        storage.saveGlobalSettings(setting);
                    } else {
-                       setting.setUKSpeechFirst();
+                       setting.setUKSpeechFirst(true);
                        System.out.println("Set UK Speech First");
                        storage.saveGlobalSettings(setting);
                    }
@@ -46,8 +46,38 @@
            HBox playUSSpeechFirstHBox = new HBox(10);
            playUSSpeechFirstHBox.getChildren().addAll(playUSSpeechFirstRadioButton, playUKSpeechFirstRadioButton);
 
+           // 添加全屏启动选项
+           ToggleGroup fullScreenOnStartGroup = new ToggleGroup();
+           RadioButton fullScreenOnStartYButton = new RadioButton("全屏启动");
+           RadioButton fullScreenOnStartNButton = new RadioButton("非全屏启动");
+           fullScreenOnStartYButton.setToggleGroup(fullScreenOnStartGroup);
+           fullScreenOnStartNButton.setToggleGroup(fullScreenOnStartGroup);
+           if (setting.getFullScreen()) {
+               fullScreenOnStartYButton.setSelected(true);
+           }
+           else{
+               fullScreenOnStartNButton.setSelected(true);
+           }
+           fullScreenOnStartGroup.selectedToggleProperty().addListener((obs, oldValue, newValue) -> {
+               if (newValue != null){
+                   if (fullScreenOnStartYButton.isSelected()) {
+                       setting.setFullScreen(true);
+                       System.out.println("Set Full Screen On Start");
+                       storage.saveGlobalSettings(setting);
+                   } else {
+                       setting.setFullScreen(false);
+                       System.out.println("Set Not Full Screen On Start");
+                       storage.saveGlobalSettings(setting);
+                   }
+               }
+           });
+
+           HBox fullScreenOnStartHBox = new HBox(10);
+           fullScreenOnStartHBox.getChildren().addAll(fullScreenOnStartYButton, fullScreenOnStartNButton);
+
            MyVbox root = new MyVbox(10);
            root.getChildren().addAll(playUSSpeechFirstHBox);
+           root.getChildren().addAll(fullScreenOnStartHBox);
 
            getChildren().add(root);
 

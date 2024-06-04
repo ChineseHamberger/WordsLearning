@@ -1,5 +1,6 @@
 package modules.start;
 
+import effects.Shadows;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Pos;
@@ -7,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import settings.GlobalSetting;
 
 import java.util.Objects;
 
@@ -14,7 +16,10 @@ public class StartPane extends BorderPane {
     // 表示开始按钮状态的布尔属性
     BooleanProperty startProperty = new SimpleBooleanProperty(false);
 
-    public StartPane() {
+    public StartPane(GlobalSetting globalSetting) {
+        setStyle("-fx-background-color: white");
+        setEffect(Shadows.WINDOW_SHADOW);
+
         // 图片路径假设为相对于项目资源目录，根据实际情况调整
         ImageView imageView = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/start.png"))));
 

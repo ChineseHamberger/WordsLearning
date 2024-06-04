@@ -38,7 +38,6 @@
 }
 
 .myTextField{
-    -fx-background-color: transparent;
     -fx-font-size: 16px;
     -fx-font-family: "Microsoft YaHei UI";
     -fx-prompt-text-fill: #767676;

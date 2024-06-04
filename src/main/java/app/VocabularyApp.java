@@ -6,8 +6,10 @@ import effects.Shadows;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import modules.loading.LoadingPane;
 import modules.login.LoginPane;
@@ -44,24 +46,27 @@ public class VocabularyApp extends Application {
     private WordBook wordBook;
     private String username;
 
-    private String[] words = {"Hello", "World", "Java", "FX", "Vocabulary"}; // 示例单词列表
-    private int currentWordIndex = 0;
     private List<Word> wordsToLearnCopy;
     private List<Word> wordsToReviewCopy;
 
     @Override
     public void start(Stage primayStage) throws IOException {
+        globalSetting = storage.loadGlobalSettings();
+        if (globalSetting.getFullScreen()){
+            Rectangle2D screenSize = Screen.getPrimary().getVisualBounds();
+            width = (int) screenSize.getWidth();
+            height = (int) screenSize.getHeight()-30;
+        }
+
         primayStage.setTitle("开始");
 
-        StartPane startPane = new StartPane();
-        startPane.setStyle("-fx-background-color: white");
-        startPane.setEffect(Shadows.WINDOW_SHADOW);
+        StartPane startPane = new StartPane(globalSetting);
 
         Scene scene = new Scene(startPane, width, height);
         primayStage.setScene(scene);
         primayStage.show();
 
-        globalSetting = storage.loadGlobalSettings();
+
         System.out.println("globalSetting="+globalSetting.getPlayUSSpeechFirst());
 
         startPane.startProperty().addListener((observable, oldValue, newValue) -> {
@@ -105,7 +110,8 @@ public class VocabularyApp extends Application {
                 // 获取用户选择的单词书
                 wordBook = storage.loadWordBook(config.getSelectedWordBook());
                 articleProcessor = new ArticleProcessor(wordBook);
-                ArticleFetcher.fetchArticles();
+                new Thread(ArticleFetcher::fetchArticles).start();
+
 
                 // 如果今天已经学习过单词，则从进度中获取
 //                if (progress.IsTodaySet()) {
@@ -138,7 +144,6 @@ public class VocabularyApp extends Application {
         loadingStage.setTitle("Loading");
 
         BorderPane root = new BorderPane();
-        root.setStyle("-fx-background-color: white");
         root.setEffect(Shadows.WINDOW_SHADOW);
 
         LoadingPane loadingPane = new LoadingPane();
@@ -183,6 +188,7 @@ public class VocabularyApp extends Application {
 
         VBox dialogRoot = new VBox(10);
         dialogRoot.setPadding(new Insets(10));
+
         dialogRoot.setStyle("-fx-background-color: white;");
         dialogRoot.setEffect(Shadows.WINDOW_SHADOW);
 
@@ -192,10 +198,12 @@ public class VocabularyApp extends Application {
         List<String> wordBooks = storage.listWordBooks();
         wordBooks.forEach(wordBookComboBox.getItems()::add);
 
-        MyLabel learningQuotaLabel = new MyLabel("请输入每日学习量：");
+        MyLabel learningQuotaLabel = new MyLabel("请输入每日学习量(最大为20)：");
         MyTextField learningQuotaField = new MyTextField();
-        MyLabel reviewQuotaLabel = new MyLabel("请输入每日复习量：");
+        learningQuotaField.setMaxSize(100,20);
+        MyLabel reviewQuotaLabel = new MyLabel("请输入每日复习量(最大为20)：");
         MyTextField reviewQuotaField = new MyTextField();
+        reviewQuotaField.setMaxSize(100,20);
 
         MyButton submitButton = new MyButton("提交");
 
@@ -215,11 +223,12 @@ public class VocabularyApp extends Application {
 
         HBox buttonBox = new HBox(10);
         buttonBox.getChildren().add(submitButton);
-        buttonBox.setAlignment(Pos.CENTER_RIGHT);
+        buttonBox.setAlignment(Pos.CENTER);
 
         dialogRoot.getChildren().addAll(label, wordBookComboBox, learningQuotaLabel, learningQuotaField, reviewQuotaLabel, reviewQuotaField, buttonBox);
+        dialogRoot.setAlignment(Pos.CENTER);
 
-        Scene dialogScene = new Scene(dialogRoot, 400, 300);
+        Scene dialogScene = new Scene(dialogRoot, width, height);
         dialogStage.setScene(dialogScene);
         dialogStage.show();
     }

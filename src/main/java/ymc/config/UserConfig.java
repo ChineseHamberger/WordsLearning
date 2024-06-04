@@ -7,8 +7,10 @@ public class UserConfig implements Serializable {
     private String selectedWordBook;
     private Map<String, Integer> dailyLearningQuota = new HashMap<>();
     private Map<String, Integer> dailyReviewQuota = new HashMap<>();
-    private static final int DefaultDailyLearningQuota = 20;
-    private static final int DefaultDailyReviewQuota = 20;
+    private static final int DefaultDailyLearningQuota = 10;
+    private static final int DefaultDailyReviewQuota = 10;
+    private static final int MaxDailyLearningQuota = 20;
+    private static final int MaxDailyReviewQuota = 20;
 
     public static int getDefaultDailyLearningQuota() {
         return DefaultDailyLearningQuota;
@@ -41,10 +43,16 @@ public class UserConfig implements Serializable {
     }
 
     public void setDailyLearningQuota(int dailyLearningQuota) {
+        if (dailyLearningQuota > MaxDailyLearningQuota) {
+            dailyLearningQuota = MaxDailyLearningQuota;
+        }
         this.dailyLearningQuota.put(this.selectedWordBook, dailyLearningQuota);
     }
 
     public void setDailyReviewQuota(int dailyReviewQuota) {
+        if (dailyReviewQuota > MaxDailyReviewQuota) {
+            dailyReviewQuota = MaxDailyReviewQuota;
+        }
         this.dailyReviewQuota.put(this.selectedWordBook, dailyReviewQuota);
     }
 
