@@ -1,9 +1,7 @@
 package modules.main;
 
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebEngine;
@@ -20,6 +18,7 @@ import java.util.List;
 
 public class ReadingPage extends BorderPane {
     private ArticleProcessor articleProcessor;
+    private CheckBox boldCheckBox;
 
     public ReadingPage(ArticleProcessor articleProcessor) {
         this.articleProcessor = articleProcessor;
@@ -44,9 +43,13 @@ public class ReadingPage extends BorderPane {
             articleButtons.getChildren().add(articleButton);
         }
 
+        boldCheckBox = new CheckBox("加粗正在学习的单词");
+        boldCheckBox.setSelected(false);
+
         ScrollPane scrollPane = new ScrollPane(articleButtons);
         scrollPane.setFitToWidth(true);
-        setCenter(scrollPane);
+        VBox vbox = new VBox(scrollPane, boldCheckBox);
+        setCenter(vbox);
     }
 
     private List<File> loadArticles() {
@@ -64,6 +67,7 @@ public class ReadingPage extends BorderPane {
     private void displayArticle(File articleFile) {
         try {
             String content = new String(Files.readAllBytes(articleFile.toPath()));
+            articleProcessor.setboldLearningWords(boldCheckBox.isSelected());
             String processedContent = articleProcessor.processArticle(content);
 
             WebView webView = new WebView();

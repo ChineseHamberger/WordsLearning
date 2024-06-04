@@ -5,8 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="68c959b2-b931-4e7e-ab81-940ba4d8475b" name="Changes" comment="0531">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/modules/main/ReadingPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/modules/main/ReadingPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ymc/UI/ArticleProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ymc/UI/ArticleProcessor.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +45,7 @@
     "Application.mainAPP.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "a15e722b",
+    "git-widget-placeholder": "a6a62efc",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "E:/CloudDisk/IDEA_Java/Learning/CopyWords",
     "node.js.detected.package.eslint": "true",
@@ -100,7 +100,7 @@
       <workItem from="1717251970248" duration="60000" />
       <workItem from="1717342214120" duration="313000" />
       <workItem from="1717422485656" duration="52000" />
-      <workItem from="1717460325514" duration="2744000" />
+      <workItem from="1717460325514" duration="3110000" />
     </task>
     <task id="LOCAL-00001" summary="0528">
       <option name="closed" value="true" />
