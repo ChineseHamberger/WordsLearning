@@ -1,18 +1,22 @@
    package modules.main;
 
-   import com.almasb.fxgl.app.GameSettings;
+   import effects.MyButton;
    import effects.MyVbox;
    import javafx.scene.control.*;
+   import javafx.scene.layout.BorderPane;
    import javafx.scene.layout.HBox;
-   import javafx.scene.layout.Pane;
-   import javafx.scene.layout.VBox;
+
+   import modules.config.ConfigPage;
    import settings.GlobalSetting;
+   import tools.FileKit;
    import ymc.LocalStorage.LocalStorage;
 
-   public class SettingsPage extends Pane {
+   import java.io.File;
+
+   public class SettingsPage extends BorderPane {
        private GlobalSetting setting;
 
-       public SettingsPage(GlobalSetting globalSetting) {
+       public SettingsPage(String username, GlobalSetting globalSetting) {
            LocalStorage storage = new LocalStorage();
            setting = globalSetting;
 
@@ -75,32 +79,54 @@
            HBox fullScreenOnStartHBox = new HBox(10);
            fullScreenOnStartHBox.getChildren().addAll(fullScreenOnStartYButton, fullScreenOnStartNButton);
 
+           HBox clearCacheHBox = new HBox(10);
+           MyButton clearCacheButton = new MyButton("清除数据缓存(不会删除用户数据)");
+           clearCacheButton.setOnAction(event -> {
+               File booksDir = new File("wordBooks");
+               FileKit.clearAllFiles(booksDir);
+               File articleDir = new File("articles");
+               FileKit.clearAllFiles(articleDir);
+           });
+           clearCacheHBox.getChildren().add(clearCacheButton);
+
+           HBox configHBox = new HBox(10);
+           MyButton configButton = new MyButton("重新选择该用户配置");
+           ConfigPage configPage = new ConfigPage(username);
+           configHBox.getChildren().add(configButton);
+
+           HBox logHBox = new HBox(10);
+           MyButton logButton = new MyButton("查看更新日志");
+           LogPage logPage = new LogPage(new File("src/main/resources/log.txt"));
+           logHBox.getChildren().add(logButton);
+           
            MyVbox root = new MyVbox(10);
            root.getChildren().addAll(playUSSpeechFirstHBox);
            root.getChildren().addAll(fullScreenOnStartHBox);
+           root.getChildren().addAll(clearCacheHBox);
+           root.getChildren().addAll(configHBox);
+           root.getChildren().addAll(logHBox);
 
-           getChildren().add(root);
+           configButton.setOnAction(event -> {
+               this.setCenter(configPage);
+           });
+           configPage.isOverProperty().addListener((obs, oldValue, newValue) -> {
+               if (newValue) {
+                   this.setCenter(root);
+                   configPage.isOverProperty().setValue(false);
+               }
+           });
 
+           logButton.setOnAction(event -> {
+               this.setCenter(logPage);
+           });
+           logPage.isOverProperty().addListener((obs, oldValue, newValue) -> {
+               if (newValue) {
+                   this.setCenter(root);
+                   logPage.isOverProperty().setValue(false);
+               }
+           });
 
-           // 创建控件
-//           CheckBox enableFeatureCheckbox = new CheckBox("Enable Feature");
-//           Slider valueSlider = new Slider(0, 100, globalSetting.getValue());
-//
-//           // 设置初始值
-//           enableFeatureCheckbox.setSelected(globalSetting.isFeatureEnabled());
-//           valueSlider.setValue(globalSetting.getValue());
-//
-//           // 添加事件监听器
-//           enableFeatureCheckbox.setOnAction(event -> setting.setFeatureEnabled(enableFeatureCheckbox.isSelected()));
-//           valueSlider.valueProperty().addListener((obs, oldValue, newValue) -> setting.setValue((int) newValue.doubleValue()));
-//
-//           // 布局控件
-//           VBox root = new VBox(10);
-//           root.getChildren().addAll(enableFeatureCheckbox, valueSlider);
-//
-//           // 设置SettingsPage的内容
-//           setPrefSize(GameSettings.WIDTH * 0.8, GameSettings.HEIGHT * 0.8);
-//           getChildren().add(root);
+           this.setCenter(root);
        }
    }
    

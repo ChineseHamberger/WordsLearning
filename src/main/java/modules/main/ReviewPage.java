@@ -18,7 +18,7 @@ public class ReviewPage extends BorderPane {
     boolean isFinished;
     GlobalSetting setting;
     int currentIndex = 0;
-    public ReviewPage(String username, WordBook wordBook, UserConfig config, UserProgress progress, List<Word> wordsToReview, GlobalSetting globalSetting)
+    public ReviewPage(String username, WordBook wordBook, UserConfig config, UserProgress progress, List<Word> wordsToReview, GlobalSetting globalSetting,double height)
     {
         setting = globalSetting;
 
@@ -26,7 +26,7 @@ public class ReviewPage extends BorderPane {
         for(int i = 0; i<wordsToReview.size(); i++){
             reviewNamesMask.add(Integer.toString(i));
         }
-        NavigationPane wordsNavigationPane = new NavigationPane(120,600,reviewNamesMask,false);
+        NavigationPane wordsNavigationPane = new NavigationPane(120,height,reviewNamesMask,false);
         setRight(wordsNavigationPane);
 
         MyVbox centerVbox = new MyVbox();

@@ -21,7 +21,7 @@ public class LearningPage extends BorderPane {
     Map<Word, Boolean> wordsPassed = new HashMap<>();
     List<InfoBox> infoBoxes = new ArrayList<>();
     int currentIndex = 0;
-    public LearningPage(String username,WordBook wordBook, UserConfig config, UserProgress progress, List<Word> wordsToLearn)
+    public LearningPage(String username,WordBook wordBook, UserConfig config, UserProgress progress, List<Word> wordsToLearn,double height)
     {
         LocalStorage storage = new LocalStorage();
         List<String> learnNames = new ArrayList<>();
@@ -48,7 +48,7 @@ public class LearningPage extends BorderPane {
         });
 
 
-        NavigationPane wordsNavigationPane = new NavigationPane(120,600,learnNames,false);
+        NavigationPane wordsNavigationPane = new NavigationPane(120,height,learnNames,false);
         setRight(wordsNavigationPane);
 
         MyVbox centerVbox = new MyVbox();

@@ -24,7 +24,7 @@ import java.util.List;
 public class ReadingPage extends BorderPane {
     private VBox vbox;
     private ArticleProcessor articleProcessor;
-    private CheckBox boldCheckBox;
+    private CheckBox boldCheckBox = new CheckBox("加粗学习单词");
     private final ListView<File> fileList = new ListView<>();
 //    public ArticlePage(ArticleProcessor articleProcessor) {
 //        this.articleProcessor = articleProcessor;
@@ -44,15 +44,13 @@ public class ReadingPage extends BorderPane {
 //
 //    }
 
-    public ReadingPage(ArticleProcessor articleProcessor) {
+    public ReadingPage(ArticleProcessor articleProcessor, double width, double height) {
 
         this.articleProcessor = articleProcessor;
 
         if (!new File("articles").exists()) {
             new File("articles").mkdir();
         }
-
-
 
         List<File> articles = loadArticles();
         for (File article : articles){
@@ -66,9 +64,10 @@ public class ReadingPage extends BorderPane {
                 }
             }
         });
-        VBox articlesVbox = new VBox(10,fileList);
-        articlesVbox.setAlignment(Pos.CENTER);
-        articlesVbox.setMaxSize(1000,600);
+        VBox articlesVbox = new VBox(fileList);
+        articlesVbox.setMaxSize(width,height);
+        System.out.println(width);
+        System.out.println(height);
 
         if (articles.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -79,21 +78,17 @@ public class ReadingPage extends BorderPane {
             return;
         }
 
-        boldCheckBox = new CheckBox("加粗正在学习的单词");
+        //MyButton boldButton = new MyButton("选择其他路径下的文章添加到如上列表");
+
         boldCheckBox.setSelected(false);
         boldCheckBox.setOnAction(e -> {
             articleProcessor.setBoldLearningWords(boldCheckBox.isSelected());
             System.out.println("boldLearningWords: " + boldCheckBox.isSelected());
         });
 
-
-        // 使用HBox包裹boldCheckBox，并设置对其方式为底部，减少其占用的垂直空间
-        HBox checkBoxContainer = new HBox(boldCheckBox);
-        checkBoxContainer.setAlignment(Pos.BOTTOM_LEFT);
-        checkBoxContainer.setPadding(new Insets(5, 0, 0, 0)); // 可根据需要调整内边距
-
-        vbox = new VBox(articlesVbox, checkBoxContainer);
-        vbox.setPadding(new Insets(0, 0, 20, 0));
+        vbox = new VBox();
+        vbox.getChildren().add(articlesVbox);
+        vbox.getChildren().add(boldCheckBox);
         setCenter(vbox);
     }
 
@@ -147,8 +142,8 @@ public class ReadingPage extends BorderPane {
                 setCenter(vbox);
             });
             
-            VBox webViewVbox = new VBox(webView, backButton);
-            webViewVbox.setPadding(new Insets(0, 0, 10, 0)); // 添加适当的间距
+            VBox webViewVbox = new VBox();
+            webViewVbox.getChildren().addAll(webView, backButton);
 
             setCenter(webViewVbox);
         } catch (IOException e) {

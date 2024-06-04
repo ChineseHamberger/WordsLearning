@@ -62,13 +62,13 @@ public class ProblemBox extends MyVbox {
         switch (questionType) {
             case 0:
                 // English to Chinese
-                question = "The meaning of " + word.getEnglish() + " is:";
+                question = "这个单词 " + word.getEnglish() + " 的中文解释是: ";
                 correctAnswer = word.getTranChinese();
                 generateOptions(correctAnswer, true);
                 break;
             case 1:
                 // Chinese to English
-                question = word.getTranChinese() + "的含义是：";
+                question = "哪个选项更接近\""+word.getTranChinese()+"\"的含义: ";
                 correctAnswer = word.getEnglish();
                 generateOptions(correctAnswer, false);
                 break;

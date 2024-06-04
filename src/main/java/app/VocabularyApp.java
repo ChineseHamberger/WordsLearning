@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import modules.config.ConfigPage;
 import modules.loading.LoadingPane;
 import modules.login.LoginPane;
 import modules.main.*;
@@ -35,7 +36,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class VocabularyApp extends Application {
-    private int width = 1000,height = 600;
+    private Stage UIStage;
+    private double width = 1000,height = 600;
     private GlobalSetting globalSetting;
 
     private LocalStorage storage = new LocalStorage();
@@ -50,28 +52,31 @@ public class VocabularyApp extends Application {
     private List<Word> wordsToReviewCopy;
 
     @Override
-    public void start(Stage primayStage) throws IOException {
+    public void start(Stage pirmaryStage) throws IOException {
+        UIStage = pirmaryStage;
         globalSetting = storage.loadGlobalSettings();
         if (globalSetting.getFullScreen()){
             Rectangle2D screenSize = Screen.getPrimary().getVisualBounds();
-            width = (int) screenSize.getWidth();
-            height = (int) screenSize.getHeight()-30;
+            width = screenSize.getWidth();
+            height = screenSize.getHeight()-30;
+            System.out.println("fullScreen");
+            System.out.println(width);
+            System.out.println(height);
         }
 
-        primayStage.setTitle("开始");
+        UIStage.setTitle("WordsLearning");
 
         StartPane startPane = new StartPane(globalSetting);
 
         Scene scene = new Scene(startPane, width, height);
-        primayStage.setScene(scene);
-        primayStage.show();
-
+        UIStage.setScene(scene);
+        UIStage.show();
 
         System.out.println("globalSetting="+globalSetting.getPlayUSSpeechFirst());
 
         startPane.startProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
-                primayStage.close();
+                //UIStage.close();
                 showLoginStage();
             }
         });
@@ -81,17 +86,15 @@ public class VocabularyApp extends Application {
     public void showLoginStage() {
         LoginPane loginPane = new LoginPane();
         Scene scene = new Scene(loginPane, width, height);
-        Stage loginStage = new Stage();
-        loginStage.setScene(scene);
+        UIStage.setScene(scene);
         loginPane.loginProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
                 username = loginPane.getUsername();
                 System.out.println("username="+username);
-                loginStage.close();
+                //loginStage.close();
                 showLoadingStage();;
             }
         });
-        loginStage.show();
     }
 
     public void showLoadingStage() {
@@ -139,33 +142,26 @@ public class VocabularyApp extends Application {
             }
         };
 
-
-        Stage loadingStage = new Stage();
-        loadingStage.setTitle("Loading");
-
         BorderPane root = new BorderPane();
         root.setEffect(Shadows.WINDOW_SHADOW);
 
         LoadingPane loadingPane = new LoadingPane();
         root.setCenter(loadingPane);
 
-
         Scene scene = new Scene(root, width, height);
-        loadingStage.setScene(scene);
-        loadingStage.show();
+        UIStage.setScene(scene);
 
         config = storage.loadUserConfig(username);
         progress = config != null? storage.loadUserProgress(username, config.getSelectedWordBook()): null;
         if (config == null) {
-            loadingStage.close();
-            showInitialSetupDialog();
+            showConfigStage();
+            //showInitialSetupDialog();
         }
         else{
             // 运行后台线程
             Platform.runLater(() -> {
                 loadingTask.setOnSucceeded(event -> {
                     System.out.println("loadingTask.setOnSucceeded");
-                    loadingStage.close();
                     showMainStage();
                 });
 
@@ -179,68 +175,25 @@ public class VocabularyApp extends Application {
             });
         }
 
-
     }
-
-    public void showInitialSetupDialog() {
-        Stage dialogStage = new Stage();
-        dialogStage.setTitle("初始化设置");
-
-        VBox dialogRoot = new VBox(10);
-        dialogRoot.setPadding(new Insets(10));
-
-        dialogRoot.setStyle("-fx-background-color: white;");
-        dialogRoot.setEffect(Shadows.WINDOW_SHADOW);
-
-        MyLabel label = new MyLabel("请选择一个单词书：");
-
-        ComboBox<String> wordBookComboBox = new ComboBox<>();
-        List<String> wordBooks = storage.listWordBooks();
-        wordBooks.forEach(wordBookComboBox.getItems()::add);
-
-        MyLabel learningQuotaLabel = new MyLabel("请输入每日学习量(最大为20)：");
-        MyTextField learningQuotaField = new MyTextField();
-        learningQuotaField.setMaxSize(100,20);
-        MyLabel reviewQuotaLabel = new MyLabel("请输入每日复习量(最大为20)：");
-        MyTextField reviewQuotaField = new MyTextField();
-        reviewQuotaField.setMaxSize(100,20);
-
-        MyButton submitButton = new MyButton("提交");
-
-        submitButton.setOnAction(e -> {
-            String selectedWordBook = wordBookComboBox.getValue()==null ? wordBooks.get(0) : wordBookComboBox.getValue();
-            int dailyLearningQuota = learningQuotaField.getText().isEmpty() ? UserConfig.getDefaultDailyLearningQuota() : Integer.parseInt(learningQuotaField.getText());
-            int dailyReviewQuota = reviewQuotaField.getText().isEmpty() ? UserConfig.getDefaultDailyReviewQuota() : Integer.parseInt(reviewQuotaField.getText());
-
-            UserConfig config = new UserConfig(selectedWordBook, dailyLearningQuota, dailyReviewQuota);
-            storage.saveUserConfig(username, config);
-
-            Platform.runLater(() -> {
-                dialogStage.close();
-                showLoadingStage();
-            });
+    public void showConfigStage() {
+        ConfigPage configPage = new ConfigPage(username);
+        Scene scene = new Scene(configPage, width, height);
+        configPage.isOverProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue){
+                Platform.runLater(
+                        () -> {
+                            showLoadingStage();
+                        }
+                );
+            }
         });
-
-        HBox buttonBox = new HBox(10);
-        buttonBox.getChildren().add(submitButton);
-        buttonBox.setAlignment(Pos.CENTER);
-
-        dialogRoot.getChildren().addAll(label, wordBookComboBox, learningQuotaLabel, learningQuotaField, reviewQuotaLabel, reviewQuotaField, buttonBox);
-        dialogRoot.setAlignment(Pos.CENTER);
-
-        Scene dialogScene = new Scene(dialogRoot, width, height);
-        dialogStage.setScene(dialogScene);
-        dialogStage.show();
+        UIStage.setScene(scene);
     }
-
 
     public void showMainStage() {
         System.out.println("username="+username);
         System.out.println("showMainStage");
-        progress.showInfo("CET6_1");
-
-        Stage mainStage = new Stage();
-        mainStage.setTitle("Main");
 
         BorderPane root = new BorderPane();
         root.setStyle("-fx-background-color: white");
@@ -260,16 +213,16 @@ public class VocabularyApp extends Application {
             int newIndex = newValue.intValue();
             switch (newIndex) {
                 case 0:
-                    contentPane.getChildren().setAll(new LearningPage(username,wordBook,config,progress,wordsToLearnCopy));
+                    contentPane.getChildren().setAll(new LearningPage(username,wordBook,config,progress,wordsToLearnCopy,height));
                     System.out.println("LearningPane showed");
                     break;
                 case 1:
-                    contentPane.getChildren().setAll(new ReviewPage(username,wordBook,config,progress,wordsToReviewCopy,globalSetting));
+                    contentPane.getChildren().setAll(new ReviewPage(username,wordBook,config,progress,wordsToReviewCopy,globalSetting,height));
                     System.out.println("ReviewPage showed");
                     break;
                 case 2:
                     ArticleProcessor articleProcessor = new ArticleProcessor(wordBook);
-                    ReadingPage readingPage = new ReadingPage(articleProcessor);
+                    ReadingPage readingPage = new ReadingPage(articleProcessor, width, height);
                     contentPane.getChildren().setAll(readingPage);
                     System.out.println("ReadingPage showed");
                     break;
@@ -278,7 +231,7 @@ public class VocabularyApp extends Application {
                     System.out.println("DictionaryPage showed");
                     break;
                 case 4:
-                    contentPane.getChildren().setAll(new SettingsPage(globalSetting));
+                    contentPane.getChildren().setAll(new SettingsPage(username,globalSetting));
                     System.out.println("SettingsPage showed");
                     break;
                 }
@@ -286,15 +239,13 @@ public class VocabularyApp extends Application {
         root.setLeft(navigationPane);
 
         Scene scene = new Scene(root,width,height);
-        mainStage.setScene(scene);
+        UIStage.setScene(scene);
 
-        mainStage.setOnCloseRequest(event -> {
+        UIStage.setOnCloseRequest(event -> {
             storage.saveUserConfig(username, config);
             storage.saveUserProgress(username, progress, config.getSelectedWordBook());
         });
-        mainStage.show();
     }
-
 
     public static void main(String[] args) {
         launch();
