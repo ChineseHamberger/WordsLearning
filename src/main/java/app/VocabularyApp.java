@@ -256,7 +256,9 @@ public class VocabularyApp extends Application {
                     System.out.println("ReviewPage showed");
                     break;
                 case 2:
-                    contentPane.getChildren().setAll(new ReadingPage());
+                    ArticleProcessor articleProcessor = new ArticleProcessor(wordBook);
+                    ReadingPage readingPage = new ReadingPage(articleProcessor);
+                    contentPane.getChildren().setAll(readingPage);
                     System.out.println("ReadingPage showed");
                     break;
                 case 3:
