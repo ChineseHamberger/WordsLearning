@@ -93,6 +93,7 @@ public class UserProgress implements Serializable {
         wordsToReview.remove(word);
         wordsToReviewWithProblems.add(word);
         System.out.println("Review word done: " + word.getEnglish());
+
     }
 
     public void reviewWordWithProblem(Word word) {

@@ -10,6 +10,10 @@ public class ArticleProcessor {
     private WordBook wordBook;
     private boolean boldLearningWords;
 
+    public void setboldLearningWords(boolean flag){
+        this.boldLearningWords = flag;
+    }
+
     public ArticleProcessor(WordBook wordBook) {
         this.wordBook = wordBook;
     }

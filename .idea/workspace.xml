@@ -5,11 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="68c959b2-b931-4e7e-ab81-940ba4d8475b" name="Changes" comment="0531">
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/VocabularyApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/VocabularyApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/modules/main/ProblemBox.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/modules/main/ProblemBox.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/modules/main/ReviewPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/modules/main/ReviewPage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ymc/basicelements/UserProgress.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ymc/basicelements/UserProgress.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ymc/basicelements/Word.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ymc/basicelements/Word.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,6 +23,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitToolBoxStore">
+    <option name="projectConfigVersion" value="5" />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -33,23 +33,42 @@
   &quot;associatedIndex&quot;: 2
 }</component>
   <component name="ProjectId" id="2h7UXaAJhivYlNUoCk0umfUZzeq" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;Application.VocabularyApp.executor&quot;: &quot;Run&quot;,
-    &quot;Application.mainAPP.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;E:/CloudDisk/IDEA_Java/Learning/CopyWords&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "Application.VocabularyApp.executor": "Run",
+    "Application.mainAPP.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "eb27af7e",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "E:/CloudDisk/IDEA_Java/Learning/CopyWords",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
-  <component name="RunManager">
+}]]></component>
+  <component name="RunManager" selected="Application.mainAPP">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ymc.main.Main" />
+      <module name="WordsLearning" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ymc.main.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="mainAPP" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="app.VocabularyApp" />
       <module name="WordsLearning" />
@@ -57,11 +76,16 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="jdk-21.0.2-openjdk-21.0.2-4caba194b151-4f524021" />
+        <option value="jdk-21.0.2-corretto-21.0.2-4caba194b151-51586f01" />
       </set>
     </attachedChunks>
   </component>
@@ -73,6 +97,10 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1716944649741</updated>
+      <workItem from="1717251970248" duration="60000" />
+      <workItem from="1717342214120" duration="313000" />
+      <workItem from="1717422485656" duration="52000" />
+      <workItem from="1717460325514" duration="3110000" />
     </task>
     <task id="LOCAL-00001" summary="0528">
       <option name="closed" value="true" />
@@ -93,9 +121,27 @@
     <option name="localTasksCounter" value="3" />
     <servers />
   </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="0528" />
     <MESSAGE value="0531" />
     <option name="LAST_COMMIT_MESSAGE" value="0531" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/main/java/ymc/main/Main.java</url>
+          <line>9</line>
+          <properties class="ymc.main.Main" method="main">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
