@@ -5,8 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="68c959b2-b931-4e7e-ab81-940ba4d8475b" name="Changes" comment="0531">
-      <change beforePath="$PROJECT_DIR$/src/main/java/modules/main/ReadingPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/modules/main/ReadingPage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ymc/UI/ArticleProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ymc/UI/ArticleProcessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +45,7 @@
     "Application.mainAPP.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "a6a62efc",
+    "git-widget-placeholder": "eb27af7e",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "E:/CloudDisk/IDEA_Java/Learning/CopyWords",
     "node.js.detected.package.eslint": "true",
