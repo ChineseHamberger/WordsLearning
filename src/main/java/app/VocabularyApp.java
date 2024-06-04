@@ -25,6 +25,8 @@ import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import ymc.init.ArticleFetcher;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -103,6 +105,7 @@ public class VocabularyApp extends Application {
                 // 获取用户选择的单词书
                 wordBook = storage.loadWordBook(config.getSelectedWordBook());
                 articleProcessor = new ArticleProcessor(wordBook);
+                ArticleFetcher.fetchArticles();
 
                 // 如果今天已经学习过单词，则从进度中获取
 //                if (progress.IsTodaySet()) {
