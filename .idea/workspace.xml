@@ -6,10 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="68c959b2-b931-4e7e-ab81-940ba4d8475b" name="Changes" comment="0531">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings/GlobalSetting.dat" beforeDir="false" afterPath="$PROJECT_DIR$/settings/GlobalSetting.dat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/VocabularyApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/VocabularyApp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/modules/main/ReadingPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/modules/main/ReadingPage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wordBooks/BEC_2.dat" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,23 +38,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;Application.VocabularyApp.executor&quot;: &quot;Run&quot;,
-    &quot;Application.mainAPP.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;828ff86b&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;E:/CloudDisk/IDEA_Java/Learning/CopyWords&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "Application.VocabularyApp.executor": "Run",
+    "Application.mainAPP.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "a15e722b",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "E:/CloudDisk/IDEA_Java/Learning/CopyWords",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="Application.mainAPP">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="ymc.main.Main" />
@@ -103,7 +100,7 @@
       <workItem from="1717251970248" duration="60000" />
       <workItem from="1717342214120" duration="313000" />
       <workItem from="1717422485656" duration="52000" />
-      <workItem from="1717460325514" duration="1940000" />
+      <workItem from="1717460325514" duration="2744000" />
     </task>
     <task id="LOCAL-00001" summary="0528">
       <option name="closed" value="true" />
